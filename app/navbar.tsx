@@ -9,21 +9,23 @@ type NavLink = {
 }
 
 const navLinks: NavLink[] = [
+  {href: '/', label: 'Home'},
   {href: '/sets', label: 'Sets'},
 ]
 
 export function Navbar() {
   const pathname = usePathname()
 
-  return (<nav>
+  return (<nav className="flex gap-2">
     {navLinks.map(link => {
-      const isActive = pathname.startsWith(link.href)
+      // const isActive = pathname.startsWith(link.href)
+      const isActive = pathname === link.href
 
       return <Link
         key={link.href}
         href={link.href}
         className={
-          (isActive ? 'text-blue-500' : '')
+          (isActive ? 'text-blue-400 ' : '')
           + 'hover:underline'
         }
       >{link.label}</Link>
