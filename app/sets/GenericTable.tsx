@@ -6,20 +6,21 @@ export function GenericTable<Item extends { [key: string]: any}>(props: {
   })[]
   rows: Item[]
   getId: (item: Item) => string | number
+  // classes?: Record<'th' | 'tr' | 'td', string>
 }) {
   return (
-    <table>
-      <thead>
-        {props.columns.map((col, i) => <th key={i}>{col.label}</th>)}
+    <table className="border-collapse border-2 px-20">
+      <thead className="bg-slate-800">
+        {props.columns.map((col, i) => <th className="py-2 px-2 text-left" key={i}>{col.label}</th>)}
       </thead>
       <tbody>
         {props.rows.map(item => {
           const itemId = props.getId(item)
 
           return (
-            <tr key={itemId}>
+            <tr key={itemId} className="hover:bg-slate-900 odd:border-b border-2">
               {props.columns.map((col, i) => (
-                <td key={`${itemId}_i`}>{col.cellFn(item)}</td>
+                <td className="py-0.5 px-2" key={`${itemId}_i`}>{col.cellFn(item)}</td>
               ))}
             </tr>
           )}

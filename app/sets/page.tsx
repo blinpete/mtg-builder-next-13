@@ -8,7 +8,7 @@ import { GenericTable } from './GenericTable'
 export default async function Sets() {
   // const data = await Scry.setFuzzySearch()
   const data = await Scry.Sets.all()
-  data.length = 10
+  data.length = 20
 
   return <>
     <GenericTable
@@ -16,19 +16,17 @@ export default async function Sets() {
       getId={item => item.id}
       columns={[
         {
-          label: 'Icon',
-          cellFn: item => (
-            <div className='bg-white w-8 h-8 rounded-md flex justify-center items-center'>
-              <object type="image/svg+xml" data={item.icon_svg_uri} className="w-6 h-6">  
-                {/* {item.name} */}
-              </object>
-            </div>
-          ),
-        },
-        {
           label: 'Name',
           cellFn: item => (
-            <Link href={`/sets/${item.id}`}>{item.name}</Link>
+            <div className="flex flex-row gap-2 items-center" style={{minWidth: "min(60vw, 800px)"}}>
+              <div className='bg-white w-8 h-8 rounded-lg flex justify-center items-center'>
+                <object type="image/svg+xml" data={item.icon_svg_uri} className="w-6 h-6">  
+                  {/* {item.name} */}
+                </object>
+              </div>
+              <Link href={`/sets/${item.id}`}>{item.name}</Link>
+              <pre className='opacity-40'>{item.code.toUpperCase()}</pre>
+            </div>
           ),
         },
         {
@@ -40,7 +38,7 @@ export default async function Sets() {
         //   cellFn: item => item.code,
         // },
         {
-          label: 'Release date',
+          label: 'Date',
           cellFn: item => item.released_at
         },
       ]}
