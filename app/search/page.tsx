@@ -65,11 +65,6 @@ export default async function Search() {
           src={card.image_uris?.normal}
           height={320}
           width={240}
-          style={{
-            borderRadius: '4.75% / 3.5%',
-            fontSize: '14px',
-            boxShadow: '1px 1px 4px hsl(0deg 0.61% 24.97% / 90%)',
-          }}
           alt={card.name}
         />}
       </li>)}
