@@ -24,7 +24,7 @@ export default async function Sets() {
                   {/* {item.name} */}
                 </object>
               </div>
-              <Link href={`/sets/${item.id}`}>{item.name}</Link>
+              <Link href={`/search?set=${item.code}`}>{item.name}</Link>
               <pre className='opacity-40'>{item.code.toUpperCase()}</pre>
             </div>
           ),

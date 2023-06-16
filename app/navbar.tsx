@@ -10,6 +10,7 @@ type NavLink = {
 
 const navLinks: NavLink[] = [
   {href: '/', label: 'Home'},
+  {href: '/search', label: 'Search'},
   {href: '/sets', label: 'Sets'},
 ]
 
