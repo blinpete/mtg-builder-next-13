@@ -10,7 +10,7 @@ export function GenericTable<Item extends { [key: string]: any}>(props: {
 }) {
   return (
     <table className="border-collapse border-2 px-20">
-      <thead className="bg-slate-800">
+      <thead className="bg-slate-800 text-slate-300">
         {props.columns.map((col, i) => <th className="py-2 px-2 text-left" key={i}>{col.label}</th>)}
       </thead>
       <tbody>
@@ -18,7 +18,7 @@ export function GenericTable<Item extends { [key: string]: any}>(props: {
           const itemId = props.getId(item)
 
           return (
-            <tr key={itemId} className="hover:bg-slate-900 odd:border-b border-2">
+            <tr key={itemId} className="hover:bg-slate-200 odd:border-b border-2">
               {props.columns.map((col, i) => (
                 <td className="py-0.5 px-2" key={`${itemId}_i`}>{col.cellFn(item)}</td>
               ))}
