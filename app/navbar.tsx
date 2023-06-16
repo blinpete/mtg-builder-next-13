@@ -26,7 +26,7 @@ export function Navbar() {
         key={link.href}
         href={link.href}
         className={
-          (isActive ? 'text-blue-400 ' : '')
+          (isActive ? 'text-orange-400 ' : '')
           + 'hover:underline'
         }
       >{link.label}</Link>
