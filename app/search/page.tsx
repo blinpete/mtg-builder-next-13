@@ -16,11 +16,15 @@
  * 
  * sets
  * https://scryfall.com/sets
+ * 
+ * 
+ * https://magic.wizards.com/en/formats
+ * https://gatherer.wizards.com/Pages/Default.aspx
  */
 
 import Image from "next/image";
 import { search } from "./scryfall";
-// import { useState } from "react";
+import type { SearchResponse } from "../api/search/route";
 
 export default async function Search() {
   // const [cards, setCards] = useState([] as Scry.Card[])
@@ -36,19 +40,15 @@ export default async function Search() {
   // const data = (await magicEmitter.all().next()).value
 
   // Scry.Cards.bySet()
-  const data = await search('set:eld')
+  // const data = await search('set:eld')
   // const data = await search('-t:planeswalker')
-  // const data = await fetch('search/scryfall?q=-t:planeswalker')
+  const response = await fetch('http://localhost:3000/api/search?order=set&q=set:eld+color:B', {method: 'GET'})
   // console.log("🚀 | Search | data:", data)
+  const {data, error} = await response.json() as SearchResponse
 
-  // setIsLoading(false)
-
-  // if (data) setCards(x => [...x, ...data])
+  if (!data) return 'not found'
 
   return <section>
-    {/* <p>
-      isLoading: {''+isLoading}
-    </p> */}
     <p>cards found: {data.length}</p>
 
     <ul style={{

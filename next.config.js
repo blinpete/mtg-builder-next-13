@@ -7,7 +7,10 @@ const nextConfig = {
       'cards.scryfall.io',
     ],
   },
-  // experimental: {turbo: {}},
+  experimental: {
+    // turbo: {},
+    // typedRoutes: true,
+  },
 }
 
 module.exports = nextConfig
