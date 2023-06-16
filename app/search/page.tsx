@@ -26,6 +26,9 @@ export default async function Search({searchParams}: {
   };
 }) {
   return (
-    <SearchInput renderer={<SearchOutput query={searchParams?.q}/>}/>
+    <>
+      <SearchInput />
+      <SearchOutput query={searchParams?.q}/>
+    </>
   )
 }

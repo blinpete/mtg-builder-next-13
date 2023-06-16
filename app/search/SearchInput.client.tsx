@@ -3,9 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 
-export function SearchInput(props: {
-  renderer: JSX.Element
-}) {
+export function SearchInput() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -49,11 +47,6 @@ export function SearchInput(props: {
           ></input>
         </label>
       </form>
-
-      {query
-        ? props.renderer
-        : <div>Query is empty</div>
-      }
     </>
   )
 }
