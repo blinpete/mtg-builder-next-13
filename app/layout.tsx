@@ -29,7 +29,7 @@ export default function RootLayout({
           <Navbar />
         </div>
 
-        <main className="flex flex-col items-center justify-center" style={{minHeight: "calc(100vh - 0.75rem)"}}>
+        <main className="flex flex-col items-center" style={{minHeight: "calc(100vh - 3rem)"}}>
           <Providers>{children}</Providers>
         </main>
       </body>
