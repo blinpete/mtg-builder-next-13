@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import * as Scry from 'scryfall-sdk'
+import { Pagination } from './Pagination'
 
 // export const dynamic = "force-dynamic";
 // export const revalidate = 0;
@@ -18,8 +19,11 @@ export async function SearchOutput(props: {
 
   // https://scryfall.com/docs/api/lists
   // GET https://api.scryfall.com/cards/search?q=c%3Awhite+mv%3D1
-  const searchOptions = Object.entries(props.options || {}).reduce((acc, [k,v]) => acc+`&${k}=${v}`, '')
-  const response = await fetch(`https://api.scryfall.com/cards/search?${searchOptions}&q=${props.query}`)
+  function searchParams(pairs: Record<string, any>) {
+    return Object.entries(pairs).reduce((acc, [k,v]) => acc+`&${k}=${v}`, `q=${props.query}`)
+  }
+
+  const response = await fetch(`https://api.scryfall.com/cards/search?${searchParams(props.options || {})}`)
   const json = await response.json() as {
     object: "list"
     total_cards: number
@@ -29,7 +33,11 @@ export async function SearchOutput(props: {
   }
 
   const data = json.data
-  const prevPage = (props.options?.page || 1 ) - 1
+
+  const page = (props.options?.page || 1 )
+  const prevPage = page - 1
+
+  // const nextPageParams = searchParams({...(props.options || {}), page: page + 1})
 
   // const emitter = Scry.Cards.search(props.query, {page: 2})
   // emitter.on('data', card => {
@@ -41,29 +49,34 @@ export async function SearchOutput(props: {
 
   return (
     <section>
-      <p className="
-        text-center text-zinc-600 text-sm
-      ">{prevPage*175 + 1} - {prevPage*175 + data.length} of {json.total_cards} cards</p>
-      {/* <p>has more: {''+json.has_more}</p> */}
-      <ul style={{
-        marginTop: '1rem',
-        display: 'grid',
-        gridTemplateColumns: 'repeat(4, 1fr)',
-        gap: '0.4rem',
-        rowGap: '0.6rem',
-        listStyle: 'none'
-      }}>
-        {data.map(card => <li key={card.id}>
-          {/* {s.name} */}
-          {card.image_uris?.normal && <Image
-            className="magic-card"
-            src={card.image_uris?.normal}
-            height={320}
-            width={240}
-            alt={card.name}
-          />}
-        </li>)}
-      </ul>
+      {data && <>
+          <p className="
+            text-center text-zinc-600 text-sm
+          ">{prevPage*175 + 1} - {prevPage*175 + data.length} of {json.total_cards} cards</p>
+          <Pagination needNext={json.has_more} />
+
+          <ul style={{
+            marginTop: '1rem',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, 1fr)',
+            gap: '0.4rem',
+            rowGap: '0.6rem',
+            listStyle: 'none'
+          }}>
+            {data.map(card => <li key={card.id}>
+              {card.image_uris?.normal && <Image
+                className="magic-card"
+                src={card.image_uris?.normal}
+                height={320}
+                width={240}
+                alt={card.name}
+              />}
+            </li>)}
+          </ul>
+        </>
+      }
+      
+      {!data && <div>No cards found</div>}
     </section>
   )
 }
