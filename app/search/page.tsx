@@ -1,5 +1,6 @@
 import { SearchInput } from "./SearchInput.client";
 import { SearchOutput } from "./SearchOutput.server";
+import {type SearchOptions} from 'scryfall-sdk'
 
 /**
  * #### Scryfall routes
@@ -20,15 +21,15 @@ import { SearchOutput } from "./SearchOutput.server";
  * #### formats
  * https://magic.wizards.com/en/formats
  */
-export default async function Search({searchParams}: {
+export default async function Search(props: {
   searchParams?: {
     q?: string
-  };
+  } & SearchOptions;
 }) {
   return (
     <>
       <SearchInput />
-      <SearchOutput query={searchParams?.q}/>
+      <SearchOutput query={props.searchParams?.q} options={props.searchParams}/>
     </>
   )
 }

@@ -38,7 +38,7 @@ export function SearchInput() {
             ref={inputRef}
             name="search"
             className="
-              px-1 py-1.5 outline-none rounded-md
+              px-2 py-1.5 outline-none rounded-md
               border-2 border-transparent
               focus:border-slate-500
               bg-zinc-400 text-gray-800
