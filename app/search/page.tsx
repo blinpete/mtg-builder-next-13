@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { SearchInput } from "./SearchInput.client";
 import { SearchOutput } from "./SearchOutput.server";
 import {type SearchOptions} from 'scryfall-sdk'
@@ -29,7 +30,9 @@ export default async function Search(props: {
   return (
     <>
       <SearchInput />
-      <SearchOutput query={props.searchParams?.q} options={props.searchParams}/>
+      <Suspense fallback={<div>Loading...</div>}>
+        <SearchOutput query={props.searchParams?.q} options={props.searchParams}/>
+      </Suspense>
     </>
   )
 }
