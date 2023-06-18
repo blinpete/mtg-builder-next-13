@@ -29,7 +29,7 @@ export function SearchInput() {
             .search
             .value
             .replaceAll(' ', '+')
-          router.push(`${pathname}?q=${q}`)
+          router.push(`${pathname}?q=${q}&page=1`)
         }}
         className="w-full px-5 my-2"
       >
