@@ -31,7 +31,10 @@ export default async function Search(props: {
     <>
       <SearchInput />
       <Suspense fallback={<div>Loading...</div>}>
-        <SearchOutput query={props.searchParams?.q} options={props.searchParams}/>
+        {props.searchParams?.q
+          ? <SearchOutput query={props.searchParams.q} options={props.searchParams}/>
+          : <div>Empty query</div>
+        }
       </Suspense>
     </>
   )
