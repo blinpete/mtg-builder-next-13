@@ -1,6 +1,6 @@
 import { Suspense } from "react";
-import { SearchInput } from "./SearchInput.client";
-import { SearchOutput } from "./SearchOutput.server";
+import { SearchInput } from "./SearchInput";
+import { SearchOutput } from "./SearchOutput";
 import {type SearchOptions} from 'scryfall-sdk'
 
 /**
