@@ -10,7 +10,7 @@ type NavLink = {
 
 const navLinks: NavLink[] = [
   {href: '/', label: 'Home'},
-  {href: '/search', label: 'Search'},
+  {href: '/search?q=type:creature order:set unique:cards', label: 'Search'},
   {href: '/sets', label: 'Sets'},
 ]
 
