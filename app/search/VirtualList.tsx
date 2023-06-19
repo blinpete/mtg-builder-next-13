@@ -11,7 +11,7 @@ export function VirtualList({
 }: {
   itemsLength: number
   rowFn: (props: ListChildComponentProps) => JSX.Element
-} & Parameters<typeof useBottomLoader>[0]) {
+} & Omit<Parameters<typeof useBottomLoader>[0], 'rootRef'>) {
   const rootRef = useRef<HTMLElement>(null)
 
   const height = useMaxHeight({rootRef})
