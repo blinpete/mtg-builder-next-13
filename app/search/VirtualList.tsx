@@ -60,8 +60,9 @@ export function VirtualList({ itemsLength, rowFn, onReachBottom , isFetching}: {
       className="border-2 border-red-400"
       height={height}
       itemCount={itemsLength}
-      itemSize={320+10}
+      itemSize={320+24}
       width="100%"
+      overscanCount={4}
     >
       {rowFn}
     </List>
