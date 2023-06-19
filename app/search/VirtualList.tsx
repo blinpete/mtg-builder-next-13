@@ -30,7 +30,7 @@ export function VirtualList({itemsLength, rowFn}: {
       className="border-2 border-red-400"
       height={height}
       itemCount={itemsLength}
-      itemSize={35}
+      itemSize={320+10}
       width="100%"
     >
       {rowFn}

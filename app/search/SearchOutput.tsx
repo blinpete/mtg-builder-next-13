@@ -58,7 +58,18 @@ export async function SearchOutput(props: {
 }) {
   console.log("🚀 | SearchOutput | query:", props.query)
   console.log("🚀🚀🚀 | SearchOutput | options:", props.options)
-  const gridRowLength = 4
+  
+  const [rowSize, setRowSize] = useState(4)
+  useEffect(() => {
+    // const total = 240*X + (X-1)*gap = (240+gap)*X - gap
+    const gap = 6
+    const vpWidth = window.visualViewport?.width
+
+    if (vpWidth) {
+      setRowSize(Math.floor((vpWidth + gap) / (240 + gap)))
+    }
+  }, [])
+  // plus ResizeObserver
 
   const { data, isFetching, error, hasNextPage } = useInfiniteQuery({
     queryKey: ['cards-search', props.query],
@@ -126,13 +137,16 @@ export async function SearchOutput(props: {
           {/* <Pagination needNext={json.has_more} /> */}
 
           <VirtualList
-            itemsLength={Math.ceil(flatList.length / gridRowLength)}
+            itemsLength={Math.ceil(flatList.length / rowSize)}
             rowFn={({index, style}) => (
-              <div style={style} className="flex">row {index} {
-                range(index*gridRowLength, gridRowLength)
+              <div style={style} className="flex justify-center gap-2 py-2">{
+                range(index*rowSize, rowSize)
                   .map(i => {
-                    if (!flatList[i]) return 'none'
-                    return <div key={flatList[i].id}>card {flatList[i].data}</div>
+                    if (!flatList[i]) return <div key="none" className="w-60">None</div>
+                    return <div
+                      key={flatList[i].id}
+                      className="w-60 h-80 border-2 border-blue-400/80"
+                    >card {flatList[i].data}</div>
                   })
               }</div>
             )}
