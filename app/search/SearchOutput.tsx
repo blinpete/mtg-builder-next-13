@@ -140,6 +140,7 @@ export function SearchOutput(props: {
               )}
               onReachBottom={fetchNextPage}
               isFetching={isFetching}
+              hasNext={hasNextPage}
             />
           }
         </>

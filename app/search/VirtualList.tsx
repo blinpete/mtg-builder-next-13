@@ -3,11 +3,15 @@
 import { FixedSizeList as List, type ListChildComponentProps } from 'react-window';
 import { useEffect, useRef, useState } from 'react';
  
-export function VirtualList({ itemsLength, rowFn, onReachBottom , isFetching}: {
+export function VirtualList({
+  itemsLength, rowFn,
+  onReachBottom, isFetching, hasNext
+}: {
   itemsLength: number
   rowFn: (props: ListChildComponentProps) => JSX.Element
   onReachBottom: () => void
   isFetching: boolean
+  hasNext?: boolean
 }) {
   const rootRef = useRef<HTMLElement>(null)
   const [height, setHeight] = useState(100)
@@ -23,6 +27,8 @@ export function VirtualList({ itemsLength, rowFn, onReachBottom , isFetching}: {
   // const handleReachBottom = experimental_useEffectEvent(() => onReachBottom())
 
   useEffect(() => {
+    if (!hasNext) return
+
     const root = rootRef.current
     const id = 'vlist-bottom'
     
@@ -51,13 +57,12 @@ export function VirtualList({ itemsLength, rowFn, onReachBottom , isFetching}: {
 
       if (el) root?.removeChild(el)
     }
-  }, [onReachBottom, isFetching])
+  }, [onReachBottom, isFetching, hasNext])
 
 
   return (
     <List
       outerRef={rootRef}
-      className="border-2 border-red-400"
       height={height}
       itemCount={itemsLength}
       itemSize={320+24}
