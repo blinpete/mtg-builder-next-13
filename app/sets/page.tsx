@@ -8,7 +8,7 @@ import { GenericTable } from './GenericTable'
 export default async function Sets() {
   // const data = await Scry.setFuzzySearch()
   const data = await Scry.Sets.all()
-  data.length = 20
+  data.length = 30
 
   return <>
     <GenericTable
