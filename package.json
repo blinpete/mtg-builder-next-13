@@ -24,10 +24,15 @@
     "postcss": "8.4.24",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-query": "^3.39.3",
+    "react-window": "^1.8.9",
     "scryfall-sdk": "^4.1.1",
     "tailwind-merge": "^1.13.1",
     "tailwindcss": "3.3.2",
     "tailwindcss-animate": "^1.0.6",
     "typescript": "5.1.3"
+  },
+  "devDependencies": {
+    "@types/react-window": "^1.8.5"
   }
 }

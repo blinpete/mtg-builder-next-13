@@ -3,7 +3,9 @@
 import Image from 'next/image'
 import type Scry from 'scryfall-sdk'
 import { Pagination } from './Pagination'
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { useInfiniteQuery } from 'react-query';
+import { VirtualList } from './VirtualList';
 
 const images: HTMLImageElement[] = [];
 function preload(urls: (string | undefined)[]) {
@@ -43,6 +45,10 @@ async function ScrySearch(query: string, options?: Scry.SearchOptions) {
   return json
 }
 
+function range(start: number, length: number) {
+  return Array.from({length}).map((_,i) => start + i)
+}
+
 /**
  * https://scryfall.com/docs/api
  */
@@ -52,45 +58,87 @@ export async function SearchOutput(props: {
 }) {
   console.log("🚀 | SearchOutput | query:", props.query)
   console.log("🚀🚀🚀 | SearchOutput | options:", props.options)
+  const gridRowLength = 4
 
-  const page = parseInt(''+props.options?.page || '1')
-  const prevPage = page - 1
-  const [json, setJson] = useState<ScrySearchResponse>()
+  const { data, isFetching, error, hasNextPage } = useInfiniteQuery({
+    queryKey: ['cards-search', props.query],
+    
+    // queryFn: async ({ pageParam = 1 }) => ScrySearch(props.query, {
+    //   ...(props.options || {}),
+    //   page: pageParam
+    // }),
+    queryFn: async () => {
+      return { data: Array.from({length: 15}).map((_,i) => {
+        return {
+          id: i,
+          data: 2*i
+        }
+      }) }
+    },
 
-  useEffect(() => {
-    async function fetchData() {
-      const json = await ScrySearch(props.query, props.options)
-      setJson(json)
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.has_more) return pages.length + 1
+    },
+
+    retryOnMount: false,
+    refetchOnWindowFocus: false,
+    // keepPreviousData: true,
+    // refetchInterval: -1,
+  })
+  console.log("🚀 | data:", data)
+  console.log("🚀 | error:", error)
+
+  const flatList = useMemo(() => data?.pages.map(p => p.data).flat(), [data?.pages])
+
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const json = await ScrySearch(props.query, props.options)
+  //     setJson(json)
       
-      // cache forced prefetch
-      ScrySearch(props.query || '', {...(props.options || {}), page: page + 1})
-        .then(json => {
-          console.log("🚀 prefetch | json:", json)
+  //     // cache forced prefetch
+  //     ScrySearch(props.query || '', {...(props.options || {}), page: page + 1})
+  //       .then(json => {
+  //         console.log("🚀 prefetch | json:", json)
     
-          // if (json.data) json.data.forEach(card => {      
-          //   if (card.image_uris?.normal) {
-          //     console.log("🚀 prefetch | card:", card.name)
-          //     fetch(card.image_uris.normal, {cache: 'force-cache'})
-          //   }
-          // })
+  //         // if (json.data) json.data.forEach(card => {      
+  //         //   if (card.image_uris?.normal) {
+  //         //     console.log("🚀 prefetch | card:", card.name)
+  //         //     fetch(card.image_uris.normal, {cache: 'force-cache'})
+  //         //   }
+  //         // })
     
-          // if (json.data) preload(json.data.map(card => card.image_uris?.normal).filter(Boolean))
-        })
-    }
+  //         // if (json.data) preload(json.data.map(card => card.image_uris?.normal).filter(Boolean))
+  //       })
+  //   }
 
-    fetchData()
-  }, [props.query, props.options, page])
+  //   fetchData()
+  // }, [props.query, props.options, page])
 
   
   return (
-    <section>
-      {json?.data && <>
-          <p className="
-            text-center text-zinc-600 text-sm
-          ">{prevPage*175 + 1} - {prevPage*175 + json.data.length} of {json.total_cards} cards</p>
-          <Pagination needNext={json.has_more} />
+    <section className="w-full">
+      {data && <>
+          <p className="text-center text-zinc-600 text-sm">
+            {flatList?.length} loaded | {data.pages[0].total_cards} cards in total
+          </p>
+      
+          {/* <Pagination needNext={json.has_more} /> */}
 
-          <ul
+          <VirtualList
+            itemsLength={Math.ceil(flatList.length / gridRowLength)}
+            rowFn={({index, style}) => (
+              <div style={style} className="flex">row {index} {
+                range(index*gridRowLength, gridRowLength)
+                  .map(i => {
+                    if (!flatList[i]) return 'none'
+                    return <div key={flatList[i].id}>card {flatList[i].data}</div>
+                  })
+              }</div>
+            )}
+          />
+
+          {/* <ul
             className="
               mt-4 list-none
               grid grid-cols-2 gap-x-1.5 gap-y-2.5
@@ -107,11 +155,11 @@ export async function SearchOutput(props: {
                 alt={card.name}
               />}
             </li>)}
-          </ul>
+          </ul> */}
         </>
       }
       
-      {!json?.data && <div>No cards found</div>}
+      {!data?.pages?.length && <div>No cards found</div>}
     </section>
   )
 }
