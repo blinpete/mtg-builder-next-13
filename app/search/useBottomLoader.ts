@@ -16,7 +16,7 @@ export default function useBottomLoader({rootRef, onReachBottom, hasNext, isFetc
     
     const el = document.createElement('div')
     el.id = id
-    el.className = 'border-2 border-green-400 flex justify-center'
+    el.className = 'flex justify-center'
     el.innerText = 'Loading more...'
 
     root?.appendChild(el)
