@@ -52,7 +52,7 @@ function range(start: number, length: number) {
 /**
  * https://scryfall.com/docs/api
  */
-export async function SearchOutput(props: {
+export function SearchOutput(props: {
   query: string
   options?: Scry.SearchOptions
 }) {
@@ -71,22 +71,30 @@ export async function SearchOutput(props: {
   }, [])
   // plus ResizeObserver
 
-  const { data, isFetching, error, hasNextPage } = useInfiniteQuery({
+  const { data, isFetching, error, hasNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey: ['cards-search', props.query],
     
     // queryFn: async ({ pageParam = 1 }) => ScrySearch(props.query, {
     //   ...(props.options || {}),
     //   page: pageParam
     // }),
-    queryFn: async () => {
-      return { data: Array.from({length: 15}).map((_,i) => {
-        return {
-          id: i,
-          data: 2*i
-        }
-      }) }
-    },
+    // getNextPageParam: (lastPage, pages) => {
+    //   if (lastPage.has_more) return pages.length + 1
+    // },
 
+    queryFn: async ({pageParam = 1}) => {
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      return {
+        has_more: true,
+        data: Array.from({length: 15}).map((_,i) => {
+          return {
+            id: i + 15*(pageParam - 1),
+            data: pageParam*i,
+          }
+        })
+      }
+    },
     getNextPageParam: (lastPage, pages) => {
       if (lastPage.has_more) return pages.length + 1
     },
@@ -100,7 +108,6 @@ export async function SearchOutput(props: {
   console.log("🚀 | error:", error)
 
   const flatList = useMemo(() => data?.pages.map(p => p.data).flat(), [data?.pages])
-
 
   // useEffect(() => {
   //   async function fetchData() {
@@ -129,6 +136,7 @@ export async function SearchOutput(props: {
   
   return (
     <section className="w-full">
+      <button onClick={() => fetchNextPage()}>fetch next page</button>
       {data && <>
           <p className="text-center text-zinc-600 text-sm">
             {flatList?.length} loaded | {data.pages[0].total_cards} cards in total
@@ -136,21 +144,25 @@ export async function SearchOutput(props: {
       
           {/* <Pagination needNext={json.has_more} /> */}
 
-          <VirtualList
-            itemsLength={Math.ceil(flatList.length / rowSize)}
-            rowFn={({index, style}) => (
-              <div style={style} className="flex justify-center gap-2 py-2">{
-                range(index*rowSize, rowSize)
-                  .map(i => {
-                    if (!flatList[i]) return <div key="none" className="w-60">None</div>
-                    return <div
-                      key={flatList[i].id}
-                      className="w-60 h-80 border-2 border-blue-400/80"
-                    >card {flatList[i].data}</div>
-                  })
-              }</div>
-            )}
-          />
+          {flatList && 
+            <VirtualList
+              itemsLength={Math.ceil(flatList.length / rowSize)}
+              rowFn={({index, style}) => (
+                <div style={style} className="flex justify-center gap-2 py-2">{
+                  range(index*rowSize, rowSize)
+                    .map(i => {
+                      if (!flatList[i]) return <div key="none" className="w-60">None</div>
+                      return <div
+                        key={flatList[i].id}
+                        className="w-60 h-80 border-2 border-blue-400/80"
+                      >card {flatList[i].data}</div>
+                    })
+                }</div>
+              )}
+              onReachBottom={fetchNextPage}
+              isFetching={isFetching}
+            />
+          }
 
           {/* <ul
             className="
