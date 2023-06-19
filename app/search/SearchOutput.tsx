@@ -112,8 +112,13 @@ export function SearchOutput(props: {
   return (
     <section className="w-full">
       {data && <>
-          <p className="text-center text-zinc-600 text-sm">
-            {flatList?.length} loaded | {data.pages[0].total_cards} cards in total
+          <p className="
+            absolute z-20 left-1/2 -translate-x-1/2 -translate-y-0.5
+            bg-background text-zinc-500
+            px-5 py-0.5 rounded-full rounded-t-none 
+            text-center text-xs
+          ">
+            {flatList?.length} loaded of {data.pages[0].total_cards} cards
           </p>
       
           {flatList && 
