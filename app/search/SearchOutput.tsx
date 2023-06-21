@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import { Pagination } from './Pagination'
-import { useEffect, useState } from 'react';
-import { ScrySearch, type ScrySearchResponse, type Scry } from './ScryfallAPI';
+import { ScrySearch, type Scry } from './ScryfallAPI';
+import { useInfiniteQuery } from 'react-query';
 
 /**
  * https://scryfall.com/docs/api
@@ -15,40 +15,37 @@ export function SearchOutput(props: {
   console.log("🚀 | SearchOutput | query:", props.query)
   console.log("🚀🚀🚀 | SearchOutput | options:", props.options)
 
-  const page = parseInt(''+props.options?.page || '1')
-  const prevPage = page - 1
-  const [json, setJson] = useState<ScrySearchResponse>()
+  const curPage = parseInt(''+props.options?.page) || 1
+  const prevPage = curPage - 1
+  const curPageIdx = prevPage
 
-  useEffect(() => {
-    async function fetchData() {
-      const json = await ScrySearch(props.query, props.options)
-      setJson(json)
-      
-      // cache forced prefetch
-      // ScrySearch(props.query || '', {...(props.options || {}), page: page + 1})
-      //   .then(json => {
-      //     console.log("🚀 prefetch | json:", json)
+  const { data, isFetching, error, hasNextPage, fetchNextPage } = useInfiniteQuery({
+    queryKey: ['cards-search', props.query],
     
-      //     if (json.data) json.data.forEach(card => {      
-      //       if (card.image_uris?.normal) {
-      //         console.log("🚀 prefetch | card:", card.name)
-      //         fetch(card.image_uris.normal, {cache: 'force-cache'})
-      //       }
-      //     })
-      //   })
-    }
+    queryFn: async ({ pageParam = 1 }) => ScrySearch(props.query, {
+      ...(props.options || {}),
+      page: pageParam
+    }),
+    getNextPageParam: (lastPage, pages) => {
+      if (lastPage.has_more) return pages.length + 1
+    },
 
-    fetchData()
-  }, [props.query, props.options, page])
+    retryOnMount: false,
+    refetchOnWindowFocus: false,
+    // keepPreviousData: true,
+    // refetchInterval: -1,
+  })
+  console.log("🚀 | data:", data)
+  console.log("🚀 | error:", error)
 
-  
   return (
     <section>
-      {json?.data && <>
-          <p className="
-            text-center text-zinc-600 text-sm
-          ">{prevPage*175 + 1} - {prevPage*175 + json.data.length} of {json.total_cards} cards</p>
-          <Pagination needNext={json.has_more} />
+      {!isFetching && data?.pages && <>
+          <p className="text-center text-zinc-600 text-sm">
+            {prevPage*175 + 1} - {prevPage*175 + data.pages[curPageIdx].data.length} of {data.pages[0]?.total_cards} cards
+          </p>
+          
+          <Pagination needNext={!!hasNextPage} />
 
           <ul
             className="
@@ -59,7 +56,7 @@ export function SearchOutput(props: {
               sm:grid-cols-3
             "
           >
-            {json.data.map(card => <li key={card.id}>
+            {data.pages[prevPage].data?.map(card => <li key={card.id}>
               {card.image_uris && <Image
                 className="magic-card h-auto"
                 src={card.image_uris?.normal || card.image_uris.png}
@@ -72,7 +69,9 @@ export function SearchOutput(props: {
         </>
       }
       
-      {!json?.data && <div>No cards found</div>}
+      { isFetching
+        ? <div>Loading...</div>
+        : !data?.pages && <div>No cards found</div>}
     </section>
   )
 }
