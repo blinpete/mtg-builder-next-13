@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { Pagination } from './Pagination'
 import { ScrySearch, type Scry } from './ScryfallAPI';
 import { useInfiniteQuery } from 'react-query';
+import { useMemo, useState } from 'react';
 
 /**
  * https://scryfall.com/docs/api
@@ -14,10 +15,6 @@ export function SearchOutput(props: {
 }) {
   console.log("🚀 | SearchOutput | query:", props.query)
   console.log("🚀🚀🚀 | SearchOutput | options:", props.options)
-
-  const curPage = parseInt(''+props.options?.page) || 1
-  const prevPage = curPage - 1
-  const curPageIdx = prevPage
 
   const { data, isFetching, error, hasNextPage, fetchNextPage } = useInfiniteQuery({
     queryKey: ['cards-search', props.query],
@@ -38,14 +35,31 @@ export function SearchOutput(props: {
   console.log("🚀 | data:", data)
   console.log("🚀 | error:", error)
 
+
+
+  const [page, setPage] = useState(1)
+  const pageData = useMemo(() => data?.pages[page-1]?.data, [data?.pages, page])
+  const total = useMemo(() => data?.pages[0].total_cards || NaN, [data])
+  const prevCount = useMemo(() => 175 * (page - 1), [page])
+  const hasNext = useMemo(() => page * 175 < total, [page, total])
+  const hasPrev = useMemo(() => page > 1, [page])
+    
+  console.log("🚀 | total:", total)
+  console.log("🚀 | prevCount:", prevCount)
+  console.log("🚀 | hasNext:", hasNext)
+  console.log("🚀 | hasPrev:", hasPrev)
+
+  if (data?.pages.length === page && hasNextPage) fetchNextPage()
+
+
   return (
     <section>
-      {!isFetching && data?.pages && <>
+      {data?.pages && data?.pages[page-1] && <>
           <p className="text-center text-zinc-600 text-sm">
-            {prevPage*175 + 1} - {prevPage*175 + data.pages[curPageIdx].data.length} of {data.pages[0]?.total_cards} cards
+            {prevCount + 1} - {prevCount + data.pages[page-1].data.length} of {data.pages[0]?.total_cards} cards
           </p>
-          
-          <Pagination needNext={!!hasNextPage} />
+
+          <Pagination setPage={setPage} hasPrev={hasPrev} hasNext={hasNext} />
 
           <ul
             className="
@@ -56,7 +70,7 @@ export function SearchOutput(props: {
               sm:grid-cols-3
             "
           >
-            {data.pages[prevPage].data?.map(card => <li key={card.id}>
+            {data.pages[page-1].data?.map(card => <li key={card.id}>
               {card.image_uris && <Image
                 className="magic-card h-auto"
                 src={card.image_uris?.normal || card.image_uris.png}

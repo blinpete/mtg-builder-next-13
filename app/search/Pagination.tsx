@@ -2,34 +2,32 @@
 
 import Link from "next/link"
 import { usePathname, useSearchParams } from "next/navigation"
+import { Dispatch, SetStateAction } from "react"
 
-export function Pagination({needNext}: {needNext: boolean}) {
+export function Pagination(props: {
+  hasPrev: boolean
+  hasNext: boolean
+  setPage: Dispatch<SetStateAction<number>>
+}) {
   // console.log("🚀 | Pagination | needNext:", needNext)
 
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-
-  const page = parseInt(searchParams.get('page') || '1')
-  const prev = page - 1
-  const next = page + 1
-
-  let newParams = ''
-  searchParams.forEach((v,k) => {
-    if (k !== 'page') newParams += `${k}=${v}&`
-  })
-  newParams += 'page='
-
-
   return (
-    <div className="flex gap-2">
-      {prev > 0
-        ? <Link href={`${pathname}?${newParams + prev}`}>Prev</Link>
-        : <span className="opacity-40">Prev</span>
-      }
-      {needNext
-        ? <Link href={`${pathname}?${newParams + next}`}>Next</Link>
-        : <span className="opacity-40">Next</span>
-      }
+    <div className="flex gap-2 justify-end mx-4">
+      <button
+        className="px-2 py-0.5 rounded-sm bg-slate-400 hover:opacity-80 disabled:opacity-30"
+        onClick={() => props.setPage(1)}
+        disabled={!props.hasPrev}
+      >0</button>
+      <button
+        className="px-2 py-0.5 rounded-sm bg-slate-400 hover:opacity-80 disabled:opacity-30"
+        onClick={() => props.setPage(n => n-1)}
+        disabled={!props.hasPrev}
+      >prev</button>
+      <button
+        className="px-2 py-0.5 rounded-sm bg-slate-400 hover:opacity-80 disabled:opacity-30"
+        onClick={() => props.setPage(n => n+1)}
+        disabled={!props.hasNext}
+      >next</button>
     </div>
   )
 }
