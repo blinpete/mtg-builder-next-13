@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { Pagination } from './Pagination'
-import { ScrySearch, type Scry } from './ScryfallAPI';
+import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } from './ScryfallAPI';
 import { useInfiniteQuery } from 'react-query';
 import { useMemo, useState } from 'react';
 
@@ -16,7 +16,11 @@ export function SearchOutput(props: {
   console.log("🚀 | SearchOutput | query:", props.query)
   console.log("🚀🚀🚀 | SearchOutput | options:", props.options)
 
-  const { data, isFetching, error, hasNextPage, fetchNextPage } = useInfiniteQuery({
+  const {
+    data, error,
+    isFetching,
+    hasNextPage, fetchNextPage
+  } = useInfiniteQuery<ScrySearchResponse, ScrySearchError>({
     queryKey: ['cards-search', props.query],
     
     queryFn: async ({ pageParam = 1 }) => ScrySearch(props.query, {
@@ -85,6 +89,10 @@ export function SearchOutput(props: {
       
       { isFetching
         ? <div>Loading...</div>
+        : error
+        ? <div className="mx-6 my-6">
+            <strong>Error {error.status}:</strong> {error.details}
+          </div>
         : !data?.pages && <div>No cards found</div>}
     </section>
   )
