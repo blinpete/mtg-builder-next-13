@@ -1,47 +1,9 @@
 "use client"
 
 import Image from 'next/image'
-import type Scry from 'scryfall-sdk'
 import { Pagination } from './Pagination'
 import { useEffect, useState } from 'react';
-
-const images: HTMLImageElement[] = [];
-function preload(urls: (string | undefined)[]) {
-  let url
-  for (var i = 0; i < urls.length; i++) {
-    url = urls[i] 
-    if (!url) continue
-
-    images[i] = new window.Image();
-    images[i].src = url;
-  }
-}
-
-type ScrySearchResponse = {
-  object: "list"
-  total_cards: number
-  has_more: boolean
-  next_page: string // url with ?page=NEXT_PAGE
-  data: Scry.Card[]
-}
-
-/**
- * Docs:
- * https://scryfall.com/docs/api/lists
- * 
- * Example:
- * GET https://api.scryfall.com/cards/search?q=c%3Awhite+mv%3D1
-*/
-async function ScrySearch(query: string, options?: Scry.SearchOptions) {
-  const searchParams = Object
-    .entries(options || {})
-    .reduce((acc, [k,v]) => acc+`&${k}=${v}`, `q=${query}`)
-
-  const response = await fetch(`https://api.scryfall.com/cards/search?${searchParams}`)
-  const json = await response.json() as ScrySearchResponse
-
-  return json
-}
+import { ScrySearch, type ScrySearchResponse, type Scry } from './ScryfallAPI';
 
 /**
  * https://scryfall.com/docs/api
@@ -63,19 +25,17 @@ export async function SearchOutput(props: {
       setJson(json)
       
       // cache forced prefetch
-      ScrySearch(props.query || '', {...(props.options || {}), page: page + 1})
-        .then(json => {
-          console.log("🚀 prefetch | json:", json)
+      // ScrySearch(props.query || '', {...(props.options || {}), page: page + 1})
+      //   .then(json => {
+      //     console.log("🚀 prefetch | json:", json)
     
-          // if (json.data) json.data.forEach(card => {      
-          //   if (card.image_uris?.normal) {
-          //     console.log("🚀 prefetch | card:", card.name)
-          //     fetch(card.image_uris.normal, {cache: 'force-cache'})
-          //   }
-          // })
-    
-          // if (json.data) preload(json.data.map(card => card.image_uris?.normal).filter(Boolean))
-        })
+      //     if (json.data) json.data.forEach(card => {      
+      //       if (card.image_uris?.normal) {
+      //         console.log("🚀 prefetch | card:", card.name)
+      //         fetch(card.image_uris.normal, {cache: 'force-cache'})
+      //       }
+      //     })
+      //   })
     }
 
     fetchData()
@@ -92,8 +52,9 @@ export async function SearchOutput(props: {
 
           <ul
             className="
-              mt-4 list-none
-              grid grid-cols-2 gap-x-1.5 gap-y-2.5
+              mx-1 mt-4 list-none
+              grid gap-x-1.5 gap-y-2.5
+              grid-cols-2 
               md:grid-cols-4
               sm:grid-cols-3
             "
@@ -115,5 +76,3 @@ export async function SearchOutput(props: {
     </section>
   )
 }
-
-export type SearchOutputType = typeof SearchOutput
