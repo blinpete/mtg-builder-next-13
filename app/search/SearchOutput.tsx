@@ -8,7 +8,7 @@ import { ScrySearch, type ScrySearchResponse, type Scry } from './ScryfallAPI';
 /**
  * https://scryfall.com/docs/api
  */
-export async function SearchOutput(props: {
+export function SearchOutput(props: {
   query: string
   options?: Scry.SearchOptions
 }) {
