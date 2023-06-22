@@ -17,17 +17,23 @@ export function Pagination(props: {
         className="px-2 py-0.5 rounded-sm bg-slate-400 hover:opacity-80 disabled:opacity-30"
         onClick={() => props.setPage(1)}
         disabled={!props.hasPrev}
-      >0</button>
+      >
+        0
+      </button>
       <button
         className="px-2 py-0.5 rounded-sm bg-slate-400 hover:opacity-80 disabled:opacity-30"
-        onClick={() => props.setPage(n => n-1)}
+        onClick={() => props.setPage(n => n - 1)}
         disabled={!props.hasPrev}
-      >prev</button>
+      >
+        prev
+      </button>
       <button
         className="px-2 py-0.5 rounded-sm bg-slate-400 hover:opacity-80 disabled:opacity-30"
-        onClick={() => props.setPage(n => n+1)}
+        onClick={() => props.setPage(n => n + 1)}
         disabled={!props.hasNext}
-      >next</button>
+      >
+        next
+      </button>
     </div>
   )
 }
