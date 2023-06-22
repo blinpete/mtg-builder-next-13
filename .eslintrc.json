@@ -8,6 +8,9 @@
   "plugins": ["@typescript-eslint"],
 
   "rules": {
+    "import/no-unresolved": "error",
+    "import/newline-after-import": "error",
+
     "@typescript-eslint/consistent-type-imports": [
       "error",
       {
