@@ -1,3 +1,24 @@
+/**
+  https://github.com/vercel/next.js/blob/canary/packages/eslint-config-next/index.js
+  https://nextjs.org/docs/pages/building-your-application/configuring/eslint#core-web-vitals
+*/
 {
-  "extends": "next/core-web-vitals"
+  "extends": ["next/core-web-vitals", "prettier"],
+
+  "plugins": ["@typescript-eslint"],
+
+  "rules": {
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports",
+        "disallowTypeAnnotations": true,
+        "fixStyle": "separate-type-imports"
+      }
+    ]
+    // "sort-imports": "off",
+    // "import/order": "off",
+    // "simple-import-sort/imports": "error",
+    // "simple-import-sort/exports": "error"
+  }
 }
