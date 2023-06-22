@@ -1,0 +1,33 @@
+import bcrypt from "bcrypt";
+import { prisma } from "@/lib/prismadb";
+import { NextResponse } from "next/server";
+import type { RegisterRequest } from "@/types/auth";
+
+export async function POST(request: RegisterRequest) {
+  const { name, email, password } = await request.json();
+
+  if (!name || !email || !password) {
+    return new NextResponse("Missing fields", { status: 400 });
+  }
+
+  console.log(`user data: ${name} ${email} ${password}`);
+
+  const exist = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  });
+
+  if (exist) {
+    throw new Error("Email already exists");
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10); // 10 - salt
+  console.log(`hashedPassword: ${hashedPassword}`);
+
+  const user = await prisma.user.create({
+    data: { name, email, hashedPassword },
+  });
+
+  return NextResponse.json(user);
+}

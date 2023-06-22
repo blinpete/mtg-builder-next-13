@@ -1,10 +1,13 @@
-'use client'
+"use client";
 
-import { ThemeProvider } from 'next-themes'
-import type { PropsWithChildren } from 'react'
+import { ThemeProvider } from "next-themes";
+import type { PropsWithChildren } from "react";
+import AuthProvider from "./auth/context/AuthContext";
 
 export function Providers({ children }: PropsWithChildren) {
-  return <ThemeProvider
-    attribute='class'
-  >{children}</ThemeProvider>
+  return (
+    <ThemeProvider attribute="class">
+      <AuthProvider>{children}</AuthProvider>
+    </ThemeProvider>
+  );
 }

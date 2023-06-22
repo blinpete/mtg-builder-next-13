@@ -1,38 +1,44 @@
-import './globals.css'
-import { Inter } from 'next/font/google'
-import { Navbar } from './navbar'
-import { Providers } from './providers'
-import { cn } from '@/lib/utils'
+import "./globals.css";
+import { Inter } from "next/font/google";
+import { Navbar } from "./navbar";
+import { Providers } from "./providers";
+import { cn } from "@/lib/utils";
 
-const font = Inter({ subsets: ['latin'] })
+const font = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'MTG Builder',
-  description: 'A magic place for everyone to browse MTG cards and build decks.',
-}
+  title: "MTG Builder",
+  description:
+    "A magic place for everyone to browse MTG cards and build decks.",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(font.className, 'overscroll-y-none')}>
+      <body className={cn(font.className, "overscroll-y-none")}>
         {/* header */}
-        <div className="
+        <div
+          className="
           w-full
           flex justify-center h-12 items-center
           bg-gradient-to-b from-zinc-900/95 to-zinc-800/95
           text-zinc-200
-          lg:static lg:w-auto lg:rounded-xl">
+          lg:static lg:w-auto lg:rounded-xl"
+        >
           <Navbar />
         </div>
 
-        <main className="flex flex-col items-center" style={{minHeight: "calc(100vh - 3rem)"}}>
+        <main
+          className="flex flex-col items-center"
+          style={{ minHeight: "calc(100vh - 3rem)" }}
+        >
           <Providers>{children}</Providers>
         </main>
       </body>
     </html>
-  )
+  );
 }
