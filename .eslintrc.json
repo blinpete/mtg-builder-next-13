@@ -10,6 +10,24 @@
   "rules": {
     "import/no-unresolved": "error",
     "import/newline-after-import": "error",
+    "import/order": [
+      "error",
+      {
+        "distinctGroup": false,
+
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "index",
+          "sibling",
+          "object",
+          "unknown",
+          "type"
+        ]
+      }
+    ],
 
     "@typescript-eslint/consistent-type-imports": [
       "error",
