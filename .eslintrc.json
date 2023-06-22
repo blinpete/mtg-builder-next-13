@@ -10,6 +10,9 @@
   "rules": {
     "import/no-unresolved": "error",
     "import/newline-after-import": "error",
+    "import/no-extraneous-dependencies": "error",
+    "import/no-unused-modules": "error",
+    "import/no-useless-path-segments": "error",
     "import/order": [
       "error",
       {
