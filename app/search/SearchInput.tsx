@@ -1,7 +1,7 @@
 "use client"
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useRef } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useEffect, useRef } from "react"
 
 export function SearchInput() {
   const router = useRouter()
@@ -9,26 +9,27 @@ export function SearchInput() {
   const searchParams = useSearchParams()
   console.log("🚀 | SearchInput | searchParams:", searchParams)
 
-  const order = searchParams.get('order')
-  const direction = searchParams.get('dir')
-  const query = searchParams.get('q')
+  // const order = searchParams.get("order")
+  // const direction = searchParams.get("dir")
+  const query = searchParams.get("q")
 
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (inputRef.current) {
-      inputRef.current.value = query || ''
+      inputRef.current.value = query || ""
     }
   }, [query])
-  
+
   return (
     <>
-      <form onSubmit={e => {
+      <form
+        onSubmit={e => {
           e.preventDefault()
-          const q = (e.target as unknown as {search: HTMLInputElement})
-            .search
-            .value
-            .replaceAll(' ', '+')
+          const q = (e.target as unknown as { search: HTMLInputElement }).search.value.replaceAll(
+            " ",
+            "+"
+          )
           router.push(`${pathname}?q=${q}&page=1`)
         }}
         className="w-full px-5 my-2"

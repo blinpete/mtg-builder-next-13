@@ -2,10 +2,7 @@
 const nextConfig = {
   images: {
     dangerouslyAllowSVG: true,
-    domains: [
-      'svgs.scryfall.io',
-      'cards.scryfall.io',
-    ],
+    domains: ["svgs.scryfall.io", "cards.scryfall.io"],
   },
   experimental: {
     // turbo: {},

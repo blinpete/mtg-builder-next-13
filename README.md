@@ -1,9 +1,8 @@
-MTG Builder
----
+## MTG Builder
 
 **Note:** this is still work in progress
 
-*Magic: The Gathering* deck builder. 
+_Magic: The Gathering_ deck builder.
 
 Bulit with
 
@@ -22,4 +21,3 @@ pnpm build
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
