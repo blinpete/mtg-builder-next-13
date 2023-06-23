@@ -65,12 +65,12 @@ export function SearchOutput(props: { query: string; options?: Scry.SearchOption
             className="
               mx-1 mt-4 list-none
               grid gap-x-1.5 gap-y-2.5
-              grid-cols-2 
+              grid-cols-2
               md:grid-cols-4
               sm:grid-cols-3
             "
           >
-            {data.pages[page - 1].data?.map(card => (
+            {pageData?.map(card => (
               <li key={card.id}>
                 {card.image_uris && (
                   <Image

@@ -5,7 +5,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url)
   console.log("🚀 search | GET | searchParams:", searchParams)
 
-  const id = searchParams.get("id")
+  // const id = searchParams.get("id")
   const query = searchParams.get("q")
   if (!query) return NextResponse.json({ data: null, error: "empty query" })
 

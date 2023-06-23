@@ -1,4 +1,3 @@
-import { Suspense } from "react"
 import { SearchInput } from "./SearchInput"
 import { SearchOutput } from "./SearchOutput"
 import type { SearchOptions } from "scryfall-sdk"

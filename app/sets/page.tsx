@@ -1,4 +1,3 @@
-import Image from "next/image"
 import Link from "next/link"
 import * as Scry from "scryfall-sdk"
 import { GenericTable } from "./GenericTable"

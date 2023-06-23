@@ -1,7 +1,7 @@
 "use client"
 
-import Link from "next/link"
-import { usePathname, useSearchParams } from "next/navigation"
+// import Link from "next/link"
+// import { usePathname, useSearchParams } from "next/navigation"
 import type { Dispatch, SetStateAction } from "react"
 
 export function Pagination(props: {
