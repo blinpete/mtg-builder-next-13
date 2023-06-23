@@ -1,8 +1,8 @@
 "use client"
 
 import Image from "next/image"
-import { useInfiniteQuery } from "react-query"
 import { useMemo, useState } from "react"
+import { useInfiniteQuery } from "react-query"
 import { Pagination } from "./Pagination"
 import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } from "./ScryfallAPI"
 

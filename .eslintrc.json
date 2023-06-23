@@ -20,6 +20,11 @@
     "import/order": [
       "error",
       {
+        "newlines-between": "never",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        },
         "distinctGroup": false,
 
         "groups": [
