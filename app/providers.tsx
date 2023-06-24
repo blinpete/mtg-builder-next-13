@@ -1,15 +1,18 @@
 "use client"
 
 import { ThemeProvider } from "next-themes"
+import { type PropsWithChildren } from "react"
 import { QueryClient, QueryClientProvider } from "react-query"
-import type { PropsWithChildren } from "react"
+import { DeckProvider } from "./search/DeckContext"
 
 const queryClient = new QueryClient()
 
 export function Providers({ children }: PropsWithChildren) {
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider attribute="class">{children}</ThemeProvider>
-    </QueryClientProvider>
+    <DeckProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider attribute="class">{children}</ThemeProvider>
+      </QueryClientProvider>
+    </DeckProvider>
   )
 }

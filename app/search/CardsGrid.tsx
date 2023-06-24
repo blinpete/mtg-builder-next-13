@@ -1,7 +1,12 @@
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 import type { Scry } from "./ScryfallAPI"
 
-export function CardsGrid({ data }: { data: Scry.Card[] }) {
+export function CardsGrid(props: {
+  data: Scry.Card[]
+  cardClassName?: (card: Scry.Card) => string
+  onCardClick?: (card: Scry.Card) => void
+}) {
   return (
     <ul
       className="
@@ -12,15 +17,16 @@ export function CardsGrid({ data }: { data: Scry.Card[] }) {
         sm:grid-cols-3
       "
     >
-      {data.map(card => (
-        <li key={card.id}>
+      {props.data.map((card, i) => (
+        <li key={card.id + i}>
           {card.image_uris && (
             <Image
-              className="magic-card h-auto"
+              className={cn("magic-card h-auto", props.cardClassName?.(card))}
               src={card.image_uris?.normal || card.image_uris.png}
               height={320}
               width={240}
               alt={card.name}
+              onClick={() => props.onCardClick?.(card)}
             />
           )}
         </li>

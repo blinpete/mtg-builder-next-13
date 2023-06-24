@@ -12,6 +12,8 @@ const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/search", label: "Search" },
   { href: "/sets", label: "Sets" },
+  { href: "/decks/1", label: "Deck 1" },
+  // { href: "/decks/2", label: "Deck 2" },
 ]
 
 export function Navbar() {

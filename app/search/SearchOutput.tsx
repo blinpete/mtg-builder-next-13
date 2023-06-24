@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react"
 import { useInfiniteQuery } from "react-query"
 import { CardsGrid } from "./CardsGrid"
+import { useDeck } from "./DeckContext"
 import { Pagination } from "./Pagination"
 import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } from "./ScryfallAPI"
 
@@ -12,6 +13,8 @@ import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } 
 export function SearchOutput(props: { query: string; options?: Scry.SearchOptions }) {
   console.log("🚀 | SearchOutput | query:", props.query)
   console.log("🚀🚀🚀 | SearchOutput | options:", props.options)
+
+  const deck = useDeck()
 
   const { data, error, isFetching, hasNextPage, fetchNextPage } = useInfiniteQuery<
     ScrySearchResponse,
@@ -60,7 +63,11 @@ export function SearchOutput(props: { query: string; options?: Scry.SearchOption
 
           <Pagination setPage={setPage} hasPrev={hasPrev} hasNext={hasNext} />
 
-          <CardsGrid data={pageData} />
+          <CardsGrid
+            data={pageData}
+            onCardClick={card => deck?.addCard(card)}
+            cardClassName={card => (deck?.has(card.id) ? "border-2 border-orange-500" : "")}
+          />
         </>
       )}
 
