@@ -4,6 +4,7 @@ import type { Scry } from "./ScryfallAPI"
 
 export function CardsGrid(props: {
   data: Scry.Card[]
+  counters?: number[]
   cardClassName?: (card: Scry.Card) => string
   onCardClick?: (card: Scry.Card) => void
 }) {
@@ -19,6 +20,7 @@ export function CardsGrid(props: {
     >
       {props.data.map((card, i) => (
         <li key={card.id + i}>
+          <div>count: {props.counters?.[i]}</div>
           {card.image_uris && (
             <Image
               className={cn("magic-card h-auto", props.cardClassName?.(card))}

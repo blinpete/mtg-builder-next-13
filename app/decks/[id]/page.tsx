@@ -42,7 +42,11 @@ export default function DeckPage() {
         </>
       )}
 
-      <CardsGrid data={deck.cards} onCardClick={card => deck.removeCard(card.id)} />
+      <CardsGrid
+        data={deck.cards.map(x => x.card)}
+        counters={deck.cards.map(x => x.count)}
+        onCardClick={card => deck.removeCard(card.id)}
+      />
     </section>
   )
 }

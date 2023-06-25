@@ -7,11 +7,11 @@ const filename = resolve(process.cwd(), "app/api/deck/decks.json")
 export type DeckRecord = {
   id: string
   name: string
-  cards: string[]
+  cards: [id: string, count: number][]
 }
 
 export type DeckRecordLoaded = Omit<DeckRecord, "cards"> & {
-  cards: Scry.Card[]
+  cards: { card: Scry.Card; count: number }[]
 }
 
 export function readDecks() {
