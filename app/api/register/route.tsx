@@ -1,33 +1,34 @@
-import bcrypt from "bcrypt";
-import { prisma } from "@/lib/prismadb";
-import { NextResponse } from "next/server";
-import type { RegisterRequest } from "@/types/auth";
+import bcrypt from "bcrypt"
+import { NextResponse } from "next/server"
+import { prisma } from "@/lib/prismadb"
+import { NextErrorResponse } from "@/types/errors"
+import type { RegisterRequest } from "@/types/auth"
 
 export async function POST(request: RegisterRequest) {
-  const { name, email, password } = await request.json();
+  const { name, email, password } = await request.json()
 
   if (!name || !email || !password) {
-    return new NextResponse("Missing fields", { status: 400 });
+    return new NextErrorResponse({ error: "Missing fields" }, { status: 400 })
   }
 
-  console.log(`user data: ${name} ${email} ${password}`);
+  console.log(`user data: ${name} ${email} ${password}`)
 
   const exist = await prisma.user.findUnique({
     where: {
       email,
     },
-  });
+  })
 
   if (exist) {
-    throw new Error("Email already exists");
+    return new NextErrorResponse({ error: "Email Already Exists" }, { status: 209 })
   }
 
-  const hashedPassword = await bcrypt.hash(password, 10); // 10 - salt
-  console.log(`hashedPassword: ${hashedPassword}`);
+  const hashedPassword = await bcrypt.hash(password, 10) // 10 - salt
+  console.log(`hashedPassword: ${hashedPassword}`)
 
   const user = await prisma.user.create({
     data: { name, email, hashedPassword },
-  });
+  })
 
-  return NextResponse.json(user);
+  return NextResponse.json(user, { status: 201 })
 }

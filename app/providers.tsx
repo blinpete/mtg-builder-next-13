@@ -2,6 +2,7 @@
 
 import { ThemeProvider } from "next-themes"
 import { QueryClient, QueryClientProvider } from "react-query"
+import { AuthProvider } from "./auth/contexts/AuthProvider"
 import type { PropsWithChildren } from "react"
 
 const queryClient = new QueryClient()

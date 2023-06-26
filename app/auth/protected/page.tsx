@@ -1,16 +1,16 @@
-"use client";
+"use client"
 
-import { useSession } from "next-auth/react";
+import { useSession } from "next-auth/react"
 
 export default function ProtectedClientPageExample() {
-  const { data: session, status } = useSession();
+  const { status } = useSession()
 
   if (status === "loading") {
-    return <p>Loading...</p>;
+    return <p>Loading...</p>
   }
 
   if (status === "unauthenticated") {
-    return <p>Access Denied</p>;
+    return <p>Access Denied</p>
   }
 
   return (
@@ -18,5 +18,5 @@ export default function ProtectedClientPageExample() {
       <h1>Protected Page</h1>
       <p>You can view this page because you are signed in.</p>
     </>
-  );
+  )
 }

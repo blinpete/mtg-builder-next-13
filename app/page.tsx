@@ -1,9 +1,9 @@
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
-import User from "@/components/User";
+import { getServerSession } from "next-auth"
+import User from "@/components/User"
+import { authOptions } from "./api/auth/[...nextauth]/route"
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions)
 
   return (
     <div className="flex-grow flex flex-col justify-center text-center">
@@ -15,12 +15,9 @@ export default async function Home() {
       <p>Client side rendered session info:</p>
       <User />
       <br />
-      <a
-        href="/auth/protected"
-        className="text-blue-400 hover:opacity-50 transition"
-      >
+      <a href="/auth/protected" className="text-blue-400 hover:opacity-50 transition">
         Auth protected page
       </a>
     </div>
-  );
+  )
 }

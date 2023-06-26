@@ -2,7 +2,6 @@
 
 # secrets
 .env
-.pnpm-lock.yaml
 
 # dependencies
 /node_modules

@@ -1,12 +1,12 @@
-import NextAuth from "next-auth/next";
-import { prisma } from "@/lib/prismadb";
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import GithubProvider from "next-auth/providers/github";
-import { AuthOptions, Awaitable, RequestInternal, User } from "next-auth";
-import type { LoginData } from "@/types/auth";
-import bcrypt from "bcrypt";
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import bcrypt from "bcrypt"
+import NextAuth from "next-auth/next"
+import CredentialsProvider from "next-auth/providers/credentials"
+import GithubProvider from "next-auth/providers/github"
+import GoogleProvider from "next-auth/providers/google"
+import { prisma } from "@/lib/prismadb"
+import type { LoginData } from "@/types/auth"
+import type { AuthOptions, User } from "next-auth"
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
@@ -39,33 +39,29 @@ export const authOptions: AuthOptions = {
         },
       },
       authorize: async function (
-        credentials: Record<string, string> | LoginData | undefined,
-        req: Pick<RequestInternal, "query" | "headers" | "body" | "method">
+        credentials: Record<string, string> | LoginData | undefined
       ): Promise<User> {
         if (!credentials?.email || !credentials.password) {
-          throw new Error("Please enter the email and password");
+          throw new Error("Please enter the email and password")
         }
 
         const user = await prisma.user.findUnique({
           where: {
             email: credentials.email,
           },
-        });
+        })
 
         if (!user || !user?.hashedPassword) {
-          throw new Error("No user found");
+          throw new Error("No user found")
         }
 
-        const passMatch = await bcrypt.compare(
-          credentials.password,
-          user.hashedPassword
-        );
+        const passMatch = await bcrypt.compare(credentials.password, user.hashedPassword)
 
         if (!passMatch) {
-          throw new Error("Wrong password");
+          throw new Error("Wrong password")
         }
 
-        return user;
+        return user
       },
     }),
   ],
@@ -74,8 +70,8 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
   },
   debug: process.env.NODE_ENV === "development",
-};
+}
 
-const handler = NextAuth(authOptions);
+const handler = NextAuth(authOptions)
 
-export { handler as GET, handler as POST };
+export { handler as GET, handler as POST }

@@ -1,14 +1,16 @@
-"use client";
+"use client"
 
-import type { RegisterData } from "@/types/auth";
-import { useState } from "react";
+import { useState } from "react"
+import { toast } from "react-hot-toast"
+import type { RegisterData } from "@/types/auth"
+import type { ErrorJSON } from "@/types/errors"
 
 export default function Register() {
   const [data, setData] = useState<RegisterData>({
     name: "",
     email: "",
     password: "",
-  });
+  })
 
   const registerUser = async () => {
     try {
@@ -18,13 +20,19 @@ export default function Register() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
-      });
-      const resJson = await response.json();
-      alert(`Registered succeed: ${JSON.stringify(resJson)}`);
+      })
+      console.log(response)
+      if (response.status === 201) {
+        toast.success("User has been registered")
+      } else {
+        const data: ErrorJSON = await response.json()
+        toast.error(`Error: ${data.error}`)
+      }
     } catch (error) {
-      alert(`Error occured: ${JSON.stringify(error)}`);
+      console.log(error)
+      toast.error("Something went wrong, sorry po(")
     }
-  };
+  }
 
   return (
     <>
@@ -38,16 +46,13 @@ export default function Register() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
             className="space-y-6"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              await registerUser();
+            onSubmit={async e => {
+              e.preventDefault()
+              await registerUser()
             }}
           >
             <div>
-              <label
-                htmlFor="name"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
                 Name
               </label>
               <div className="mt-2">
@@ -58,17 +63,14 @@ export default function Register() {
                   autoComplete="name"
                   required
                   value={data.name}
-                  onChange={(e) => setData({ ...data, name: e.target.value })}
+                  onChange={e => setData({ ...data, name: e.target.value })}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
 
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
+              <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
                 Email address
               </label>
               <div className="mt-2">
@@ -79,7 +81,7 @@ export default function Register() {
                   autoComplete="email"
                   required
                   value={data.email}
-                  onChange={(e) => setData({ ...data, email: e.target.value })}
+                  onChange={e => setData({ ...data, email: e.target.value })}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -102,9 +104,7 @@ export default function Register() {
                   autoComplete="current-password"
                   required
                   value={data.password}
-                  onChange={(e) =>
-                    setData({ ...data, password: e.target.value })
-                  }
+                  onChange={e => setData({ ...data, password: e.target.value })}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -132,5 +132,5 @@ export default function Register() {
         </div>
       </div>
     </>
-  );
+  )
 }

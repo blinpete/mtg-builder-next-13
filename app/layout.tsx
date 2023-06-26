@@ -1,22 +1,17 @@
-import "./globals.css";
-import { Inter } from "next/font/google";
-import { cn } from "@/lib/utils";
-import { Navbar } from "./navbar";
-import { Providers } from "./providers";
+import "./globals.css"
+import { Inter } from "next/font/google"
+import { cn } from "@/lib/utils"
+import { Navbar } from "./navbar"
+import { Providers } from "./providers"
 
-const font = Inter({ subsets: ["latin"] });
+const font = Inter({ subsets: ["latin"] })
 
 export const metadata = {
   title: "MTG Builder",
-  description:
-    "A magic place for everyone to browse MTG cards and build decks.",
-};
+  description: "A magic place for everyone to browse MTG cards and build decks.",
+}
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(font.className, "overscroll-y-none")}>
@@ -32,13 +27,10 @@ export default function RootLayout({
           <Navbar />
         </div>
 
-        <main
-          className="flex flex-col items-center"
-          style={{ minHeight: "calc(100vh - 3rem)" }}
-        >
+        <main className="flex flex-col items-center" style={{ minHeight: "calc(100vh - 3rem)" }}>
           <Providers>{children}</Providers>
         </main>
       </body>
     </html>
-  );
+  )
 }
