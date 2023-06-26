@@ -1,32 +1,19 @@
 "use client"
 
 import { useParams } from "next/navigation"
-import { useQuery } from "react-query"
 import { CardsGrid } from "@/app/search/CardsGrid"
-import type { DeckRecordLoaded } from "@/app/api/deck/decks-json"
+import { useDeck } from "@/app/search/DeckContext"
+import { useDeckQuery } from "./useDeckQuery"
 
 export default function DeckPage() {
   const params = useParams()
   console.log("🚀 | DeckPage | params:", params)
 
-  const {
-    data: deck,
-    error,
-    isFetching,
-  } = useQuery<DeckRecordLoaded | undefined, any>({
-    queryKey: ["deck"],
-    queryFn: async () => {
-      const response = await fetch("http://localhost:3000/api/deck/get-by-id?id=" + params.id, {
-        method: "GET",
-      })
-      const res = await response.json()
+  const { data: deck, error, isFetching } = useDeckQuery({ id: params.id })
+  console.log("🚀 | /deck/[id] | error:", error)
+  console.log("🚀 | /deck/[id] | deck:", deck)
 
-      return res.data as DeckRecordLoaded
-    },
-  })
-
-  console.log("🚀 | DeckPage | error:", error)
-  console.log("🚀 | deck:", deck)
+  const { deck: deckForEdit, setDeckId } = useDeck()
 
   if (isFetching) return <div>Loading...</div>
 
@@ -42,10 +29,22 @@ export default function DeckPage() {
         </>
       )}
 
+      {deck && deck.id === deckForEdit?.id && (
+        <button
+          className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
+          onClick={() => setDeckId(deck.id)}
+        >
+          Edit
+        </button>
+      )}
+
       <CardsGrid
         data={deck.cards.map(x => x.card)}
         counters={deck.cards.map(x => x.count)}
-        onCardClick={card => deck.removeCard(card.id)}
+        onCardClick={card => {
+          if (deck.id !== deckForEdit?.id) return
+          deckForEdit.removeCard(card.id)
+        }}
       />
     </section>
   )

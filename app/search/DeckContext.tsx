@@ -1,45 +1,93 @@
 // https://react.dev/learn/scaling-up-with-reducer-and-context
 
-import { createContext, useContext } from "react"
+import { createContext, useContext, useState } from "react"
+import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useDeckQuery } from "../decks/[id]/useDeckQuery"
 import { type Scry } from "./ScryfallAPI"
-import { usePersistentStore } from "./usePersistentStore"
+import type { DeckRecordLoaded } from "../api/deck/decks-json"
 import type { PropsWithChildren } from "react"
 
-export type Deck = {
-  cards: Scry.Card[]
+export type DeckLocal = {
+  id: string
+  name: string
+
+  cards: {
+    card: Scry.Card
+    count: number
+  }[]
+  has: (id: string) => boolean
   addCard: (card: Scry.Card) => void
   removeCard: (id: Scry.Card["id"]) => void
-  has: (id: string) => boolean
 }
 
-const DeckContext = createContext<Deck | null>(null)
+const DeckContext = createContext<{
+  deck: DeckLocal | null
+  setDeckId: (id: string) => void
+}>(null as any)
 
 export function DeckProvider({ children }: PropsWithChildren) {
-  const deckID = 1
+  const [deckId, setDeckId] = useState<string | null>(null)
 
-  // const [cards, setCards] = useState<Deck["cards"]>([])
-  const [cards, setCards] = usePersistentStore<Deck["cards"]>({
-    default: [],
-    storageKey: "decks#" + deckID,
-  })
-  console.log("🚀 | DeckProvider | cards:", cards)
+  const { data: deckServer, error, isFetching } = useDeckQuery({ id: deckId })
+  console.log("🚀 | DeckProvider | deckServer:", deckServer)
 
-  const deck: Deck = {
-    cards,
+  const queryClient = useQueryClient()
 
-    addCard: card => {
-      setCards(cards => [...cards, card])
-      console.log("🚀 | DeckProvider | addCard")
-    },
-    removeCard: id => {
-      const idx = cards.findIndex(card => card.id === id)
-      setCards(cards => cards.filter((card, i) => i !== idx))
-      console.log("🚀 | DeckProvider | removeCard")
-    },
-    has: id => cards.findIndex(card => card.id === id) !== -1,
-  }
+  let deck: DeckLocal | null = null
+  if (deckServer)
+    deck = {
+      ...deckServer,
 
-  return <DeckContext.Provider value={deck}>{children}</DeckContext.Provider>
+      addCard: card => {
+        queryClient.setQueryData<DeckRecordLoaded | null>(["deck", deckId], oldData => {
+          if (!oldData) {
+            console.log("🚀 | addCard: no oldData!")
+            return null
+          }
+          const cards = [...oldData.cards]
+          const found = cards.find(x => x.card.id === card.id)
+          if (found) {
+            if (found.count >= 4)
+              console.warn(
+                `Warning: Adding "${card.name}" might be a mistake. There are already ${found.count} copies of the card in the deck.`
+              )
+            found.count += 1
+          } else {
+            cards.push({ card, count: 1 })
+          }
+
+          const newData = { ...oldData, cards }
+          return newData
+        })
+      },
+
+      removeCard: id => {
+        queryClient.setQueryData<DeckRecordLoaded | null>(["deck", deckId], oldData => {
+          if (!oldData) {
+            console.log("🚀 | removeCard: no oldData!")
+            return null
+          }
+
+          const cards = [...oldData.cards]
+          const idx = cards.findIndex(x => x.card.id === card.id)
+          if (idx === -1) return oldData
+
+          if (cards[idx].count <= 0) {
+            console.warn(
+              `Warning: Removing "${cards[idx].card.name}" might be a mistake. There are already ${cards[idx].count} copies of the card in the deck.`
+            )
+          }
+          cards[idx].count -= 1
+
+          const newData = { ...oldData, cards }
+          return newData
+        })
+      },
+
+      has: id => !!cards[id]?.count,
+    }
+
+  return <DeckContext.Provider value={{ deck, setDeckId }}>{children}</DeckContext.Provider>
 }
 
 export function useDeck() {

@@ -17,10 +17,10 @@ const queryClient = new QueryClient({
 
 export function Providers({ children }: PropsWithChildren) {
   return (
-    <DeckProvider>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider attribute="class">{children}</ThemeProvider>
-      </QueryClientProvider>
-    </DeckProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider attribute="class">
+        <DeckProvider>{children}</DeckProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   )
 }
