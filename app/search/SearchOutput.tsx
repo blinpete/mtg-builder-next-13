@@ -10,11 +10,15 @@ import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } 
 /**
  * https://scryfall.com/docs/api
  */
-export function SearchOutput(props: { query: string; options?: Scry.SearchOptions }) {
+export function SearchOutput(props: {
+  query: string
+  options?: Scry.SearchOptions
+  counters?: Record<string, number>
+}) {
   console.log("🚀 | SearchOutput | query:", props.query)
   console.log("🚀🚀🚀 | SearchOutput | options:", props.options)
 
-  const deck = useDeck()
+  const { deck } = useDeck()
 
   const { data, error, isFetching, hasNextPage, fetchNextPage } = useInfiniteQuery<
     ScrySearchResponse,
@@ -65,6 +69,7 @@ export function SearchOutput(props: { query: string; options?: Scry.SearchOption
 
           <CardsGrid
             data={pageData}
+            counters={props.counters}
             onCardClick={card => deck?.addCard(card)}
             cardClassName={card => (deck?.has(card.id) ? "border-2 border-orange-500" : "")}
           />
