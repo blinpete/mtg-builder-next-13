@@ -1,6 +1,6 @@
 // https://react.dev/learn/scaling-up-with-reducer-and-context
 
-import { createContext, useContext, useMemo, useState } from "react"
+import { createContext, useCallback, useContext, useMemo, useState } from "react"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useDeckQuery } from "../decks/[id]/useDeckQuery"
 import { type Scry } from "./ScryfallAPI"
@@ -37,43 +37,49 @@ export function DeckProvider({ children }: PropsWithChildren) {
   const [added, setAdded] = useState<Record<string, CardEntry>>({})
   const [updated, setUpdated] = useState<Record<string, number>>({})
 
-  const addCard = (card: Card) => {
-    if (!deckServer) return
+  const addCard = useCallback(
+    (card: Card) => {
+      if (!deckServer) return
 
-    const idx = deckServer.cards.findIndex(x => x.card.id === card.id)
-    if (idx !== -1) {
+      const idx = deckServer.cards.findIndex(x => x.card.id === card.id)
+      if (idx !== -1) {
+        setUpdated(prev => ({
+          ...prev,
+          [card.id]: (prev[card.id] || 0) + 1,
+        }))
+        return
+      }
+
+      setAdded(prev => ({
+        ...prev,
+        [card.id]: { card, count: (prev[card.id]?.count || 0) + 1 },
+      }))
+    },
+    [deckServer]
+  )
+
+  const removeCard = useCallback(
+    (id: string) => {
+      if (!deckServer) return
+
+      if (added[id]) {
+        added[id].count -= 1
+        setAdded(added)
+
+        if (added[id].count <= 0) {
+          delete added[id]
+          setAdded({ ...added })
+        }
+        return
+      }
+
       setUpdated(prev => ({
         ...prev,
-        [card.id]: (prev[card.id] || 0) + 1,
+        [id]: (prev[id] || 0) - 1,
       }))
-      return
-    }
-
-    setAdded(prev => ({
-      ...prev,
-      [card.id]: { card, count: (prev[card.id]?.count || 0) + 1 },
-    }))
-  }
-
-  const removeCard = (id: string) => {
-    if (!deckServer) return
-
-    if (added[id]) {
-      added[id].count -= 1
-      setAdded(added)
-
-      if (added[id].count <= 0) {
-        delete added[id]
-        setAdded({ ...added })
-      }
-      return
-    }
-
-    setUpdated(prev => ({
-      ...prev,
-      [id]: (prev[id] || 0) - 1,
-    }))
-  }
+    },
+    [deckServer, added]
+  )
 
   const cards = useMemo(() => {
     if (!deckServer) return []
@@ -92,18 +98,19 @@ export function DeckProvider({ children }: PropsWithChildren) {
     return cards?.filter(Boolean) as CardEntry[]
   }, [deckServer, added, updated])
 
-  const has = (id: string) => !!cards.find(x => x.card.id === id)
+  const has = useCallback((id: string) => !!cards.find(x => x.card.id === id), [cards])
 
-  let deck: DeckLocal | null = null
-  if (!deckServer) {
-    deck = {
+  const deck: DeckLocal | null = useMemo(() => {
+    if (!deckServer) return null
+
+    return {
       ...(deckServer || {}),
       cards,
       addCard,
       removeCard,
       has,
     }
-  }
+  }, [deckServer, cards, addCard, removeCard, has])
 
   return <DeckContext.Provider value={{ deck, setDeckId }}>{children}</DeckContext.Provider>
 }
