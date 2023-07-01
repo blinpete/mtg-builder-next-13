@@ -1,16 +1,17 @@
 "use client"
 
-import Image from "next/image"
 import { useMemo, useState } from "react"
 import { useDeck } from "@/app/search/DeckContext"
 import { SearchForm } from "@/app/search/SearchForm"
 import { SearchOutput } from "@/app/search/SearchOutput"
-import { cn } from "@/lib/utils"
+import { DeckColumn } from "./DeckColumn"
+import type { Card } from "scryfall-sdk"
 
 export default function DeckPage() {
   const { deck } = useDeck()
 
   const [query, setQuery] = useState("")
+  const [activeCard, setActiveCard] = useState<Card | null>(null)
 
   const counters = useMemo(() => {
     if (!deck) return
@@ -49,46 +50,7 @@ export default function DeckPage() {
           Save
         </button>
 
-        <ul
-          className="
-            mx-1 mt-4 list-none
-            grid gap-y-1 grid-cols-1
-          "
-        >
-          {deck.cards.map(({ card, count }, i) => (
-            <li key={card.id + i} className="relative">
-              <div
-                className="
-                  absolute -top-1 -left-0.5
-                  bg-black text-stone-300
-                  w-4 h-4 rounded-full font-bold
-                  flex items-center justify-center
-                "
-                style={{ fontSize: "0.6rem" }}
-              >
-                {count}
-              </div>
-              <div
-                className="h-11 overflow-hidden w-max"
-                style={{
-                  borderBottom: "solid 0.6rem black",
-                  borderRadius: "0.6rem",
-                }}
-              >
-                {card.image_uris && (
-                  <Image
-                    className={cn("magic-card h-auto")}
-                    src={card.image_uris?.normal || card.image_uris.png}
-                    height={320}
-                    width={240}
-                    alt={card.name}
-                    // onClick={() => props.onCardClick?.(card)}
-                  />
-                )}
-              </div>
-            </li>
-          ))}
-        </ul>
+        <DeckColumn deck={deck} activeCard={activeCard} setActiveCard={setActiveCard} />
       </article>
 
       {/* Search -> Card Grid */}
