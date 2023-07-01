@@ -1,6 +1,7 @@
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import type { DeckLocal } from "@/app/search/DeckContext"
+import type { Dispatch, SetStateAction } from "react"
 import type { Card } from "scryfall-sdk"
 
 export function DeckColumn({
@@ -10,7 +11,7 @@ export function DeckColumn({
 }: {
   deck: DeckLocal
   activeCard: Card | null
-  setActiveCard: (card: Card | null) => void
+  setActiveCard: Dispatch<SetStateAction<Card | null>>
 }) {
   return (
     <ul
@@ -23,11 +24,9 @@ export function DeckColumn({
         <li
           key={card.id + i}
           className="relative"
-          onMouseEnter={() => {
-            console.log("mouse enter! card:", card)
-            setActiveCard(card)
+          onClick={() => {
+            setActiveCard(prev => (prev?.id === card.id ? null : card))
           }}
-          onMouseLeave={() => setActiveCard(null)}
         >
           <div
             className="
@@ -54,19 +53,15 @@ export function DeckColumn({
                 height={320}
                 width={240}
                 alt={card.name}
-                // onClick={() => props.onCardClick?.(card)}
               />
             )}
 
             {activeCard?.id === card.id && (
               <div
                 className="
-                  bg-rose-400/80
-                  absolute
-                  top-0 bottom-1 left-1 right-2
-                  rounded-full
+                  absolute top-0 bottom-1 left-1 right-2
+                  rounded-full pr-10
                   flex gap-0.5 justify-end
-                  pr-10
                 "
                 style={{
                   background: "radial-gradient(rgba(0 0 0 / 10%) 10%, black)",
@@ -78,7 +73,10 @@ export function DeckColumn({
                     w-8 h-3/4 rounded-t-none rounded-md
                     hover:h-4/5
                   "
-                  onClick={() => deck.removeCard(card.id)}
+                  onClick={e => {
+                    e.stopPropagation()
+                    deck.removeCard(card.id)
+                  }}
                 >
                   -
                 </button>
@@ -88,7 +86,10 @@ export function DeckColumn({
                     w-8 h-3/4 rounded-t-none rounded-md
                     hover:h-4/5
                   "
-                  onClick={() => deck.addCard(card)}
+                  onClick={e => {
+                    e.stopPropagation()
+                    deck.addCard(card)
+                  }}
                 >
                   +
                 </button>
