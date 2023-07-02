@@ -20,11 +20,11 @@ export function CardDotCounter(props: Props) {
         flex flex-row items-center justify-center gap-1.5
       "
       >
-        {props.visible && props.counters[card.id] && (
+        {props.visible && (
           <button
             className="
             h-5 w-5 rounded-md mr-auto
-            bg-zinc-400 font-bold
+            bg-gray-400/50 font-bold
             flex items-center justify-center
             hover:opacity-90
           "
@@ -44,7 +44,7 @@ export function CardDotCounter(props: Props) {
                 "h-2 w-2 rounded-full",
                 props.counters![card.id] > i
                   ? "bg-orange-600 border-2 border-orange-700"
-                  : "bg-slate-400 border"
+                  : "bg-slate-400 border border-zinc-200/80"
               )}
             ></div>
           ))}
@@ -52,7 +52,7 @@ export function CardDotCounter(props: Props) {
           <button
             className="
               h-5 w-5 rounded-md ml-auto
-              bg-zinc-400 font-bold
+              bg-gray-400/50 font-bold
               flex items-center justify-center
               hover:opacity-90
             "
