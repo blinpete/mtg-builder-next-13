@@ -14,6 +14,7 @@ export function SearchOutput(props: {
   query: string
   options?: Scry.SearchOptions
   counters?: Record<string, number>
+  cardHeaderFn?: Parameters<typeof CardsGrid>[0]["cardHeaderFn"]
 }) {
   console.log("🚀 | SearchOutput | query:", props.query)
   console.log("🚀🚀🚀 | SearchOutput | options:", props.options)
@@ -71,7 +72,7 @@ export function SearchOutput(props: {
             data={pageData}
             counters={props.counters}
             onCardClick={card => deck?.addCard(card)}
-            cardClassName={card => (deck?.has(card.id) ? "border-2 border-orange-500" : "")}
+            cardHeaderFn={props.cardHeaderFn}
           />
         </>
       )}

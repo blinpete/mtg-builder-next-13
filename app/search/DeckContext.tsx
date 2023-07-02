@@ -64,7 +64,7 @@ export function DeckProvider({ children }: PropsWithChildren) {
 
       if (added[id]) {
         added[id].count -= 1
-        setAdded(added)
+        setAdded({ ...added })
 
         if (added[id].count <= 0) {
           delete added[id]

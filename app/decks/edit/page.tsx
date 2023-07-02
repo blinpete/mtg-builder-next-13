@@ -7,6 +7,7 @@ import { ScryRulings } from "@/app/search/ScryfallAPI"
 import { SearchForm } from "@/app/search/SearchForm"
 import { SearchOutput } from "@/app/search/SearchOutput"
 import { cn } from "@/lib/utils"
+import { CardDotCounter } from "./CardDotCounter"
 import { DeckColumn } from "./DeckColumn"
 import type { Card, Ruling } from "scryfall-sdk"
 
@@ -72,7 +73,7 @@ export default function DeckPage() {
         "
       >
         <div>title: {deck?.name}</div>
-        <div>deck: {deck?.cards.length} cards</div>
+        <div>deck: {deck?.cards.reduce((acc, x) => acc + x.count, 0)} cards</div>
         <button
           className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
           onClick={() => {
@@ -103,13 +104,29 @@ export default function DeckPage() {
           }}
         />
 
-        {query ? <SearchOutput query={query} counters={counters} /> : <div>Empty query</div>}
+        {query ? (
+          <SearchOutput
+            query={query}
+            counters={counters}
+            cardHeaderFn={(card, counters, visible) => (
+              <CardDotCounter
+                card={card}
+                counters={counters}
+                addCard={deck.addCard}
+                removeCard={deck.removeCard}
+                visible={visible}
+              />
+            )}
+          />
+        ) : (
+          <div>Empty query</div>
+        )}
 
         {/* overlay */}
         {activeCard && (
           <div
             className="
-              bg-gray-600/80 text-gray-200
+              bg-gray-600/95 backdrop-blur-0 text-gray-200
               flex flex-row gap-5 px-3
               fixed top-12 bottom-0 left-64 right-0
               cursor-pointer
