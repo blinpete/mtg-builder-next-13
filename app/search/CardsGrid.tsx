@@ -3,14 +3,21 @@ import { useState } from "react"
 import { cn } from "@/lib/utils"
 import type { Scry } from "./ScryfallAPI"
 
-type Props = {
-  data: Scry.Card[]
+export type CardsGridProps = {
   counters?: Record<string, number>
-  cardClassName?: (card: Scry.Card) => string
   onCardClick?: (card: Scry.Card) => void
-
-  cardHeaderFn?: (card: Scry.Card, counters: Props["counters"], visible: boolean) => JSX.Element
 }
+
+type Props = CardsGridProps & {
+  data: Scry.Card[]
+  cardClassName?: (card: Scry.Card) => string
+  cardHeaderFn?: (
+    card: Scry.Card,
+    counters: CardsGridProps["counters"],
+    visible: boolean
+  ) => JSX.Element
+}
+
 export function CardsGrid(props: Props) {
   const [hovered, setHovered] = useState<string | null>(null)
 

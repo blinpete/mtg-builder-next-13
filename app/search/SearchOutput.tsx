@@ -3,23 +3,22 @@
 import { useMemo, useState } from "react"
 import { useInfiniteQuery } from "react-query"
 import { CardsGrid } from "./CardsGrid"
-import { useDeck } from "./DeckContext"
 import { Pagination } from "./Pagination"
 import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } from "./ScryfallAPI"
+import type { CardsGridProps } from "./CardsGrid"
 
 /**
  * https://scryfall.com/docs/api
  */
-export function SearchOutput(props: {
-  query: string
-  options?: Scry.SearchOptions
-  counters?: Record<string, number>
-  cardHeaderFn?: Parameters<typeof CardsGrid>[0]["cardHeaderFn"]
-}) {
+export function SearchOutput(
+  props: CardsGridProps & {
+    query: string
+    options?: Scry.SearchOptions
+    cardHeaderFn?: Parameters<typeof CardsGrid>[0]["cardHeaderFn"]
+  }
+) {
   console.log("🚀 | SearchOutput | query:", props.query)
   console.log("🚀🚀🚀 | SearchOutput | options:", props.options)
-
-  const { deck } = useDeck()
 
   const { data, error, isFetching, hasNextPage, fetchNextPage } = useInfiniteQuery<
     ScrySearchResponse,
@@ -71,7 +70,7 @@ export function SearchOutput(props: {
           <CardsGrid
             data={pageData}
             counters={props.counters}
-            onCardClick={card => deck?.addCard(card)}
+            onCardClick={props.onCardClick}
             cardHeaderFn={props.cardHeaderFn}
           />
         </>

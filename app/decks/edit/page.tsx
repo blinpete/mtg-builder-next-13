@@ -77,6 +77,7 @@ export default function DeckPage() {
           <SearchOutput
             query={query}
             counters={counters}
+            onCardClick={card => setActiveCard(card)}
             cardHeaderFn={(card, counters, visible) => (
               <CardDotCounter
                 card={card}
