@@ -24,7 +24,7 @@ export function CardsGrid(props: Props) {
   return (
     <ul
       className="
-        mx-1 mt-4 list-none
+        mx-1 my-4 list-none
         grid gap-x-1.5 gap-y-2.5
         grid-cols-2
         md:grid-cols-3

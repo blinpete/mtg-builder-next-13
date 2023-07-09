@@ -1,8 +1,10 @@
 "use client"
 
 import { useParams, useRouter } from "next/navigation"
+import { useMemo } from "react"
 import { CardsGrid } from "@/app/search/CardsGrid"
 import { useDeck } from "@/app/search/DeckContext"
+import { CardDotCounter } from "../edit/CardDotCounter"
 import { useDeckQuery } from "./useDeckQuery"
 
 export default function DeckPage() {
@@ -12,6 +14,11 @@ export default function DeckPage() {
   const { data: deck, error, isFetching } = useDeckQuery({ id: params.id })
   console.log("🚀 | /deck/[id] | error:", error)
   console.log("🚀 | /deck/[id] | deck:", deck)
+
+  const counters = useMemo(() => {
+    if (!deck) return
+    return Object.fromEntries(deck?.cards.map(x => [x.card.id, x.count]))
+  }, [deck])
 
   const router = useRouter()
   const { setDeckId } = useDeck()
@@ -29,22 +36,24 @@ export default function DeckPage() {
   return (
     <section>
       {deck && (
-        <>
-          <div>deck name: {deck.name}</div>
-          <div>deck: {deck.cards.length} cards</div>
-        </>
+        <div className="mx-1 my-3 flex justify-between items-center">
+          <div className="font-semibold">
+            {deck.name}: {deck.cards.length} cards
+          </div>
+          <button
+            className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
+            onClick={() => onEdit()}
+          >
+            Edit
+          </button>
+        </div>
       )}
 
-      {deck && (
-        <button
-          className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-          onClick={() => onEdit()}
-        >
-          Edit
-        </button>
-      )}
-
-      <CardsGrid data={deck.cards.map(x => x.card)} counters={deck.cards.map(x => x.count)} />
+      <CardsGrid
+        data={deck.cards.map(x => x.card)}
+        counters={counters}
+        cardHeaderFn={card => <CardDotCounter card={card} counters={counters} visible={false} />}
+      />
     </section>
   )
 }

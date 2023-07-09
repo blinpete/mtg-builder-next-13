@@ -3,9 +3,14 @@ import type { Scry } from "@/app/search/ScryfallAPI"
 
 type Props = {
   card: Scry.Card
-  addCard: (card: Scry.Card) => void
-  removeCard: (id: string) => void
+  addCard?: (card: Scry.Card) => void
+  removeCard?: (id: string) => void
+
   counters?: Record<string, number>
+
+  /**
+   * Controls add/remove buttons visibility.
+   */
   visible: boolean
 }
 export function CardDotCounter(props: Props) {
@@ -31,7 +36,7 @@ export function CardDotCounter(props: Props) {
             "
             disabled={!props.counters[card.id]}
             onClick={() => {
-              props.removeCard(card.id)
+              props.removeCard?.(card.id)
             }}
           >
             -
@@ -59,7 +64,7 @@ export function CardDotCounter(props: Props) {
               hover:opacity-90
             "
             onClick={() => {
-              props.addCard(card)
+              props.addCard?.(card)
             }}
           >
             +
