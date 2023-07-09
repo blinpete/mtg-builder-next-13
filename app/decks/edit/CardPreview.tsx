@@ -45,6 +45,9 @@ export function CardPreview({ card, onClick }: Props) {
             src={card.image_uris?.normal || card.image_uris.png}
             height={320}
             width={240}
+            style={{
+              height: "min(90%, 400px)",
+            }}
             alt={card.name}
           />
         )}
