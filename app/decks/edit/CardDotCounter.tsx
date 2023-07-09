@@ -23,11 +23,13 @@ export function CardDotCounter(props: Props) {
         {props.visible && (
           <button
             className="
-            h-5 w-5 rounded-md mr-auto
-            bg-gray-400/50 font-bold
-            flex items-center justify-center
-            hover:opacity-90
-          "
+              h-5 w-5 rounded-md mr-auto
+              bg-gray-400/50 font-bold
+              flex items-center justify-center
+              hover:opacity-90
+              disabled:opacity-40
+            "
+            disabled={!props.counters[card.id]}
             onClick={() => {
               props.removeCard(card.id)
             }}

@@ -45,7 +45,9 @@ export default function DeckPage() {
         <div>deck: {deck?.cards.reduce((acc, x) => acc + x.count, 0)} cards</div>
         <button
           className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
+          disabled={!deck.hasChanged}
           onClick={() => {
+            console.log("deck:", deck)
             alert("implement saveDeck")
           }}
         >

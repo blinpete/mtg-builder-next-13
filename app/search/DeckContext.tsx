@@ -1,10 +1,8 @@
 // https://react.dev/learn/scaling-up-with-reducer-and-context
 
 import { createContext, useCallback, useContext, useMemo, useState } from "react"
-import { useMutation, useQuery, useQueryClient } from "react-query"
 import { useDeckQuery } from "../decks/[id]/useDeckQuery"
 import { type Scry } from "./ScryfallAPI"
-import type { DeckRecordLoaded } from "../api/deck/decks-json"
 import type { PropsWithChildren } from "react"
 import type { Card } from "scryfall-sdk"
 
@@ -18,6 +16,7 @@ export type DeckLocal = {
   name: string
   cards: CardEntry[]
 
+  hasChanged: boolean
   has: (id: string) => boolean
   addCard: (card: Scry.Card) => void
   removeCard: (id: Scry.Card["id"]) => void
@@ -46,6 +45,7 @@ export function DeckProvider({ children }: PropsWithChildren) {
         setUpdated(prev => {
           const current = new Map(prev)
           current.set(card.id, (current.get(card.id) || 0) + 1)
+          if (current.get(card.id) === 0) current.delete(card.id)
           return current
         })
         return
@@ -77,6 +77,7 @@ export function DeckProvider({ children }: PropsWithChildren) {
       setUpdated(prev => {
         const current = new Map(prev)
         current.set(id, (current.get(id) || 0) - 1)
+        if (current.get(id) === 0) current.delete(id)
         return current
       })
     },
@@ -100,6 +101,10 @@ export function DeckProvider({ children }: PropsWithChildren) {
 
   const has = useCallback((id: string) => !!cards.find(x => x.card.id === id), [cards])
 
+  const hasChanged = useMemo(() => {
+    return Boolean(added.size || updated.size)
+  }, [added, updated])
+
   const deck: DeckLocal | null = useMemo(() => {
     if (!deckServer) return null
 
@@ -109,8 +114,9 @@ export function DeckProvider({ children }: PropsWithChildren) {
       addCard,
       removeCard,
       has,
+      hasChanged,
     }
-  }, [deckServer, cards, addCard, removeCard, has])
+  }, [deckServer, cards, addCard, removeCard, has, hasChanged])
 
   return <DeckContext.Provider value={{ deck, setDeckId }}>{children}</DeckContext.Provider>
 }
