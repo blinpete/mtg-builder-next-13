@@ -1,6 +1,7 @@
 // https://react.dev/learn/scaling-up-with-reducer-and-context
 
 import { createContext, useCallback, useContext, useMemo, useState } from "react"
+import { useDeckMutation } from "../decks/[id]/useDeckMutation"
 import { useDeckQuery } from "../decks/[id]/useDeckQuery"
 import { type Scry } from "./ScryfallAPI"
 import type { PropsWithChildren } from "react"
@@ -24,7 +25,13 @@ export type DeckLocal = {
 
 const DeckContext = createContext<{
   deck: DeckLocal | null
+  isSaving: boolean
+  isFetching: boolean
+  error: any
+
   setDeckId: (id: string) => void
+  saveDeck: () => void
+  dropChanges: () => void
 }>(null as any)
 
 export function DeckProvider({ children }: PropsWithChildren) {
@@ -35,6 +42,11 @@ export function DeckProvider({ children }: PropsWithChildren) {
 
   const [added, setAdded] = useState<Map<string, CardEntry>>(new Map())
   const [updated, setUpdated] = useState<Map<string, number>>(new Map())
+
+  const dropChanges = useCallback(() => {
+    setAdded(new Map())
+    setUpdated(new Map())
+  }, [])
 
   const addCard = useCallback(
     (card: Card) => {
@@ -118,7 +130,14 @@ export function DeckProvider({ children }: PropsWithChildren) {
     }
   }, [deckServer, cards, addCard, removeCard, has, hasChanged])
 
-  return <DeckContext.Provider value={{ deck, setDeckId }}>{children}</DeckContext.Provider>
+  const { isFetching: isSaving, saveDeck } = useDeckMutation({ deck, dropChanges })
+  return (
+    <DeckContext.Provider
+      value={{ deck, setDeckId, saveDeck, dropChanges, error, isFetching, isSaving }}
+    >
+      {children}
+    </DeckContext.Provider>
+  )
 }
 
 export function useDeck() {

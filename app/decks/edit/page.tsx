@@ -10,7 +10,7 @@ import { DeckColumn } from "./DeckColumn"
 import type { Card } from "scryfall-sdk"
 
 export default function DeckPage() {
-  const { deck } = useDeck()
+  const { deck, saveDeck, isSaving, dropChanges } = useDeck()
 
   const [query, setQuery] = useState("")
   const [activeCard, setActiveCard] = useState<Card | null>(null)
@@ -41,18 +41,28 @@ export default function DeckPage() {
         overflow-y-auto
         "
       >
-        <div>title: {deck?.name}</div>
-        <div>deck: {deck?.cards.reduce((acc, x) => acc + x.count, 0)} cards</div>
-        <button
-          className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-          disabled={!deck.hasChanged}
-          onClick={() => {
-            console.log("deck:", deck)
-            alert("implement saveDeck")
-          }}
-        >
-          Save
-        </button>
+        <div className="px-2 py-1">
+          <div className="font-semibold text-sm">
+            {deck?.name} ({deck?.cards.reduce((acc, x) => acc + x.count, 0)})
+          </div>
+
+          <div className="flex gap-1 mt-1">
+            <button
+              className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
+              disabled={!deck.hasChanged || isSaving}
+              onClick={() => saveDeck()}
+            >
+              Save
+            </button>
+            <button
+              className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
+              disabled={!deck.hasChanged || isSaving}
+              onClick={() => dropChanges()}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
 
         <DeckColumn deck={deck} activeCard={activeCard} setActiveCard={setActiveCard} />
       </article>
