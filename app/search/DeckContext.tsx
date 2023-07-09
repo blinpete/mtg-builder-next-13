@@ -34,8 +34,8 @@ export function DeckProvider({ children }: PropsWithChildren) {
   const { data: deckServer, error, isFetching } = useDeckQuery({ id: deckId })
   console.log("🚀 | DeckProvider | deckServer:", deckServer)
 
-  const [added, setAdded] = useState<Record<string, CardEntry>>({})
-  const [updated, setUpdated] = useState<Record<string, number>>({})
+  const [added, setAdded] = useState<Map<string, CardEntry>>(new Map())
+  const [updated, setUpdated] = useState<Map<string, number>>(new Map())
 
   const addCard = useCallback(
     (card: Card) => {
@@ -43,17 +43,19 @@ export function DeckProvider({ children }: PropsWithChildren) {
 
       const idx = deckServer.cards.findIndex(x => x.card.id === card.id)
       if (idx !== -1) {
-        setUpdated(prev => ({
-          ...prev,
-          [card.id]: (prev[card.id] || 0) + 1,
-        }))
+        setUpdated(prev => {
+          const current = new Map(prev)
+          current.set(card.id, (current.get(card.id) || 0) + 1)
+          return current
+        })
         return
       }
 
-      setAdded(prev => ({
-        ...prev,
-        [card.id]: { card, count: (prev[card.id]?.count || 0) + 1 },
-      }))
+      setAdded(prev => {
+        const current = new Map(prev)
+        current.set(card.id, { card, count: (current.get(card.id)?.count || 0) + 1 })
+        return current
+      })
     },
     [deckServer]
   )
@@ -62,21 +64,21 @@ export function DeckProvider({ children }: PropsWithChildren) {
     (id: string) => {
       if (!deckServer) return
 
-      if (added[id]) {
-        added[id].count -= 1
-        setAdded({ ...added })
+      const item = added.get(id)
+      if (item) {
+        item.count -= 1
 
-        if (added[id].count <= 0) {
-          delete added[id]
-          setAdded({ ...added })
-        }
+        if (item.count <= 0) added.delete(id)
+
+        setAdded(new Map(added))
         return
       }
 
-      setUpdated(prev => ({
-        ...prev,
-        [id]: (prev[id] || 0) - 1,
-      }))
+      setUpdated(prev => {
+        const current = new Map(prev)
+        current.set(id, (current.get(id) || 0) - 1)
+        return current
+      })
     },
     [deckServer, added]
   )
@@ -85,15 +87,13 @@ export function DeckProvider({ children }: PropsWithChildren) {
     if (!deckServer) return []
 
     const cards = deckServer?.cards.map(x => {
-      const count = x.count + (updated[x.card.id] || 0)
+      const count = x.count + (updated.get(x.card.id) || 0)
       if (count <= 0) return null
 
       return { card: x.card, count }
     })
 
-    for (const k in added) {
-      cards.push(added[k])
-    }
+    added.forEach(item => cards.push(item))
 
     return cards?.filter(Boolean) as CardEntry[]
   }, [deckServer, added, updated])
