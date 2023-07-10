@@ -2,6 +2,44 @@
   {
     "id": "1",
     "name": "Glittering arts & auras",
+    "champions": [
+      {
+        "id": "d9713032-2956-4564-b5f5-2dd16245a4e6",
+        "image_uri": "https://cards.scryfall.io/art_crop/front/d/9/d9713032-2956-4564-b5f5-2dd16245a4e6.jpg?1572489608"
+      },
+      {
+        "id": "1100b898-31a8-4fdf-a54f-a1470ec032f3",
+        "image_uri": "https://cards.scryfall.io/art_crop/front/1/1/1100b898-31a8-4fdf-a54f-a1470ec032f3.jpg?1592485685"
+      }
+    ],
+    "cards": [
+      ["d9713032-2956-4564-b5f5-2dd16245a4e6", 4],
+      ["1100b898-31a8-4fdf-a54f-a1470ec032f3", 4],
+      ["9e7fb3c0-5159-4d1f-8490-ce4c9a60f567", 2],
+      ["769cddf0-2078-456b-a622-057571464fe7", 2],
+      ["a10c1407-d397-4caa-b7b7-e7d91ffd4ee9", 3],
+      ["f6d5314b-4994-4cd0-a680-12e56be7c1e2", 4],
+      ["b42e1359-c79d-4848-a0f1-3f274e0bf0d9", 2],
+      ["8cd5cc66-2ade-4142-9269-7d9905b029e5", 1],
+      ["d5f69e24-6b5c-4a9a-af5b-1ce88efdc0aa", 1],
+      ["e0cb828c-a19b-4e6d-853f-85e5ea7cadf8", 1],
+      ["611497d2-83df-4c69-bbeb-6a807c686bc4", 1],
+      ["30c22eb9-5056-4c0b-a5d8-41e09161eb40", 1],
+      ["53a7cccd-b445-46e3-b70c-afc3bb2de85d", 1],
+      ["b9da673d-7cc0-4435-b5a5-5098630f7712", 1],
+      ["2e658cb2-11c5-4b59-a91c-f26ac28e82af", 1],
+      ["b0247ee3-7799-43c2-9617-35b3edc91f22", 1]
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Glittering arts & auras 2",
+    "champions": [
+      {
+        "id": "d9713032-2956-4564-b5f5-2dd16245a4e6",
+        "image_uri": "https://cards.scryfall.io/art_crop/front/d/9/d9713032-2956-4564-b5f5-2dd16245a4e6.jpg?1572489608"
+      }
+    ],
     "cards": [
       ["d9713032-2956-4564-b5f5-2dd16245a4e6", 4],
       ["1100b898-31a8-4fdf-a54f-a1470ec032f3", 4],

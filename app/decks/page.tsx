@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useQuery } from "react-query"
-import { useDeck } from "../search/DeckContext"
+import { DeckCover } from "./DeckCover"
 import type { DeckRecord } from "../api/deck/decks-json"
 
 export default function DeckPage() {
@@ -18,7 +18,6 @@ export default function DeckPage() {
     },
   })
 
-  // const { setDeckId } = useDeck()
   const pathname = usePathname()
 
   console.log("🚀 | DeckPage | error:", error)
@@ -29,11 +28,16 @@ export default function DeckPage() {
       {error && <div>Error: {JSON.stringify(error)}</div>}
 
       {decks && (
-        <ul>
+        <ul className="flex">
           {decks.map(d => (
-            <li key={"decks_" + d.id} className="cursor-pointer hover:opacity-80">
-              <Link href={pathname + "/" + d.id}>
-                {d.id}: {d.name} ({d.cards.length})
+            <li key={"decks_" + d.id} className="cursor-pointer hover:opacity-90">
+              <Link href={pathname + "/" + d.id} className="flex flex-col items-center p-2">
+                <DeckCover deck={d} />
+
+                <span className="text-xs my-1">
+                  {d.name}
+                  {/* ({d.cards.length}) */}
+                </span>
               </Link>
             </li>
           ))}

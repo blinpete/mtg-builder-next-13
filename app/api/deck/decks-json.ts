@@ -8,6 +8,7 @@ export type DeckRecord = {
   id: string
   name: string
   cards: [id: string, count: number][]
+  champions: { id: string; image_uri: string }[]
 }
 
 export type DeckRecordLoaded = Omit<DeckRecord, "cards"> & {
