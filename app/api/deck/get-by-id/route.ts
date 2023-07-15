@@ -15,6 +15,10 @@ export async function GET(request: Request) {
     return NextResponse.error()
   }
 
+  if (deck.cards.length === 0) {
+    return NextResponse.json({ data: deck })
+  }
+
   const response = await fetch(`https://api.scryfall.com/cards/collection`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

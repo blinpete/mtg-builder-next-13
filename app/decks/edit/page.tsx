@@ -22,7 +22,7 @@ export default function DeckPage() {
 
   // if (isFetching) return <div>Loading...</div>
   if (!deck) return <div>Error: deck is null. This should never happen</div>
-  if (!deck?.cards.length) return <div>Empty deck</div>
+  // if (!deck?.cards.length) return <div>Empty deck</div>
 
   return (
     <section

@@ -26,7 +26,7 @@ export default function DeckPage() {
   if (isFetching) return <div>Loading...</div>
 
   if (!deck) return <div>No deck found by id: {params.id}</div>
-  if (!deck.cards.length) return <div>Empty deck</div>
+  // if (!deck.cards.length) return <div>Empty deck</div>
 
   const onEdit = () => {
     setDeckId(deck.id)
@@ -36,7 +36,7 @@ export default function DeckPage() {
   return (
     <section>
       {deck && (
-        <div className="mx-1 my-3 flex justify-between items-center">
+        <div className="w-full mx-1 my-3 flex justify-between items-center">
           <div className="font-semibold">
             {deck.name}: {deck.cards.length} cards
           </div>
@@ -49,11 +49,15 @@ export default function DeckPage() {
         </div>
       )}
 
-      <CardsGrid
-        data={deck.cards.map(x => x.card)}
-        counters={counters}
-        cardHeaderFn={card => <CardDotCounter card={card} counters={counters} visible={false} />}
-      />
+      {deck.cards.length ? (
+        <CardsGrid
+          data={deck.cards.map(x => x.card)}
+          counters={counters}
+          cardHeaderFn={card => <CardDotCounter card={card} counters={counters} visible={false} />}
+        />
+      ) : (
+        <div>Empty deck</div>
+      )}
     </section>
   )
 }
