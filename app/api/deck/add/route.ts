@@ -2,8 +2,8 @@ import { NextResponse } from "next/server"
 import { readDecks, type DeckRecord, writeDecks } from "../decks-json"
 
 export async function POST(request: Request) {
-  const { searchParams } = new URL(request.url)
-  console.log("🚀 add-deck | searchParams:", searchParams)
+  // const { searchParams } = new URL(request.url)
+  // console.log("🚀 add-deck | searchParams:", searchParams)
   console.log("🚀 add-deck | request.body:", request.body)
   const reqJson = (await request.json()) as DeckRecord
   console.log("🚀 | POST | reqJson:", reqJson)
@@ -17,5 +17,5 @@ export async function POST(request: Request) {
   json.push(reqJson)
   writeDecks(json)
 
-  return NextResponse.json({ data: "done" })
+  return NextResponse.json(json)
 }
