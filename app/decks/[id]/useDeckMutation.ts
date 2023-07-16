@@ -1,12 +1,13 @@
 import { useCallback, useState } from "react"
 import { useQueryClient } from "react-query"
 import type { DeckRecord, DeckRecordLoaded } from "@/app/api/deck/decks-json"
-import type { DeckLocal } from "@/app/search/DeckContext"
+import type { DeckContextType, DeckLocal } from "@/app/search/DeckContext"
 
 async function saveDeck(deck: DeckLocal) {
   const deckRecord: DeckRecord = {
     id: deck.id,
     name: deck.name,
+    champions: deck.champions,
     cards: deck.cards.map(x => [x.card.id, x.count]),
   }
   console.log("🚀 | saveDeck | deckRecord:", deckRecord)
@@ -22,10 +23,7 @@ async function saveDeck(deck: DeckLocal) {
 export function useDeckMutation({
   deck,
   dropChanges,
-}: {
-  deck: DeckLocal | null
-  dropChanges: () => void
-}) {
+}: Pick<DeckContextType, "deck" | "dropChanges">) {
   const queryClient = useQueryClient()
 
   const [isFetching, setIsFetching] = useState(false)
@@ -39,16 +37,17 @@ export function useDeckMutation({
       setIsFetching(true)
       saveDeck(deck)
         .then(() => {
-          dropChanges()
-
           const deckUpdated: DeckRecordLoaded = {
-            id: deck.id,
-            name: deck.name,
+            ...deck,
             cards: deck.cards,
           }
-          queryClient.setQueryData(["deck", deck.id], deckUpdated)
 
+          queryClient.setQueryData(["deck", deck.id], deckUpdated)
           // queryClient.invalidateQueries(["deck", deck.id])
+
+          queryClient.refetchQueries({ queryKey: ["decks"] })
+
+          dropChanges({ dropName: false })
         })
         .finally(() => setIsFetching(false))
     }, [deck, queryClient, dropChanges]),
