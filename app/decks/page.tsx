@@ -8,7 +8,11 @@ import { DeckCover } from "./DeckCover"
 import type { DeckRecord } from "../api/deck/decks-json"
 
 export default function DeckPage() {
-  const { data: decks, error } = useQuery<DeckRecord[], any>({
+  const {
+    data: decks,
+    isFetching,
+    error,
+  } = useQuery<DeckRecord[], any>({
     queryKey: ["decks"],
     queryFn: async () => {
       const response = await fetch("http://localhost:3000/api/deck/all", {
@@ -46,10 +50,11 @@ export default function DeckPage() {
     }
   }
 
+  if (isFetching) return <div className="m-4">Loading...</div>
+  if (error) return <div>Error: {JSON.stringify(error)}</div>
+
   return (
     <section>
-      {error && <div>Error: {JSON.stringify(error)}</div>}
-
       <ul className="flex">
         <li key="decks_new" className="cursor-pointer hover:opacity-70">
           <div onClick={addDeck} className="flex items-center p-2">
