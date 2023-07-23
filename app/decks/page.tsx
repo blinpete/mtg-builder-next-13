@@ -2,10 +2,15 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
+import toast from "react-hot-toast"
 import { useQuery, useQueryClient } from "react-query"
 import { useDeck } from "../search/DeckContext"
 import { DeckCover } from "./DeckCover"
 import type { DeckRecord } from "../api/deck/decks-json"
+import type { CreateDeckData } from "@/types/decks"
+import type { ErrorJSON } from "@/types/errors"
+import type { Prisma } from "@prisma/client"
 
 export default function DeckPage() {
   const {
@@ -22,6 +27,7 @@ export default function DeckPage() {
       return res.data
     },
   })
+  // or Prisma.DeckUncheckedCreateWithoutUserInput[]
 
   const pathname = usePathname()
 
@@ -40,14 +46,56 @@ export default function DeckPage() {
     console.log("🚀 | addDeck | response:", response)
 
     if (response.ok) {
-      const decks = (await response.json()) as DeckRecord[]
+      const decks = (await response.json()) as DeckRecord[] | ErrorJSON
+      if ("error" in decks) {
+        return toast.error(`Error: ${decks.error}`)
+      }
+
       console.log("🚀 | addDeck | decks:", decks)
 
       queryClient.setQueryData(["decks"], decks)
 
       setDeckId(decks[decks.length - 1].id)
       router.push("/decks/edit")
+    } else {
+      return toast.error(`Unknown error: ${response.body}`)
     }
+  }
+
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     const response = await fetch("/api/decks", { method: "GET" })
+  //     const decks: Prisma.DeckUncheckedCreateWithoutUserInput[] = await response.json()
+  //     console.log(decks)
+  //     setDeckNames(() => decks.map(deck => deck.name))
+  //   }
+  //   fetchData()
+  // }, [])
+
+  // async function handleSubmit(e: any) {
+  //   // Prevent the browser from reloading the page
+  //   e.preventDefault()
+  //   const name: string = e.target[0].value
+  //   if (!name) return
+
+  //   const data: CreateDeckData = { name }
+  //   const response = await fetch("/api/decks", { method: "POST", body: JSON.stringify(data) })
+  //   const resJson: ErrorJSON | Prisma.DeckUncheckedCreateWithoutUserInput = await response.json()
+  //   if ("error" in resJson) {
+  //     toast.error(`Error: ${resJson.error}`)
+  //   } else {
+  //     setDeckNames(names => [...names, resJson.name])
+  //   }
+  // }
+
+  const { status } = useSession()
+
+  if (status === "loading") {
+    return <p>Loading...</p>
+  }
+
+  if (status === "unauthenticated") {
+    return <p>Access Denied</p>
   }
 
   if (isFetching) return <div className="m-4">Loading...</div>
