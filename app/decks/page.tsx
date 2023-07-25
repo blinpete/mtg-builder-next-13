@@ -17,14 +17,16 @@ export default function DeckPage() {
     data: decks,
     isFetching,
     error,
-  } = useQuery<DeckRecord[], any>({
+  } = useQuery<Prisma.DeckUpdateInput[], any>({
     queryKey: ["decks"],
     queryFn: async () => {
-      const response = await fetch("http://localhost:3000/api/deck/all", {
+      const response = await fetch("/api/decks", {
         method: "GET",
       })
       const res = await response.json()
-      return res.data
+      console.log("🚀 GET decks | queryFn: | res:", res)
+
+      return res
     },
   })
   // or Prisma.DeckUncheckedCreateWithoutUserInput[]

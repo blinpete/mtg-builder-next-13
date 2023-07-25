@@ -3,6 +3,7 @@ import { NextResponse } from "next/server"
 import { decode } from "next-auth/jwt"
 import { prisma } from "@/lib/prismadb"
 import { NextErrorResponse } from "@/types/errors"
+import { deckUtils } from "./decks-converters"
 import type { CreateDeckRequest, UpdateDeckRequest } from "@/types/decks"
 
 export async function POST(request: CreateDeckRequest) {
@@ -54,11 +55,13 @@ export async function GET() {
 
   const decoded = await decode({ token: token?.value, secret: "" + process.env.SECRET })
 
-  const decks = await prisma.deck.findMany({
+  const decksFromDB = await prisma.deck.findMany({
     where: {
       userId: decoded?.sub,
     },
   })
+
+  const decks = decksFromDB.map(deck => deckUtils.deserialize(deck))
 
   return NextResponse.json(decks, { status: 200 })
 }
