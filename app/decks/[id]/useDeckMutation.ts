@@ -1,12 +1,15 @@
 import { useCallback, useState } from "react"
 import { useQueryClient } from "react-query"
-import type { DeckRecord, DeckRecordLoaded } from "@/app/api/deck/decks-json"
-import type { DeckContextType, DeckLocal } from "@/app/search/DeckContext"
+import type { DeckContextType } from "@/app/search/DeckContext"
+import type { DeckLocal, DeckRecord, DeckRecordLoaded } from "@/types/decks"
 
 async function saveDeck(deck: DeckLocal) {
   const deckRecord: DeckRecord = {
     id: deck.id,
     name: deck.name,
+    sideboard: deck.sideboard,
+    createdAt: deck.createdAt,
+    userId: deck.userId,
     champions: deck.champions,
     cards: deck.cards.map(x => [x.card.id, x.count]),
   }

@@ -1,5 +1,5 @@
 import Image from "next/image"
-import type { DeckRecord } from "../api/deck/decks-json"
+import type { DeckRecord } from "@/types/decks"
 
 export function DeckCover({ deck }: { deck: DeckRecord }) {
   return (

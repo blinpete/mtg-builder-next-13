@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { cn } from "@/lib/utils"
-import type { DeckLocal } from "@/app/search/DeckContext"
+import type { DeckLocal } from "@/types/decks"
 import type { Dispatch, SetStateAction } from "react"
 import type { Card } from "scryfall-sdk"
 

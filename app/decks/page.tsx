@@ -7,17 +7,15 @@ import toast from "react-hot-toast"
 import { useQuery, useQueryClient } from "react-query"
 import { useDeck } from "../search/DeckContext"
 import { DeckCover } from "./DeckCover"
-import type { DeckRecord } from "../api/deck/decks-json"
-import type { CreateDeckData } from "@/types/decks"
+import type { DeckRecord } from "@/types/decks"
 import type { ErrorJSON } from "@/types/errors"
-import type { Prisma } from "@prisma/client"
 
 export default function DeckPage() {
   const {
     data: decks,
     isFetching,
     error,
-  } = useQuery<Prisma.DeckUpdateInput[], any>({
+  } = useQuery<DeckRecord[], any>({
     queryKey: ["decks"],
     queryFn: async () => {
       const response = await fetch("/api/decks", {
@@ -63,32 +61,6 @@ export default function DeckPage() {
       return toast.error(`Unknown error: ${response.body}`)
     }
   }
-
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const response = await fetch("/api/decks", { method: "GET" })
-  //     const decks: Prisma.DeckUncheckedCreateWithoutUserInput[] = await response.json()
-  //     console.log(decks)
-  //     setDeckNames(() => decks.map(deck => deck.name))
-  //   }
-  //   fetchData()
-  // }, [])
-
-  // async function handleSubmit(e: any) {
-  //   // Prevent the browser from reloading the page
-  //   e.preventDefault()
-  //   const name: string = e.target[0].value
-  //   if (!name) return
-
-  //   const data: CreateDeckData = { name }
-  //   const response = await fetch("/api/decks", { method: "POST", body: JSON.stringify(data) })
-  //   const resJson: ErrorJSON | Prisma.DeckUncheckedCreateWithoutUserInput = await response.json()
-  //   if ("error" in resJson) {
-  //     toast.error(`Error: ${resJson.error}`)
-  //   } else {
-  //     setDeckNames(names => [...names, resJson.name])
-  //   }
-  // }
 
   const { status } = useSession()
 

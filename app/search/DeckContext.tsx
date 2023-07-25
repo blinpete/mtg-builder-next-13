@@ -3,24 +3,9 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { useDeckMutation } from "../decks/[id]/useDeckMutation"
 import { useDeckQuery } from "../decks/[id]/useDeckQuery"
-import { type Scry } from "./ScryfallAPI"
-import type { DeckRecord } from "../api/deck/decks-json"
+import type { CardEntry, DeckLocal } from "@/types/decks"
 import type { PropsWithChildren } from "react"
 import type { Card } from "scryfall-sdk"
-
-type CardEntry = {
-  card: Scry.Card
-  count: number
-}
-
-export type DeckLocal = Omit<DeckRecord, "cards"> & {
-  cards: CardEntry[]
-
-  hasChanged: boolean
-  has: (id: string) => boolean
-  addCard: (card: Scry.Card) => void
-  removeCard: (id: Scry.Card["id"]) => void
-}
 
 export type DeckContextType = {
   deck: DeckLocal | null

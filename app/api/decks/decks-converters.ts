@@ -1,8 +1,7 @@
-import type { DeckRecord } from "../deck/decks-json"
-import type { Prisma } from "@prisma/client"
+import type { DbDeck, DeckRecord } from "@/types/decks"
 
 export const deckUtils = {
-  serialize(deck: DeckRecord): Prisma.DeckUpdateInput {
+  serialize(deck: DeckRecord): DbDeck {
     return {
       // id: deck.id,
       // name: deck.name,
@@ -15,7 +14,7 @@ export const deckUtils = {
     }
   },
 
-  deserialize(deck: Prisma.DeckUpdateInput): DeckRecord {
+  deserialize(deck: DbDeck): DeckRecord {
     return {
       // id: deck.id,
       // name: deck.name,
