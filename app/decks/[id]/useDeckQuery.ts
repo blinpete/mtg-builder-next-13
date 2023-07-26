@@ -7,12 +7,13 @@ export function useDeckQuery(props: { id: string | null }) {
     queryFn: async () => {
       if (props.id === null) return undefined
 
-      const response = await fetch("http://localhost:3000/api/deck/get-by-id?id=" + props.id, {
+      const response = await fetch("/api/decks/" + props.id, {
         method: "GET",
       })
       const res = await response.json()
+      console.log("🚀 | queryFn: | res:", res)
 
-      return res.data as DeckRecordLoaded
+      return res as DeckRecordLoaded
     },
   })
 }
