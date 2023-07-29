@@ -7,7 +7,6 @@ import { CardsGrid } from "@/app/search/CardsGrid"
 import { useDeck } from "@/app/search/DeckContext"
 import { CardDotCounter } from "../edit/CardDotCounter"
 import { useDeckQuery } from "./useDeckQuery"
-import type { Prisma } from "@prisma/client"
 
 export default function DeckPage({ params }: { params: { name: string } }) {
   const { status } = useSession()
@@ -48,9 +47,7 @@ function Deck() {
     <section>
       {deck && (
         <div className="w-full mx-1 my-3 flex justify-between items-center">
-          <p>Deck name: {deck?.name}</p>
-          <p>Cards: {deck?.cards.length}</p>
-          <p>Sideboard: {deck?.sideboard}</p>
+          <p>Sideboard: {deck?.sideboard?.length}</p>
           <p>Created at: {JSON.stringify(deck?.createdAt)}</p>
 
           <div className="font-semibold">
