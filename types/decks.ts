@@ -10,25 +10,40 @@ export type CreateDeckRequest = Omit<Request, "json"> & {
 }
 
 export type UpdateDeckRequest = Omit<Request, "json"> & {
-  json: () => Promise<Prisma.DeckUpdateInput>
+  json: () => Promise<DeckRecord>
 }
 
 // export type DbDeck = Required<Prisma.DeckUpdateInput>
 export type DbDeck = Required<Prisma.DeckUncheckedCreateInput>
 
-export type DeckRecord = Omit<DbDeck, "cards" | "champions"> & {
-  cards: [id: string, count: number][]
+export type DeckRecord = Omit<DbDeck, "cards" | "champions" | "sideboard"> & {
+  cards: CardRecord[]
+  sideboard: CardRecord[]
   champions: { id: string; image_uri: string }[]
 }
+
+export type CardRecord = [id: string, count: number]
 
 export type CardEntry = {
   card: Scry.Card
   count: number
 }
 
-export type DeckRecordLoaded = Omit<DeckRecord, "cards"> & {
+export type DeckRecordLoaded = Omit<DeckRecord, "cards" | "sideboard"> & {
   cards: CardEntry[]
+  sideboard: CardEntry[]
 }
+
+type DiffKeys<A, B> = {
+  [K in keyof (A | B)]: B[K] extends A[K] ? never : K
+}[keyof (A | B)]
+
+type DiffProps<A, B> = {
+  [K in DiffKeys<A, B>]: B[K]
+}
+
+export type DeckLoadedToRecord = DiffProps<DeckRecordLoaded, DeckRecord>
+export type DeckRecordToLoaded = DiffProps<DeckRecord, DeckRecordLoaded>
 
 export type DeckLocal = DeckRecordLoaded & {
   hasChanged: boolean
