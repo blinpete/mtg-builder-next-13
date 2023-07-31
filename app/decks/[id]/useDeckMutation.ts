@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import { useQueryClient } from "react-query"
+import { deckLoadedToRecord } from "@/lib/deckUtils.client"
 import type { DeckContextType } from "@/app/search/DeckContext"
 import type { DeckLocal, DeckRecord, DeckRecordLoaded } from "@/types/decks"
 
@@ -7,20 +8,26 @@ async function saveDeck(deck: DeckLocal) {
   const deckRecord: DeckRecord = {
     id: deck.id,
     name: deck.name,
-    sideboard: deck.sideboard,
     createdAt: deck.createdAt,
     userId: deck.userId,
     champions: deck.champions,
-    cards: deck.cards.map(x => [x.card.id, x.count]),
+    // sideboard: deck.sideboard,
+    // cards: deck.cards.map(x => [x.card.id, x.count]),
+    ...deckLoadedToRecord(deck),
   }
   console.log("🚀 | saveDeck | deckRecord:", deckRecord)
 
-  const response = await fetch("http://localhost:3000/api/deck/save", {
+  const response = await fetch("/api/decks/", {
     method: "PATCH",
     body: JSON.stringify(deckRecord),
   })
-  const res = await response.json()
-  return res
+  console.log("🚀 | saveDeck | response:", response)
+
+  if (response.ok) {
+    // const updatedDeck = await response.json()
+    return true
+  }
+  return false
 }
 
 export function useDeckMutation({

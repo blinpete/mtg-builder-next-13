@@ -1,9 +1,9 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 import { decode } from "next-auth/jwt"
+import { deckRecordToLoaded, deckUtilsServer } from "@/lib/deckUtils.server"
 import { prisma } from "@/lib/prismadb"
-import { deckUtils } from "../decks-converters"
-import type { Scry, ScrySearchError, ScrySearchResponse } from "@/app/search/ScryfallAPI"
+import { NextErrorResponse } from "@/types/errors"
 import type { DeckRecordLoaded } from "@/types/decks"
 import type { NextRequest } from "next/server"
 
@@ -31,32 +31,28 @@ export async function GET(request: NextRequest) {
     return NextResponse.json("Not found deck with id: " + id, { status: 404 })
   }
 
-  const deck = deckUtils.deserialize(deckFromDB)
-  console.log("🚀 | GET | deck:", deck)
+  const deck = deckUtilsServer.deserialize(deckFromDB)
+  // console.log("🚀 | GET | deck:", deck)
 
   if (decoded?.sub !== deck?.userId) {
     return NextResponse.json("Not your deck", { status: 403 })
   }
 
-  const response = await fetch(`https://api.scryfall.com/cards/collection`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ identifiers: deck.cards.map(x => ({ id: x[0] })) }),
-  })
-  const json = (await response.json()) as ScrySearchResponse | ScrySearchError
+  const response = await deckRecordToLoaded(deck)
+  console.log("🚀 /decks/id | GET | response:", response)
 
-  if (json.object === "error") {
-    return NextResponse.error()
+  if (response.object === "error") {
+    return NextErrorResponse.json("[error] loading cards by ids: " + response.code, {
+      status: response.status,
+      statusText: response.details,
+    })
   }
 
-  const map: Record<string, Scry.Card> = {}
-  for (const card of json.data) {
-    map[card.id] = card
-  }
+  const loadedFields = response.data
 
   const deckWithCards: DeckRecordLoaded = {
     ...deck,
-    cards: deck.cards.map(([id, count]) => ({ card: map[id], count })),
+    ...loadedFields,
   }
 
   // return NextResponse.json({ data: deckWithCards })

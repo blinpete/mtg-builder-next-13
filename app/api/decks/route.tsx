@@ -1,9 +1,9 @@
 import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
 import { decode } from "next-auth/jwt"
+import { deckUtilsServer } from "@/lib/deckUtils.server"
 import { prisma } from "@/lib/prismadb"
 import { NextErrorResponse } from "@/types/errors"
-import { deckUtils } from "./decks-converters"
 import type { CreateDeckRequest, UpdateDeckRequest } from "@/types/decks"
 
 export async function POST(request: CreateDeckRequest) {
@@ -61,30 +61,33 @@ export async function GET() {
     },
   })
 
-  const decks = decksFromDB.map(deck => deckUtils.deserialize(deck))
+  const decks = decksFromDB.map(deck => deckUtilsServer.deserialize(deck))
 
   return NextResponse.json(decks, { status: 200 })
 }
 
-export async function UPDATE(request: UpdateDeckRequest) {
+export async function PATCH(request: UpdateDeckRequest) {
   const cookieStore = cookies()
   const token = cookieStore.get("next-auth.session-token")
 
   const decoded = await decode({ token: token?.value, secret: "" + process.env.SECRET })
+  const deck = await request.json()
 
-  const data = await request.json()
+  const deckSerialized = deckUtilsServer.serialize(deck)
 
-  const deck = await prisma.deck.update({
-    where: {
-      name_userId: {
-        name: "" + data.name,
-        userId: "" + decoded?.sub,
-      },
-    },
-    data,
+  console.log("🚀 Decks | PATCH | decoded:", decoded)
+  console.log("🚀 Decks | PATCH | deck:", deck.id)
+
+  // if (!deck.id) {
+  //   return new NextErrorResponse({ error: "deck.id is required" }, { status: 400 })
+  // }
+
+  const updatedDeck = await prisma.deck.update({
+    where: { id: deck.id },
+    data: deckSerialized,
   })
 
-  return NextResponse.json(deck, { status: 200 })
+  return NextResponse.json(updatedDeck, { status: 200 })
 }
 
 export async function DELETE(request: CreateDeckRequest) {
