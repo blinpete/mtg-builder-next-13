@@ -42,14 +42,14 @@ model Account {
 model Deck {
   id        String @id @default(cuid())
   name      String @db.VarChar(255)
-  cards     String @default("") @db.Text
-  sideboard String @default("") @db.Text
+  cards     String @default("[]") @db.Text
+  sideboard String @default("[]") @db.Text
+  champions String @default("[]") @db.Text
 
   userId String
   user   User   @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
 
-  @@unique([name, userId])
   @@index([userId])
 }
