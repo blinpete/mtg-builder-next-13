@@ -30,6 +30,16 @@ async function saveDeck(deck: DeckLocal) {
   return false
 }
 
+/**
+ * Deck mutation
+ * ---
+ *
+ * - add/remove a new card
+ * - change existing card counters
+ * - change champions
+ * - change sideboard
+ * - change name
+ */
 export function useDeckMutation({
   deck,
   dropChanges,
