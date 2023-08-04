@@ -3,6 +3,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { useDeckMutation } from "../decks/[id]/useDeckMutation"
 import { useDeckQuery } from "../decks/[id]/useDeckQuery"
+import { useEffectEventCustom } from "./useEffectEventCustom"
 import type { CardEntry, DeckLocal } from "@/types/decks"
 import type { PropsWithChildren } from "react"
 import type { Card } from "scryfall-sdk"
@@ -34,6 +35,17 @@ export function DeckProvider({ children }: PropsWithChildren) {
   useEffect(() => {
     setName(prev => prev || deckServer?.name || "")
   }, [deckServer?.name])
+
+  // const setDeckServerName = experimental_useEffectEvent(() => setName(deckServer?.name || ""))
+  const setDeckServerName = useEffectEventCustom(() => setName(deckServer?.name || ""))
+
+  // update name when changing active deck
+  useEffect(() => {
+    setDeckServerName()
+
+    // `setDeckServerName` isn't in deps, cuz "effect events" are not reactive
+    // https://react.dev/learn/separating-events-from-effects#reading-latest-props-and-state-with-effect-events
+  }, [deckId])
 
   const dropChanges = useCallback(
     ({ dropName } = { dropName: true }) => {
