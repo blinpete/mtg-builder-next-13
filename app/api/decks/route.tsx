@@ -6,7 +6,10 @@ import { prisma } from "@/lib/prismadb"
 import { NextErrorResponse } from "@/types/errors"
 import type { CreateDeckRequest, UpdateDeckRequest } from "@/types/decks"
 
-export async function POST(request: CreateDeckRequest) {
+/**
+ * Creates a new deck
+ */
+export async function POST(request: Request) {
   const cookieStore = cookies()
   const token = cookieStore.get("next-auth.session-token")
 
@@ -16,35 +19,35 @@ export async function POST(request: CreateDeckRequest) {
     return new NextErrorResponse({ error: "Can't find user id in JWT" }, { status: 400 })
   }
 
-  const data = await request.json()
+  // TODO: fix typecheck: create deck like this, then serialize and pass to prisma.deck.create()
+  // const newDeck: Omit<DeckRecord, "id"|"createdAt"> = {
+  //   userId: decoded.sub,
+  //   name: "msal'kmsdf",
+  //   cards: [],
+  //   champions: [],
+  //   sideboard: [],
+  // }
 
-  if (!data.name) {
-    return new NextErrorResponse({ error: "Can't find 'name' in passed data" }, { status: 400 })
-  }
-
-  const exist = await prisma.deck.findUnique({
-    where: {
-      name_userId: {
-        userId: decoded.sub,
-        name: data.name,
-      },
-    },
-  })
-
-  if (exist) {
-    return new NextErrorResponse({ error: "Deck with that name already exisis" }, { status: 209 })
-  }
+  // const newDeckSerialized = deckUtilsServer.serialize(newDeck)
 
   try {
     const deck = await prisma.deck.create({
       data: {
         userId: decoded.sub,
-        name: data.name,
+        name: "New deck",
+        cards: "[]",
+        sideboard: "[]",
+        champions: "[]",
       },
     })
     console.log(`deck: ${JSON.stringify(deck)}`)
-    return NextResponse.json(deck, { status: 201 })
-  } catch {
+
+    const deckDeserialized = deckUtilsServer.deserialize(deck)
+
+    return NextResponse.json(deckDeserialized, { status: 201 })
+  } catch (err) {
+    console.log("🚀 decks | POST | err:", err)
+
     return new NextErrorResponse({ error: "Unknown error on deck creation" }, { status: 500 })
   }
 }
