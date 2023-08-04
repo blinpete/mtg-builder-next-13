@@ -2,17 +2,13 @@ import type { Scry, ScrySearchError, ScrySearchResponse } from "@/app/search/Scr
 import type { CardEntry, CardRecord, DbDeck, DeckRecord, DeckRecordToLoaded } from "@/types/decks"
 
 export const deckUtilsServer = {
+  // serialize(deck: Omit<DeckRecord, "id" | 'createdAt'>): Omit<DbDeck, "id" | "createdAt">
   serialize(deck: Omit<DeckRecord, "userId">): Omit<DbDeck, "userId"> {
     return {
-      // id: deck.id,
-      // name: deck.name,
       ...deck,
       cards: JSON.stringify(deck.cards),
       champions: JSON.stringify(deck.champions),
       sideboard: JSON.stringify(deck.sideboard),
-      // createdAt: JSON.stringify(deck.createdAt),
-      createdAt: deck.createdAt,
-      // user: deck.user
     }
   },
 
@@ -38,9 +34,21 @@ export async function deckRecordToLoaded(
     ...deck.sideboard.map(x => ({ id: x[0] })),
   ])
 
+  if (idsToLoad.size === 0) {
+    return {
+      object: "success",
+      data: {
+        cards: [],
+        sideboard: [],
+      },
+    }
+  }
+
   const response = await fetch(`https://api.scryfall.com/cards/collection`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
+
+    // don't pass an empty array to `identifiers` here
     body: JSON.stringify({ identifiers: [...idsToLoad] }),
   })
   const json = (await response.json()) as ScrySearchResponse | ScrySearchError
