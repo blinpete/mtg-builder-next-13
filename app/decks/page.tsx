@@ -66,7 +66,14 @@ export default function DeckPage() {
 
   return (
     <section>
-      <ul className="flex flex-wrap my-4 mx-3">
+      <ul
+        className="flex flex-wrap justify-evenly my-4 mx-3"
+        style={{
+          maxWidth: "42rem",
+          marginRight: "10vw",
+          marginLeft: "10vw",
+        }}
+      >
         <li key="decks_new" className="cursor-pointer hover:opacity-70">
           <div onClick={handleAddDeck} className="flex items-center p-2">
             <div
