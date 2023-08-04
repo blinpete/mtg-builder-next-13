@@ -4,11 +4,11 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import toast from "react-hot-toast"
-import { useQuery, useQueryClient } from "react-query"
+import { useQuery } from "react-query"
 import { useDeck } from "../search/DeckContext"
 import { DeckCover } from "./DeckCover"
+import { useDecksMutation } from "./useDecksMutation"
 import type { DeckRecord } from "@/types/decks"
-import type { ErrorJSON } from "@/types/errors"
 
 export default function DeckPage() {
   const {
@@ -34,32 +34,21 @@ export default function DeckPage() {
   console.log("🚀 | DeckPage | error:", error)
   console.log("🚀 | decks:", decks)
 
-  const queryClient = useQueryClient()
   const router = useRouter()
   const { setDeckId } = useDeck()
 
-  async function addDeck() {
-    const response = await fetch("http://localhost:3000/api/deck/new", {
-      method: "POST",
-      cache: "no-cache",
-    })
-    console.log("🚀 | addDeck | response:", response)
+  const { addDeck } = useDecksMutation({ decks })
 
-    if (response.ok) {
-      const decks = (await response.json()) as DeckRecord[] | ErrorJSON
-      if ("error" in decks) {
-        return toast.error(`Error: ${decks.error}`)
-      }
+  async function handleAddDeck() {
+    const deck = await addDeck()
 
-      console.log("🚀 | addDeck | decks:", decks)
-
-      queryClient.setQueryData(["decks"], decks)
-
-      setDeckId(decks[decks.length - 1].id)
-      router.push("/decks/edit")
-    } else {
-      return toast.error(`Unknown error: ${response.body}`)
+    if (deck instanceof Error) {
+      console.error("🚀 | handleAddDeck | error:", deck)
+      return toast.error(deck.message)
     }
+
+    setDeckId(deck.id)
+    router.push("/decks/edit")
   }
 
   const { status } = useSession()
@@ -77,9 +66,9 @@ export default function DeckPage() {
 
   return (
     <section>
-      <ul className="flex">
+      <ul className="flex flex-wrap my-4 mx-3">
         <li key="decks_new" className="cursor-pointer hover:opacity-70">
-          <div onClick={addDeck} className="flex items-center p-2">
+          <div onClick={handleAddDeck} className="flex items-center p-2">
             <div
               className="flex items-center justify-center
                 w-24 h-32
@@ -95,10 +84,10 @@ export default function DeckPage() {
         {decks &&
           decks.map(d => (
             <li key={"decks_" + d.id} className="cursor-pointer hover:opacity-90">
-              <Link href={pathname + "/" + d.id} className="flex flex-col items-center p-2">
+              <Link href={pathname + "/" + d.id} className="flex flex-col items-center p-2 w-min">
                 <DeckCover deck={d} />
 
-                <span className="text-xs my-1">
+                <span className="text-xs my-1 text-center" style={{ textWrap: "balance" }}>
                   {d.name}
                   {/* ({d.cards.length}) */}
                 </span>
