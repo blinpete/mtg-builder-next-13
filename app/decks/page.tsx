@@ -20,6 +20,7 @@ export default function DeckPage() {
     queryFn: async () => {
       const response = await fetch("/api/decks", {
         method: "GET",
+        cache: "no-cache",
       })
       const res = await response.json()
       console.log("🚀 GET decks | queryFn: | res:", res)
@@ -37,7 +38,7 @@ export default function DeckPage() {
   const router = useRouter()
   const { setDeckId } = useDeck()
 
-  const { addDeck } = useDecksMutation({ decks })
+  const { addDeck } = useDecksMutation()
 
   async function handleAddDeck() {
     const deck = await addDeck()

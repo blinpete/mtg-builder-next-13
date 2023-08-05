@@ -6,6 +6,7 @@ import { useMemo } from "react"
 import { CardsGrid } from "@/app/search/CardsGrid"
 import { useDeck } from "@/app/search/DeckContext"
 import { CardDotCounter } from "../edit/CardDotCounter"
+import { useDecksMutation } from "../useDecksMutation"
 import { useDeckQuery } from "./useDeckQuery"
 
 export default function DeckPage({ params }: { params: { name: string } }) {
@@ -26,12 +27,14 @@ function Deck() {
   console.log("🚀 | /deck/[id] | deck:", deck)
 
   const counters = useMemo(() => {
-    if (!deck) return
-    return Object.fromEntries(deck?.cards.map(x => [x.card.id, x.count]))
+    if (!deck || !deck?.cards) return
+    return Object.fromEntries(deck.cards.map(x => [x.card.id, x.count]))
   }, [deck])
 
   const router = useRouter()
-  const { setDeckId } = useDeck()
+  const { deck: activeDeck, setDeckId } = useDeck()
+
+  const { deleteDeck, isFetching: isMutationRunning } = useDecksMutation()
 
   if (isFetching) return <div>Loading the deck...</div>
 
@@ -43,16 +46,37 @@ function Deck() {
     router.push("/decks/edit")
   }
 
+  const onDelete = async () => {
+    await deleteDeck(deck.id)
+
+    if (deck.id === activeDeck?.id) {
+      setDeckId("")
+    }
+
+    router.push("/decks")
+  }
+
+  if (!deck) return <div>No deck with id: {params.id} </div>
+
   return (
     <section>
       {deck && (
         <div className="w-full px-1 py-3 flex flex-col items-center">
-          <div className="w-full flex justify-end items-center">
+          <div className="w-full flex justify-end items-center gap-1">
+            {isMutationRunning && <span>Waiting for the server...</span>}
             <button
+              disabled={isMutationRunning}
               className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
               onClick={() => onEdit()}
             >
               Edit
+            </button>
+            <button
+              disabled={isMutationRunning}
+              className="px-2 py-0.5 rounded-sm bg-red-500 hover:opacity-80 disabled:opacity-30"
+              onClick={() => onDelete()}
+            >
+              Delete
             </button>
           </div>
           <div className="text-slate-700 flex flex-col items-center">
