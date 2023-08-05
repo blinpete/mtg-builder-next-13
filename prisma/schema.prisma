@@ -51,5 +51,6 @@ model Deck {
 
   createdAt DateTime @default(now())
 
+  // @@unique([id, userId])
   @@index([userId])
 }
