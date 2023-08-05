@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { useDeck } from "@/app/search/DeckContext"
+import { Input } from "@/app/search/Input"
 import { SearchForm } from "@/app/search/SearchForm"
 import { SearchOutput } from "@/app/search/SearchOutput"
 import { CardDotCounter } from "./CardDotCounter"
@@ -43,15 +44,10 @@ export default function DeckPage() {
       >
         <div className="p-2">
           <div className="text-sm">
-            <input
+            <Input
               type="text"
-              className="
-                px-2 py-1.5 outline-none rounded-md
-                border-2 border-transparent
-                focus:border-slate-500
-                bg-zinc-400 text-gray-800
-                w-full
-              "
+              name="deckname"
+              className="w-full"
               onChange={e => setName(e.target.value)}
               value={deck.name}
             />

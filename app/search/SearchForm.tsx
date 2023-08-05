@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef } from "react"
+import { Input } from "./Input"
 import type { FormEventHandler } from "react"
 
 type Props = {
@@ -22,18 +23,7 @@ export function SearchForm(props: Props) {
     <>
       <form onSubmit={props.onSubmit} className="w-full px-5 my-2">
         <label>
-          <input
-            ref={inputRef}
-            name="search"
-            className="
-              px-2 py-1.5 outline-none rounded-md
-              border-2 border-transparent
-              focus:border-slate-500
-              focus:ring-transparent
-              bg-zinc-400 text-gray-800
-              w-full
-            "
-          ></input>
+          <Input ref={inputRef} type="text" name="search" className="w-full" />
         </label>
       </form>
     </>
