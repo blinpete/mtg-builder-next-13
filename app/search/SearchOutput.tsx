@@ -1,6 +1,6 @@
 "use client"
 
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useInfiniteQuery } from "react-query"
 import { CardsGrid } from "./CardsGrid"
 import { Pagination } from "./Pagination"
@@ -50,6 +50,11 @@ export function SearchOutput(
   const hasNext = useMemo(() => page * 175 < total, [page, total])
   const hasPrev = useMemo(() => page > 1, [page])
 
+  useEffect(() => {
+    setPage(1)
+  }, [props.query])
+
+  console.log("🚀 | page:", page)
   console.log("🚀 | total:", total)
   console.log("🚀 | prevCount:", prevCount)
   console.log("🚀 | hasNext:", hasNext)
