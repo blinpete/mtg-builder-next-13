@@ -1,19 +1,15 @@
-import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
-import { decode } from "next-auth/jwt"
 import { deckUtilsServer } from "@/lib/deckUtils.server"
 import { prisma } from "@/lib/prismadb"
+import { getDecodedJWT } from "@/lib/utilsJWT"
 import { NextErrorResponse } from "@/types/errors"
-import type { CreateDeckRequest, UpdateDeckRequest } from "@/types/decks"
+import type { DeckRecord, UpdateDeckRequest } from "@/types/decks"
 
 /**
  * Creates a new deck
  */
 export async function POST(request: Request) {
-  const cookieStore = cookies()
-  const token = cookieStore.get("next-auth.session-token")
-
-  const decoded = await decode({ token: token?.value, secret: "" + process.env.SECRET })
+  const decoded = await getDecodedJWT()
 
   if (!decoded?.sub) {
     return new NextErrorResponse({ error: "Can't find user id in JWT" }, { status: 400 })
@@ -53,10 +49,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  const cookieStore = cookies()
-  const token = cookieStore.get("next-auth.session-token")
-
-  const decoded = await decode({ token: token?.value, secret: "" + process.env.SECRET })
+  const decoded = await getDecodedJWT()
 
   const decksFromDB = await prisma.deck.findMany({
     where: {
@@ -70,10 +63,8 @@ export async function GET() {
 }
 
 export async function PATCH(request: UpdateDeckRequest) {
-  const cookieStore = cookies()
-  const token = cookieStore.get("next-auth.session-token")
+  const decoded = await getDecodedJWT()
 
-  const decoded = await decode({ token: token?.value, secret: "" + process.env.SECRET })
   const deck = await request.json()
 
   const deckSerialized = deckUtilsServer.serialize(deck)
@@ -93,22 +84,31 @@ export async function PATCH(request: UpdateDeckRequest) {
   return NextResponse.json(updatedDeck, { status: 200 })
 }
 
-export async function DELETE(request: CreateDeckRequest) {
-  const cookieStore = cookies()
-  const token = cookieStore.get("next-auth.session-token")
+export async function DELETE(request: Request) {
+  const decoded = await getDecodedJWT()
 
-  const decoded = await decode({ token: token?.value, secret: "" + process.env.SECRET })
+  const data = (await request.json()) as { id: DeckRecord["id"] }
 
-  const data = await request.json()
-
-  await prisma.deck.delete({
+  const deckFromDB = await prisma.deck.findUnique({
     where: {
-      name_userId: {
-        name: data.name,
-        userId: "" + decoded?.sub,
-      },
+      id: data.id,
+    },
+    select: {
+      userId: true,
     },
   })
 
-  return NextResponse.json({ status: 204 })
+  const alwaysReturnThis = NextResponse.json({ status: 204 })
+
+  if (!deckFromDB || deckFromDB.userId !== decoded?.sub) {
+    return alwaysReturnThis
+  }
+
+  await prisma.deck.delete({
+    where: {
+      id: data.id,
+    },
+  })
+
+  return alwaysReturnThis
 }
