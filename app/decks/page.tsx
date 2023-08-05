@@ -38,7 +38,7 @@ export default function DeckPage() {
   const router = useRouter()
   const { setDeckId } = useDeck()
 
-  const { addDeck } = useDecksMutation()
+  const { addDeck, isFetching: isMutationRunning } = useDecksMutation()
 
   async function handleAddDeck() {
     const deck = await addDeck()
@@ -76,7 +76,11 @@ export default function DeckPage() {
         }}
       >
         <li key="decks_new" className="cursor-pointer hover:opacity-70">
-          <div onClick={handleAddDeck} className="flex items-center p-2">
+          <button
+            disabled={isMutationRunning}
+            onClick={handleAddDeck}
+            className="flex items-center p-2 disabled:opacity-70"
+          >
             <div
               className="flex items-center justify-center
                 w-24 h-32
@@ -85,9 +89,9 @@ export default function DeckPage() {
                 text-sm
               "
             >
-              New deck
+              {isMutationRunning ? "Creating..." : "New deck"}
             </div>
-          </div>
+          </button>
         </li>
         {decks &&
           decks.map(d => (
