@@ -39,9 +39,10 @@ export function DeckProvider({ children }: PropsWithChildren) {
   // const setDeckServerName = experimental_useEffectEvent(() => setName(deckServer?.name || ""))
   const setDeckServerName = useEffectEventCustom(() => setName(deckServer?.name || ""))
 
-  // update name when changing active deck
+  // prevents data leaking from deck to deck
   useEffect(() => {
     setDeckServerName()
+    dropChanges({ dropName: false })
 
     // `setDeckServerName` isn't in deps, cuz "effect events" are not reactive
     // https://react.dev/learn/separating-events-from-effects#reading-latest-props-and-state-with-effect-events
