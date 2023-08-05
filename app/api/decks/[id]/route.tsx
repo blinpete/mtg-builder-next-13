@@ -1,17 +1,13 @@
-import { cookies } from "next/headers"
 import { NextResponse } from "next/server"
-import { decode } from "next-auth/jwt"
 import { deckRecordToLoaded, deckUtilsServer } from "@/lib/deckUtils.server"
 import { prisma } from "@/lib/prismadb"
+import { getDecodedJWT } from "@/lib/utilsJWT"
 import { NextErrorResponse } from "@/types/errors"
 import type { DeckRecordLoaded } from "@/types/decks"
 import type { NextRequest } from "next/server"
 
 export async function GET(request: NextRequest) {
-  const cookieStore = cookies()
-  const token = cookieStore.get("next-auth.session-token")
-
-  const decoded = await decode({ token: token?.value, secret: "" + process.env.SECRET })
+  const decoded = await getDecodedJWT()
 
   const id = request.url.substring(request.url.lastIndexOf("/") + 1)
   console.log(`name: ${id}`)
@@ -19,23 +15,19 @@ export async function GET(request: NextRequest) {
   const deckFromDB = await prisma.deck.findUnique({
     where: {
       id: id,
-      // name_userId: {
-      //   name,
-      //   userId: "" + decoded?.sub,
-      // },
     },
   })
   console.log("🚀 | GET | deckFromDB:", deckFromDB)
 
   if (!deckFromDB) {
-    return NextResponse.json("Not found deck with id: " + id, { status: 404 })
+    return NextErrorResponse.json("No deck found by id: " + id, { status: 404 })
   }
 
   const deck = deckUtilsServer.deserialize(deckFromDB)
   // console.log("🚀 | GET | deck:", deck)
 
   if (decoded?.sub !== deck?.userId) {
-    return NextResponse.json("Not your deck", { status: 403 })
+    return NextErrorResponse.json("Not your deck", { status: 403 })
   }
 
   const response = await deckRecordToLoaded(deck)
@@ -55,6 +47,32 @@ export async function GET(request: NextRequest) {
     ...loadedFields,
   }
 
-  // return NextResponse.json({ data: deckWithCards })
   return NextResponse.json(deckWithCards, { status: 200 })
+}
+
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+  const decoded = await getDecodedJWT()
+
+  const deckFromDB = await prisma.deck.findUnique({
+    where: {
+      id: params.id,
+    },
+    select: {
+      userId: true,
+    },
+  })
+
+  const alwaysReturnThis = new Response(null, { status: 204 })
+
+  if (!deckFromDB || deckFromDB.userId !== decoded?.sub) {
+    return alwaysReturnThis
+  }
+
+  await prisma.deck.delete({
+    where: {
+      id: params.id,
+    },
+  })
+
+  return alwaysReturnThis
 }

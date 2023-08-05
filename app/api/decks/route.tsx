@@ -83,32 +83,3 @@ export async function PATCH(request: UpdateDeckRequest) {
 
   return NextResponse.json(updatedDeck, { status: 200 })
 }
-
-export async function DELETE(request: Request) {
-  const decoded = await getDecodedJWT()
-
-  const data = (await request.json()) as { id: DeckRecord["id"] }
-
-  const deckFromDB = await prisma.deck.findUnique({
-    where: {
-      id: data.id,
-    },
-    select: {
-      userId: true,
-    },
-  })
-
-  const alwaysReturnThis = NextResponse.json({ status: 204 })
-
-  if (!deckFromDB || deckFromDB.userId !== decoded?.sub) {
-    return alwaysReturnThis
-  }
-
-  await prisma.deck.delete({
-    where: {
-      id: data.id,
-    },
-  })
-
-  return alwaysReturnThis
-}
