@@ -46,19 +46,36 @@ function Deck() {
   return (
     <section>
       {deck && (
-        <div className="w-full mx-1 my-3 flex justify-between items-center">
-          <p>Sideboard: {deck?.sideboard?.length}</p>
-          <p>Created at: {JSON.stringify(deck?.createdAt)}</p>
-
-          <div className="font-semibold">
-            {deck.name}: {deck.cards.length} cards
+        <div className="w-full px-1 py-3 flex flex-col items-center">
+          <div className="w-full flex justify-end items-center">
+            <button
+              className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
+              onClick={() => onEdit()}
+            >
+              Edit
+            </button>
           </div>
-          <button
-            className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-            onClick={() => onEdit()}
-          >
-            Edit
-          </button>
+          <div className="text-slate-700 flex flex-col items-center">
+            <div className="font-semibold text-lg">{deck.name}</div>
+            <p className="text-sm">
+              cards: {deck.cards.length}/60 deck + {deck?.sideboard?.length}/15 sideboard
+            </p>
+            <p className="text-sm">
+              Created at:{" "}
+              {deck?.createdAt &&
+                new Date(deck.createdAt).toLocaleDateString("en", {
+                  month: "short",
+                  day: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  weekday: "short",
+                })}
+            </p>
+
+            {/* <p>Cards: {deck.cards.length}</p>
+            <p>Sideboard: {deck?.sideboard?.length}/15</p> */}
+          </div>
         </div>
       )}
 
