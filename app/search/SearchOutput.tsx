@@ -64,7 +64,7 @@ export function SearchOutput(
 
   if (data?.pages.length === page && hasNextPage) fetchNextPage()
 
-  if (isFetching) return wrap(<div>Loading...</div>)
+  if (isFetching) return <div>Loading...</div>
 
   if (error) {
     return wrap(
