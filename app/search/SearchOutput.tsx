@@ -7,6 +7,8 @@ import { Pagination } from "./Pagination"
 import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } from "./ScryfallAPI"
 import type { CardsGridProps } from "./CardsGrid"
 
+const wrap = (children: JSX.Element) => <div className="mx-6 my-6">{children}</div>
+
 /**
  * https://scryfall.com/docs/api
  */
@@ -62,6 +64,18 @@ export function SearchOutput(
 
   if (data?.pages.length === page && hasNextPage) fetchNextPage()
 
+  if (isFetching) return wrap(<div>Loading...</div>)
+
+  if (error) {
+    return wrap(
+      <>
+        <strong>Error {error.status}:</strong> {error.details}
+      </>
+    )
+  }
+
+  if (!data?.pages) return wrap(<div>No cards found</div>)
+
   return (
     <section>
       {pageData && (
@@ -79,16 +93,6 @@ export function SearchOutput(
             cardHeaderFn={props.cardHeaderFn}
           />
         </>
-      )}
-
-      {isFetching ? (
-        <div>Loading...</div>
-      ) : error ? (
-        <div className="mx-6 my-6">
-          <strong>Error {error.status}:</strong> {error.details}
-        </div>
-      ) : (
-        !data?.pages && <div>No cards found</div>
       )}
     </section>
   )
