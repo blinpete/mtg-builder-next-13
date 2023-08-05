@@ -10,6 +10,9 @@ export function useDeckQuery(props: { id: string | null }) {
       const response = await fetch("/api/decks/" + props.id, {
         method: "GET",
       })
+
+      if (!response.ok) throw response
+
       const res = await response.json()
       console.log("🚀 | queryFn: | res:", res)
 

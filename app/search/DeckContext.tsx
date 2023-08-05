@@ -107,7 +107,7 @@ export function DeckProvider({ children }: PropsWithChildren) {
   )
 
   const cards = useMemo(() => {
-    if (!deckServer) return []
+    if (!deckServer || !deckServer?.cards) return []
 
     const cards = deckServer?.cards.map(x => {
       const count = x.count + (updated.get(x.card.id) || 0)
