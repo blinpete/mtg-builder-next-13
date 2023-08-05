@@ -29,6 +29,7 @@ export function SearchForm(props: Props) {
               px-2 py-1.5 outline-none rounded-md
               border-2 border-transparent
               focus:border-slate-500
+              focus:ring-transparent
               bg-zinc-400 text-gray-800
               w-full
             "
