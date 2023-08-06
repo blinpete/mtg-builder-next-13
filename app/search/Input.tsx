@@ -15,9 +15,18 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(props, r
         outline-none border-2 border-transparent
         focus:border-slate-500
         focus:ring-transparent
+        placeholder:text-gray-600
       `,
         props.className
       )}
+      style={{
+        // https://stackoverflow.com/questions/2781549/removing-input-background-colour-for-chrome-autocomplete
+        WebkitTextFillColor: "rgb(31 41 55)",
+        caretColor: "rgb(31 41 55)",
+        // WebkitBackgroundClip: "border-box",
+        // WebkitBoxShadow: "0 0 0 30px rgb(31 41 55 / 10%) inset !important",
+        WebkitBoxShadow: "none",
+      }}
     ></input>
   )
 })
