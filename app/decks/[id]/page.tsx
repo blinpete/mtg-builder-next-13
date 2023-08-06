@@ -79,7 +79,7 @@ function Deck() {
   if (!deck) return <div>No deck with id: {params.id} </div>
 
   return (
-    <section>
+    <section className="@container/main w-full">
       {deck && (
         <div className="w-full px-1 py-3 flex flex-col items-center">
           <div className="w-full flex justify-end items-center gap-1">

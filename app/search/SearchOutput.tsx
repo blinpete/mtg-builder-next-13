@@ -77,7 +77,7 @@ export function SearchOutput(
   if (!data?.pages) return wrap(<div>No cards found</div>)
 
   return (
-    <section>
+    <section className="@container/main w-full">
       {pageData && (
         <>
           <p className="text-center text-zinc-600 text-sm">

@@ -24,15 +24,28 @@ export function CardsGrid(props: Props) {
   return (
     <ul
       className="
-        mx-1 my-4 list-none
+        my-4 list-none
         grid gap-x-1.5 gap-y-2.5
-        grid-cols-2
-        md:grid-cols-3
-        lg:grid-cols-4
+        w-fit mx-auto px-3
+        grid-cols-1
+        @xs:grid-cols-2
+        @2xl:grid-cols-3
+        @4xl:grid-cols-4
         items-end
       "
-      // TODO: use Container query instead of `sm / md`
-      // https://tailwindcss.com/blog/tailwindcss-v3-2#container-queries
+      // TODO: test and change `@xs` to `@sm`
+      /**
+       * TailwindCSS container queries
+       *
+       * release post:
+       * https://tailwindcss.com/blog/tailwindcss-v3-2#container-queries
+       *
+       * sizes:
+       * https://github.com/tailwindlabs/tailwindcss-container-queries#configuration
+       *
+       * mdn docs
+       * https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Container_Queries
+       */
     >
       {props.data.map((card, i) => (
         <li
