@@ -81,8 +81,8 @@ function Deck() {
   return (
     <section className="w-full">
       {deck && (
-        <div className="w-full px-1 py-3 flex flex-col items-center">
-          <div className="w-full flex justify-end items-center gap-1">
+        <div className="w-full px-4 py-3 flex flex-col items-stretch">
+          <div className="flex justify-end items-center gap-1">
             {isMutationRunning && <span>Waiting for the server...</span>}
             <button
               disabled={isMutationRunning}
@@ -99,6 +99,7 @@ function Deck() {
               Delete
             </button>
           </div>
+
           <div className="text-slate-700 flex flex-col items-center">
             <div className="font-semibold text-lg">{deck.name}</div>
             <p className="text-sm">
