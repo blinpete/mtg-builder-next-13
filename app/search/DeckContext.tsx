@@ -4,9 +4,13 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { useDeckMutation } from "../decks/[id]/useDeckMutation"
 import { useDeckQuery } from "../decks/[id]/useDeckQuery"
 import { useEffectEventCustom } from "./useEffectEventCustom"
-import type { CardEntry, DeckLocal } from "@/types/decks"
+import type { CardEntry, DeckLocal, DeckRecord } from "@/types/decks"
 import type { PropsWithChildren } from "react"
 import type { Card } from "scryfall-sdk"
+
+function hashChampions(champions: DeckRecord["champions"]): string {
+  return champions.reduce((acc, x) => acc + "__" + x.id, "")
+}
 
 export type DeckContextType = {
   deck: DeckLocal | null
@@ -52,11 +56,14 @@ export function DeckProvider({ children }: PropsWithChildren) {
     ({ dropName } = { dropName: true }) => {
       setAdded(new Map())
       setUpdated(new Map())
+
+      setChampions(deckServer?.champions || [])
+
       if (dropName) {
         setName(deckServer?.name || "")
       }
     },
-    [deckServer?.name]
+    [deckServer?.champions, deckServer?.name]
   )
 
   const addCard = useCallback(
@@ -107,6 +114,39 @@ export function DeckProvider({ children }: PropsWithChildren) {
     [deckServer, added]
   )
 
+  // --------------------------------------------------------------
+  //                          Champions
+  // --------------------------------------------------------------
+  const [champions, setChampions] = useState<DeckRecord["champions"]>([])
+
+  useEffect(() => {
+    setChampions(deckServer?.champions || [])
+  }, [deckServer?.champions])
+
+  const addChampion = useCallback((card: Card) => {
+    setChampions(prev => {
+      if (!card?.image_uris) return prev
+
+      const champion: DeckRecord["champions"][number] = {
+        id: card.id,
+        image_uri: card.image_uris["art_crop"],
+      }
+
+      if (!prev || !prev.length) return [champion]
+
+      return [prev[prev.length - 1], champion]
+    })
+  }, [])
+
+  const removeChampion = useCallback((id: Card["id"]) => {
+    setChampions(prev => {
+      if (!prev) return prev
+      return prev.filter(x => x.id !== id)
+    })
+  }, [])
+
+  // --------------------------------------------------------------
+
   const cards = useMemo(() => {
     if (!deckServer || !deckServer?.cards) return []
 
@@ -122,25 +162,57 @@ export function DeckProvider({ children }: PropsWithChildren) {
     return cards?.filter(Boolean) as CardEntry[]
   }, [deckServer, added, updated])
 
+  useEffect(() => {
+    setChampions(prev =>
+      prev.filter(champion => cards.findIndex(x => x.card.id === champion.id) !== -1)
+    )
+  }, [cards])
+
   const has = useCallback((id: string) => !!cards.find(x => x.card.id === id), [cards])
 
   const hasChanged = useMemo(() => {
-    return Boolean(added.size || updated.size) || name !== deckServer?.name
-  }, [added, updated, name, deckServer])
+    return (
+      Boolean(added.size || updated.size) ||
+      name !== deckServer?.name ||
+      hashChampions(champions) !== hashChampions(deckServer.champions)
+    )
+  }, [added, updated, name, deckServer, champions])
 
-  const deck: DeckLocal | null = useMemo(() => {
+  const deck = useMemo(() => {
     if (!deckServer) return null
 
-    return {
+    const deck: DeckLocal = {
       ...(deckServer || {}),
       name: name,
+
       cards,
       addCard,
       removeCard,
+
+      champions,
+      addChampion,
+      removeChampion,
+
       has,
       hasChanged,
     }
-  }, [deckServer, cards, addCard, removeCard, has, hasChanged, name])
+
+    return deck
+  }, [
+    deckServer,
+    name,
+
+    cards,
+    addCard,
+    removeCard,
+
+    champions,
+    addChampion,
+    removeChampion,
+
+    has,
+    hasChanged,
+  ])
 
   const { isFetching: isSaving, saveDeck } = useDeckMutation({ deck, dropChanges })
   return (

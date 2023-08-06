@@ -48,8 +48,12 @@ export type DeckRecordToLoaded = DiffProps<DeckRecord, DeckRecordLoaded>
 export type DeckLocal = DeckRecordLoaded & {
   hasChanged: boolean
   has: (id: string) => boolean
+
   addCard: (card: Scry.Card) => void
   removeCard: (id: Scry.Card["id"]) => void
+
+  addChampion: (card: Scry.Card) => void
+  removeChampion: (id: Scry.Card["id"]) => void
 }
 
 // export const Deck = Prisma.validator<Prisma.DeckArgs>()({

@@ -24,6 +24,13 @@ export default function DeckPage() {
     return Object.fromEntries(deck?.cards.map(x => [x.card.id, x.count]))
   }, [deck])
 
+  const isActiveCardInDeck = useMemo(() => {
+    if (!activeCard?.id) return false
+    if (!counters) return false
+
+    return !!counters[activeCard.id]
+  }, [activeCard, counters])
+
   // if (isFetching) return <div>Loading...</div>
   if (!deck) return <div>Error: deck is null. This should never happen</div>
   // if (!deck?.cards.length) return <div>Empty deck</div>
@@ -119,7 +126,13 @@ export default function DeckPage() {
         )}
 
         {/* overlay */}
-        {activeCard && <CardPreview card={activeCard} onClick={() => setActiveCard(null)} />}
+        {activeCard && (
+          <CardPreview
+            isInDeck={isActiveCardInDeck}
+            card={activeCard}
+            onClick={() => setActiveCard(null)}
+          />
+        )}
       </article>
     </section>
   )

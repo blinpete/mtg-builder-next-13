@@ -3,7 +3,7 @@ import type { SetActiveCardAction } from "./page"
 import type { DeckLocal } from "@/types/decks"
 import type { Card } from "scryfall-sdk"
 
-function DeckSectionHeading({ title }: { title: string }) {
+export function DeckSectionHeading({ title }: { title: string }) {
   return (
     <h1 className="text-xs flex gap-2 pl-3 pr-4 items-center text-zinc-600/60">
       <hr className="flex-grow border-zinc-600/30" />

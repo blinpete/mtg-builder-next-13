@@ -6,8 +6,10 @@ import { useMemo } from "react"
 import { CardsGrid } from "@/app/search/CardsGrid"
 import { useDeck } from "@/app/search/DeckContext"
 import { CardDotCounter } from "../edit/CardDotCounter"
+import { DeckSectionHeading } from "../edit/DeckColumn"
 import { useDecksMutation } from "../useDecksMutation"
 import { useDeckQuery } from "./useDeckQuery"
+import type { Card } from "scryfall-sdk"
 
 export default function DeckPage({ params }: { params: { name: string } }) {
   const { status } = useSession()
@@ -35,6 +37,18 @@ function Deck() {
   const { deck: activeDeck, setDeckId } = useDeck()
 
   const { deleteDeck, isFetching: isMutationRunning } = useDecksMutation()
+
+  const cardsExceptChampions = useMemo(() => {
+    return deck?.cards
+      ?.filter(x => deck.champions.findIndex(champion => champion.id === x.card.id) === -1)
+      .map(x => x.card)
+  }, [deck?.cards, deck?.champions])
+
+  const champions = useMemo(() => {
+    return deck?.champions
+      ?.map(champion => deck.cards.find(x => champion.id === x.card.id)?.card)
+      .filter(Boolean) as Card[]
+  }, [deck?.cards, deck?.champions])
 
   if (isFetching) return <div>Loading the deck...</div>
 
@@ -103,15 +117,35 @@ function Deck() {
         </div>
       )}
 
-      {deck.cards.length ? (
-        <CardsGrid
-          data={deck.cards.map(x => x.card)}
-          counters={counters}
-          cardHeaderFn={card => <CardDotCounter card={card} counters={counters} visible={false} />}
-        />
-      ) : (
-        <div>Empty deck</div>
-      )}
+      <div className="pt-2">
+        <DeckSectionHeading title="Champions" />
+        {champions.length ? (
+          <CardsGrid
+            data={champions}
+            counters={counters}
+            cardHeaderFn={card => (
+              <CardDotCounter card={card} counters={counters} visible={false} />
+            )}
+          />
+        ) : (
+          <div className="text-center my-7 text-sm text-zinc-600/60">No champions</div>
+        )}
+      </div>
+
+      <div className="pt-2">
+        <DeckSectionHeading title="Deck" />
+        {cardsExceptChampions?.length ? (
+          <CardsGrid
+            data={cardsExceptChampions}
+            counters={counters}
+            cardHeaderFn={card => (
+              <CardDotCounter card={card} counters={counters} visible={false} />
+            )}
+          />
+        ) : (
+          <div className="text-center my-7 text-sm text-zinc-600/60">Empty deck</div>
+        )}
+      </div>
     </section>
   )
 }
