@@ -1,7 +1,8 @@
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { CardCompact, CardCompactButton } from "./CardCompact"
+import type { SetActiveCardAction } from "./page"
 import type { DeckLocal } from "@/types/decks"
-import type { Dispatch, SetStateAction } from "react"
 import type { Card } from "scryfall-sdk"
 
 export function DeckColumn({
@@ -11,7 +12,7 @@ export function DeckColumn({
 }: {
   deck: DeckLocal
   activeCard: Card | null
-  setActiveCard: Dispatch<SetStateAction<Card | null>>
+  setActiveCard: SetActiveCardAction
 }) {
   return (
     <ul
@@ -21,42 +22,13 @@ export function DeckColumn({
       "
     >
       {deck.cards.map(({ card, count }, i) => (
-        <li
+        <CardCompact
           key={card.id + i}
-          className="relative"
-          onClick={() => {
-            setActiveCard(prev => (prev?.id === card.id ? null : card))
-          }}
-        >
-          <div
-            className="
-              absolute -top-1 -left-0.5
-              bg-black text-stone-300
-              w-4 h-4 rounded-full font-bold
-              flex items-center justify-center
-            "
-            style={{ fontSize: "0.6rem" }}
-          >
-            {count}
-          </div>
-          <div
-            className="h-11 overflow-hidden w-max"
-            style={{
-              borderBottom: "solid 0.6rem black",
-              borderRadius: "0.6rem",
-            }}
-          >
-            {card.image_uris && (
-              <Image
-                className={cn("magic-card h-auto w-full")}
-                src={card.image_uris?.normal || card.image_uris.png}
-                height={320}
-                width={240}
-                alt={card.name}
-              />
-            )}
-
-            {activeCard?.id === card.id && (
+          card={card}
+          onClick={() => setActiveCard(prev => (prev?.id === card.id ? null : card))}
+          slotLeftCorner={<span>{count}</span>}
+          slotControls={
+            activeCard?.id !== card.id ? null : (
               <div
                 className="
                   absolute top-0 bottom-1 left-1 right-2
@@ -67,36 +39,24 @@ export function DeckColumn({
                   background: "radial-gradient(rgba(0 0 0 / 10%) 10%, black)",
                 }}
               >
-                <button
-                  className="
-                    bg-black text-gray-200 font-bold
-                    w-8 h-3/4 rounded-t-none rounded-md
-                    hover:h-4/5
-                  "
-                  onClick={e => {
-                    e.stopPropagation()
+                <CardCompactButton
+                  onClick={() => {
                     deck.removeCard(card.id)
                   }}
                 >
                   -
-                </button>
-                <button
-                  className="
-                    bg-black text-gray-200 font-bold
-                    w-8 h-3/4 rounded-t-none rounded-md
-                    hover:h-4/5
-                  "
-                  onClick={e => {
-                    e.stopPropagation()
+                </CardCompactButton>
+                <CardCompactButton
+                  onClick={() => {
                     deck.addCard(card)
                   }}
                 >
                   +
-                </button>
+                </CardCompactButton>
               </div>
-            )}
-          </div>
-        </li>
+            )
+          }
+        />
       ))}
     </ul>
   )
