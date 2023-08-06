@@ -28,7 +28,7 @@ export function CardsGrid(props: Props) {
         grid gap-x-1.5 gap-y-2.5
         grid-cols-2
         md:grid-cols-3
-        sm:grid-cols-2
+        lg:grid-cols-4
         items-end
       "
       // TODO: use Container query instead of `sm / md`
