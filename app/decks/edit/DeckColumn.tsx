@@ -1,3 +1,5 @@
+import { useMemo } from "react"
+import { sortCards } from "@/lib/deckUtils.client"
 import { CardCompact, CardCompactButton } from "./CardCompact"
 import type { SetActiveCardAction } from "./page"
 import type { DeckLocal } from "@/types/decks"
@@ -52,6 +54,8 @@ export function DeckColumn({
   activeCard: Card | null
   setActiveCard: SetActiveCardAction
 }) {
+  const cardsSorted = useMemo(() => sortCards(deck.cards), [deck.cards])
+
   return (
     <div>
       <DeckSectionHeading title="Champions" />
@@ -88,7 +92,7 @@ export function DeckColumn({
         grid gap-y-1 grid-cols-1
       "
       >
-        {deck.cards.map(({ card, count }, i) => (
+        {cardsSorted.map(({ card, count }, i) => (
           <CardCompact
             key={card.id + i}
             card={card}

@@ -1,11 +1,4 @@
-import type {
-  CardEntry,
-  CardRecord,
-  DbDeck,
-  DeckLoadedToRecord,
-  DeckRecord,
-  DeckRecordLoaded,
-} from "@/types/decks"
+import type { CardEntry, CardRecord, DeckLoadedToRecord, DeckRecordLoaded } from "@/types/decks"
 
 export const deckUtilsClient = {}
 
@@ -18,4 +11,19 @@ export function deckLoadedToRecord(deck: DeckRecordLoaded): DeckLoadedToRecord {
     cards: deck.cards.map(cardEntryToRecord),
     sideboard: deck.sideboard.map(cardEntryToRecord),
   }
+}
+
+export function sortCards(cards: CardEntry[]) {
+  const sorted = [...cards]
+
+  sorted.sort((a, b) => {
+    // push lands to the end
+    if (a.card.cmc === 0) return 1
+    if (b.card.cmc === 0) return -1
+
+    // sort by "Cumulative Mana Cost" in INC order
+    return a.card.cmc - b.card.cmc
+  })
+
+  return sorted
 }

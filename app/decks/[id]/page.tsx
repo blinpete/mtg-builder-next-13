@@ -5,13 +5,14 @@ import { useSession } from "next-auth/react"
 import { useMemo } from "react"
 import { CardsGrid } from "@/app/search/CardsGrid"
 import { useDeck } from "@/app/search/DeckContext"
+import { sortCards } from "@/lib/deckUtils.client"
 import { CardDotCounter } from "../edit/CardDotCounter"
 import { DeckSectionHeading } from "../edit/DeckColumn"
 import { useDecksMutation } from "../useDecksMutation"
 import { useDeckQuery } from "./useDeckQuery"
 import type { Card } from "scryfall-sdk"
 
-export default function DeckPage({ params }: { params: { name: string } }) {
+export default function DeckPage({ params }: { params: { id: string } }) {
   const { status } = useSession()
 
   if (status === "loading") return <p>Loading...</p>
@@ -39,9 +40,14 @@ function Deck() {
   const { deleteDeck, isFetching: isMutationRunning } = useDecksMutation()
 
   const cardsExceptChampions = useMemo(() => {
-    return deck?.cards
-      ?.filter(x => deck.champions.findIndex(champion => champion.id === x.card.id) === -1)
-      .map(x => x.card)
+    const filtered = deck?.cards?.filter(
+      x => deck.champions.findIndex(champion => champion.id === x.card.id) === -1
+    )
+    if (!filtered) return filtered
+
+    const sorted = sortCards(filtered)
+
+    return sorted.map(x => x.card)
   }, [deck?.cards, deck?.champions])
 
   const champions = useMemo(() => {
