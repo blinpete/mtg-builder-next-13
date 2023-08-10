@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "dbgen": "prisma generate",
     "dbpush": "prisma db push",
     "dbseed": "prisma db seed",
     "fmt": "prettier . '!pnpm-lock.yaml' --write --ignore-path .gitignore",
