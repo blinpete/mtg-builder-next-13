@@ -12,7 +12,7 @@ import { useDecksMutation } from "../useDecksMutation"
 import { useDeckQuery } from "./useDeckQuery"
 import type { Card } from "scryfall-sdk"
 
-export default function DeckPage({ params }: { params: { id: string } }) {
+export default function DeckPage() {
   const { status } = useSession()
 
   if (status === "loading") return <p>Loading...</p>

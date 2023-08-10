@@ -1,9 +1,9 @@
-import { getServerSession } from "next-auth"
-import User from "@/components/User"
-import { authOptions } from "./api/auth/[...nextauth]/route"
+// import { getServerSession } from "next-auth"
+// import User from "@/components/User"
+// import { authOptions } from "./api/auth/[...nextauth]/route"
 
 export default async function Home() {
-  const session = await getServerSession(authOptions)
+  // const session = await getServerSession(authOptions)
 
   return (
     <div

@@ -99,7 +99,8 @@ export default function DeckPage() {
           query=""
           onSubmit={e => {
             e.preventDefault()
-            const q = e.target?.search?.value as string
+            const target = e.target as unknown as { search: HTMLInputElement }
+            const q = target?.search?.value
             if (!q) return
 
             setQuery(q.replaceAll(" ", "+"))

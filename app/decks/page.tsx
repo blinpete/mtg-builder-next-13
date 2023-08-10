@@ -99,6 +99,7 @@ export default function DeckPage() {
               <Link href={pathname + "/" + d.id} className="flex flex-col items-center p-2 w-min">
                 <DeckCover deck={d} />
 
+                {/* @ts-expect-error: textWrap is a new CSS prop */}
                 <span className="text-xs my-1 text-center" style={{ textWrap: "balance" }}>
                   {d.name}
                   {/* ({d.cards.length}) */}

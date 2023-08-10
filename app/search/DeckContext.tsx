@@ -50,6 +50,7 @@ export function DeckProvider({ children }: PropsWithChildren) {
 
     // `setDeckServerName` isn't in deps, cuz "effect events" are not reactive
     // https://react.dev/learn/separating-events-from-effects#reading-latest-props-and-state-with-effect-events
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deckId])
 
   const dropChanges = useCallback(

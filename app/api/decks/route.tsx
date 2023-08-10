@@ -3,12 +3,12 @@ import { deckUtilsServer } from "@/lib/deckUtils.server"
 import { prisma } from "@/lib/prismadb"
 import { getDecodedJWT } from "@/lib/utilsJWT"
 import { NextErrorResponse } from "@/types/errors"
-import type { DeckRecord, UpdateDeckRequest } from "@/types/decks"
+import type { UpdateDeckRequest } from "@/types/decks"
 
 /**
  * Creates a new deck
  */
-export async function POST(request: Request) {
+export async function POST() {
   const decoded = await getDecodedJWT()
 
   if (!decoded?.sub) {
