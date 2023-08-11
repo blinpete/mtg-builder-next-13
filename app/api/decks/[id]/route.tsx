@@ -17,14 +17,14 @@ export async function GET(request: NextRequest) {
       id: id,
     },
   })
-  console.log("🚀 | GET | deckFromDB:", deckFromDB)
+  // console.log("🚀 | GET | deckFromDB:", deckFromDB)
 
   if (!deckFromDB) {
     return NextErrorResponse.json("No deck found by id: " + id, { status: 404 })
   }
 
   const deck = deckUtilsServer.deserialize(deckFromDB)
-  console.log("🚀 | GET | deck deserialized:", deck)
+  // console.log("🚀 | GET | deck deserialized:", deck)
   console.log("🚀 | GET | decoded:", decoded)
 
   if (decoded?.sub !== deck?.userId) {

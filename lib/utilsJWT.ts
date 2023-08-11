@@ -3,6 +3,7 @@ import { decode } from "next-auth/jwt"
 import type { JWTDecodeParams } from "next-auth/jwt"
 
 function decodeJWT(token: JWTDecodeParams["token"]) {
+  console.log("🚀 | decodeJWT | process.env.SECRET:", process.env.SECRET)
   return decode({ token: token, secret: "" + process.env.SECRET })
 }
 
