@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(font.className, "overscroll-y-none")}>
+      <body className={cn(font.className, "overscroll-none")}>
         {/* header */}
         <div
           className="
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           flex justify-center h-12 items-center
           bg-gradient-to-b from-zinc-900/95 to-zinc-800/95
           text-zinc-200
-          lg:static lg:w-auto lg:rounded-xl"
+          "
         >
           <Navbar />
         </div>

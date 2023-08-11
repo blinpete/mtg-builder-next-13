@@ -10,6 +10,13 @@ export type ScrySearchResponse = {
   data: Scry.Card[]
 }
 
+export type ScrySearchError = {
+  code: string
+  details: string
+  object: "error"
+  status: number
+}
+
 /**
  * Docs:
  * https://scryfall.com/docs/api/lists
@@ -23,8 +30,29 @@ export async function ScrySearch(query: string, options?: Scry.SearchOptions) {
     `q=${query}`
   )
 
+  // await new Promise(resolve => setTimeout(resolve, 1500))
+
   const response = await fetch(`https://api.scryfall.com/cards/search?${searchParams}`)
-  const json = (await response.json()) as ScrySearchResponse
+  const json = (await response.json()) as ScrySearchResponse | ScrySearchError
+
+  if (json.object === "error") throw json
+
+  return json
+}
+
+export type ScryRulingsResponse = {
+  object: "list"
+  has_more: boolean
+  data: Scry.Ruling[]
+}
+
+export async function ScryRulings(url: string, signal?: AbortSignal) {
+  // await new Promise(resolve => setTimeout(resolve, 1500))
+
+  const response = await fetch(url, { signal: signal })
+  const json = (await response.json()) as ScryRulingsResponse | ScrySearchError
+
+  if (json.object === "error") throw json
 
   return json
 }

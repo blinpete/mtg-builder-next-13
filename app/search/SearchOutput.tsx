@@ -1,15 +1,24 @@
 "use client"
 
-import Image from "next/image"
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useInfiniteQuery } from "react-query"
+import { CardsGrid } from "./CardsGrid"
 import { Pagination } from "./Pagination"
 import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } from "./ScryfallAPI"
+import type { CardsGridProps } from "./CardsGrid"
+
+const wrap = (children: JSX.Element) => <div className="mx-6 my-6">{children}</div>
 
 /**
  * https://scryfall.com/docs/api
  */
-export function SearchOutput(props: { query: string; options?: Scry.SearchOptions }) {
+export function SearchOutput(
+  props: CardsGridProps & {
+    query: string
+    options?: Scry.SearchOptions
+    cardHeaderFn?: Parameters<typeof CardsGrid>[0]["cardHeaderFn"]
+  }
+) {
   console.log("🚀 | SearchOutput | query:", props.query)
   console.log("🚀🚀🚀 | SearchOutput | options:", props.options)
 
@@ -43,6 +52,11 @@ export function SearchOutput(props: { query: string; options?: Scry.SearchOption
   const hasNext = useMemo(() => page * 175 < total, [page, total])
   const hasPrev = useMemo(() => page > 1, [page])
 
+  useEffect(() => {
+    setPage(1)
+  }, [props.query])
+
+  console.log("🚀 | page:", page)
   console.log("🚀 | total:", total)
   console.log("🚀 | prevCount:", prevCount)
   console.log("🚀 | hasNext:", hasNext)
@@ -50,51 +64,35 @@ export function SearchOutput(props: { query: string; options?: Scry.SearchOption
 
   if (data?.pages.length === page && hasNextPage) fetchNextPage()
 
+  if (isFetching) return <div>Loading...</div>
+
+  if (error) {
+    return wrap(
+      <>
+        <strong>Error {error.status}:</strong> {error.details}
+      </>
+    )
+  }
+
+  if (!data?.pages) return wrap(<div>No cards found</div>)
+
   return (
-    <section>
-      {data?.pages && data?.pages[page - 1] && (
+    <section className="w-full">
+      {pageData && (
         <>
           <p className="text-center text-zinc-600 text-sm">
-            {prevCount + 1} - {prevCount + data.pages[page - 1].data.length} of{" "}
-            {data.pages[0]?.total_cards} cards
+            {prevCount + 1} - {prevCount + pageData.length} of {total} cards
           </p>
 
           <Pagination setPage={setPage} hasPrev={hasPrev} hasNext={hasNext} />
 
-          <ul
-            className="
-              mx-1 mt-4 list-none
-              grid gap-x-1.5 gap-y-2.5
-              grid-cols-2
-              md:grid-cols-4
-              sm:grid-cols-3
-            "
-          >
-            {pageData?.map(card => (
-              <li key={card.id}>
-                {card.image_uris && (
-                  <Image
-                    className="magic-card h-auto"
-                    src={card.image_uris?.normal || card.image_uris.png}
-                    height={320}
-                    width={240}
-                    alt={card.name}
-                  />
-                )}
-              </li>
-            ))}
-          </ul>
+          <CardsGrid
+            data={pageData}
+            counters={props.counters}
+            onCardClick={props.onCardClick}
+            cardHeaderFn={props.cardHeaderFn}
+          />
         </>
-      )}
-
-      {isFetching ? (
-        <div>Loading...</div>
-      ) : error ? (
-        <div className="mx-6 my-6">
-          <strong>Error {error.status}:</strong> {error.details}
-        </div>
-      ) : (
-        !data?.pages && <div>No cards found</div>
       )}
     </section>
   )

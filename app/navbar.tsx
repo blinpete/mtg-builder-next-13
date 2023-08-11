@@ -2,6 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import { signOut } from "next-auth/react"
 
 type NavLink = {
   label: string
@@ -12,6 +13,9 @@ const navLinks: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/search", label: "Search" },
   { href: "/sets", label: "Sets" },
+  { href: "/decks", label: "Decks" },
+  { href: "/auth/register", label: "Register" },
+  { href: "/auth/login", label: "Login" },
 ]
 
 export function Navbar() {
@@ -33,6 +37,7 @@ export function Navbar() {
           </Link>
         )
       })}
+      <button onClick={() => signOut()}>Logout</button>
     </nav>
   )
 }
