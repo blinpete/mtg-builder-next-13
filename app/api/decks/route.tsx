@@ -52,6 +52,10 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   const decoded = await getDecodedJWT(request)
 
+  if (!decoded?.sub) {
+    return NextErrorResponse.json("Not logged in", { status: 403 })
+  }
+
   const decksFromDB = await prisma.deck.findMany({
     where: {
       userId: decoded?.sub,
