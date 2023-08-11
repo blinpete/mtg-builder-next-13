@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
   const decoded = await getDecodedJWT()
 
   const id = request.url.substring(request.url.lastIndexOf("/") + 1)
-  console.log(`name: ${id}`)
+  console.log(`deck id: ${id}`)
 
   const deckFromDB = await prisma.deck.findUnique({
     where: {
@@ -24,7 +24,8 @@ export async function GET(request: NextRequest) {
   }
 
   const deck = deckUtilsServer.deserialize(deckFromDB)
-  // console.log("🚀 | GET | deck:", deck)
+  console.log("🚀 | GET | deck deserialized:", deck)
+  console.log("🚀 | GET | decoded:", decoded)
 
   if (decoded?.sub !== deck?.userId) {
     return NextErrorResponse.json("Not your deck", { status: 403 })

@@ -12,6 +12,8 @@ function decodeJWT(token: JWTDecodeParams["token"]) {
 export async function getDecodedJWT() {
   const cookieStore = cookies()
   const token = cookieStore.get("next-auth.session-token")
+  console.log("🚀 | getDecodedJWT | token:", token)
+
   const decoded = await decodeJWT(token?.value)
 
   return decoded
