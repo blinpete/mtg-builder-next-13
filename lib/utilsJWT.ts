@@ -1,21 +1,9 @@
-import { cookies } from "next/headers"
-import { decode } from "next-auth/jwt"
-import type { JWTDecodeParams } from "next-auth/jwt"
-
-function decodeJWT(token: JWTDecodeParams["token"]) {
-  console.log("🚀 | decodeJWT | process.env.SECRET:", process.env.SECRET)
-  return decode({ token: token, secret: "" + process.env.SECRET })
-}
+import { getToken } from "next-auth/jwt"
+import type { NextRequest } from "next/server"
 
 /**
  * Get decoded JWT from NextAuth cookies
  */
-export async function getDecodedJWT() {
-  const cookieStore = cookies()
-  const token = cookieStore.get("next-auth.session-token")
-  console.log("🚀 | getDecodedJWT | token:", token)
-
-  const decoded = await decodeJWT(token?.value)
-
-  return decoded
+export function getDecodedJWT(req: NextRequest) {
+  return getToken({ req, secret: "" + process.env.SECRET })
 }

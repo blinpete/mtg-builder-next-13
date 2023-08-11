@@ -1,15 +1,16 @@
 import type { Scry } from "@/app/search/ScryfallAPI"
 import type { Prisma } from "@prisma/client"
+import type { NextRequest } from "next/server"
 
 export type CreateDeckData = {
   name: string
 }
 
-export type CreateDeckRequest = Omit<Request, "json"> & {
+export type CreateDeckRequest = Omit<NextRequest, "json"> & {
   json: () => Promise<CreateDeckData>
 }
 
-export type UpdateDeckRequest = Omit<Request, "json"> & {
+export type UpdateDeckRequest = Omit<NextRequest, "json"> & {
   json: () => Promise<DeckRecord>
 }
 

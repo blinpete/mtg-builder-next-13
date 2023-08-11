@@ -7,7 +7,7 @@ import type { DeckRecordLoaded } from "@/types/decks"
 import type { NextRequest } from "next/server"
 
 export async function GET(request: NextRequest) {
-  const decoded = await getDecodedJWT()
+  const decoded = await getDecodedJWT(request)
 
   const id = request.url.substring(request.url.lastIndexOf("/") + 1)
   console.log(`deck id: ${id}`)
@@ -51,8 +51,8 @@ export async function GET(request: NextRequest) {
   return NextResponse.json(deckWithCards, { status: 200 })
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
-  const decoded = await getDecodedJWT()
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  const decoded = await getDecodedJWT(request)
 
   const deckFromDB = await prisma.deck.findUnique({
     where: {

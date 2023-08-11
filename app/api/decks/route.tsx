@@ -4,12 +4,13 @@ import { prisma } from "@/lib/prismadb"
 import { getDecodedJWT } from "@/lib/utilsJWT"
 import { NextErrorResponse } from "@/types/errors"
 import type { UpdateDeckRequest } from "@/types/decks"
+import type { NextRequest } from "next/server"
 
 /**
  * Creates a new deck
  */
-export async function POST() {
-  const decoded = await getDecodedJWT()
+export async function POST(request: NextRequest) {
+  const decoded = await getDecodedJWT(request)
 
   if (!decoded?.sub) {
     return new NextErrorResponse({ error: "Can't find user id in JWT" }, { status: 400 })
@@ -48,8 +49,8 @@ export async function POST() {
   }
 }
 
-export async function GET() {
-  const decoded = await getDecodedJWT()
+export async function GET(request: NextRequest) {
+  const decoded = await getDecodedJWT(request)
 
   const decksFromDB = await prisma.deck.findMany({
     where: {
@@ -63,7 +64,7 @@ export async function GET() {
 }
 
 export async function PATCH(request: UpdateDeckRequest) {
-  const decoded = await getDecodedJWT()
+  const decoded = await getDecodedJWT(request)
 
   const deck = await request.json()
 
