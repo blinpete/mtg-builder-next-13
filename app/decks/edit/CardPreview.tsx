@@ -20,19 +20,10 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
   console.log("🚀 | CardPreview | isLoading:", isLoading)
 
   useEffect(() => {
-    const el = document.documentElement
-
-    el.style.cssText += `
-      position: fixed;
-      left: 0;
-      width: 100%;
-      top: -${el.scrollTop}px;
-    `
+    document.documentElement.style.overflow = "hidden"
 
     return () => {
-      const scrollY = el.style.top
-      el.style.cssText = ""
-      el.scrollTo(0, parseInt(scrollY || "0") * -1)
+      document.documentElement.style.overflow = "auto"
     }
   }, [])
 
