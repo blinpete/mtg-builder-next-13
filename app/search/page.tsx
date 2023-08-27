@@ -26,7 +26,7 @@ import type { Card, SearchOptions } from "scryfall-sdk"
  * #### formats
  * https://magic.wizards.com/en/formats
  */
-export default async function Search(props: {
+export default function Search(props: {
   searchParams?: {
     q?: string
   } & SearchOptions
