@@ -1,6 +1,5 @@
 import "./globals.css"
 import { Inter } from "next/font/google"
-import { cn } from "@/lib/utils"
 import { Navbar } from "./navbar"
 import { Providers } from "./providers"
 
@@ -14,7 +13,7 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(font.className, "overscroll-none")}>
+      <body className={font.className}>
         {/* header */}
         <div
           className="
@@ -30,6 +29,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex flex-col items-center" style={{ minHeight: "calc(100vh - 3rem)" }}>
           <Providers>{children}</Providers>
         </main>
+
+        <div id="portal-root" className="fixed top-0 left-0 w-full h-0 z-10"></div>
       </body>
     </html>
   )
