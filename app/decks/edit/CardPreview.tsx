@@ -9,12 +9,32 @@ import type { Card, Ruling } from "scryfall-sdk"
 type Props = {
   card: Card
   isInDeck: boolean
+  showChampionButtons: boolean
+  height: string
   onClick: () => void
 }
 
-export function CardPreview({ card, isInDeck, onClick }: Props) {
+export function CardPreview({ card, isInDeck, showChampionButtons, height, onClick }: Props) {
   const [rulings, setRulings] = useState<Ruling[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  console.log("🚀 | CardPreview | isLoading:", isLoading)
+
+  useEffect(() => {
+    const el = document.documentElement
+
+    el.style.cssText += `
+      position: fixed;
+      left: 0;
+      width: 100%;
+      top: -${el.scrollTop}px;
+    `
+
+    return () => {
+      const scrollY = el.style.top
+      el.style.cssText = ""
+      el.scrollTo(0, parseInt(scrollY || "0") * -1)
+    }
+  }, [])
 
   useEffect(() => {
     if (!card) return
@@ -57,37 +77,42 @@ export function CardPreview({ card, isInDeck, onClick }: Props) {
   // ------------------------------------------------------------------
 
   return (
-    <div
+    <dialog
+      id="CardPreview__dialog"
+      open
       className="
         bg-gray-600/95 backdrop-blur-0 text-gray-200
         px-3
-        fixed top-12 bottom-0 left-64 right-0
+        absolute left-0 top-0 w-full
         cursor-pointer
       "
+      style={{ height }}
       onClick={onClick}
     >
-      <div className="py-3 px-4 flex gap-1 justify-center text-sm">
-        <button
-          className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-          disabled={!canAddChampion}
-          onClick={e => {
-            e.stopPropagation()
-            handleAddChampion()
-          }}
-        >
-          Add to champions
-        </button>
-        <button
-          className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-          disabled={!canRemoveChampion}
-          onClick={e => {
-            e.stopPropagation()
-            handleRemoveChampion()
-          }}
-        >
-          Remove from champions
-        </button>
-      </div>
+      {showChampionButtons && (
+        <div className="py-3 px-4 flex gap-1 justify-center text-sm">
+          <button
+            className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
+            disabled={!canAddChampion}
+            onClick={e => {
+              e.stopPropagation()
+              handleAddChampion()
+            }}
+          >
+            Add to champions
+          </button>
+          <button
+            className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
+            disabled={!canRemoveChampion}
+            onClick={e => {
+              e.stopPropagation()
+              handleRemoveChampion()
+            }}
+          >
+            Remove from champions
+          </button>
+        </div>
+      )}
 
       <div className="flex flex-row gap-5">
         <div className="flex flex-col justify-center items-center flex-shrink-0">
@@ -119,33 +144,34 @@ export function CardPreview({ card, isInDeck, onClick }: Props) {
           </div> */}
 
           <div className="flex flex-col gap-3 my-10" style={{ maxWidth: "36rem" }}>
-            {card.keywords.length ? (
-              <>
-                <hr className="opacity-25" />
-                <div>
-                  <span className="font-bold mb-3">Keywords: </span>
-                  {card.keywords.map(k => (
-                    <span key={card.id + k}>{k + " "}</span>
-                  ))}
-                </div>
-                <hr className="opacity-25" />
-              </>
-            ) : null}
+            {/* keywords */}
+            <>
+              <hr className="opacity-25" />
+              <div>
+                <span className="font-bold mb-3">Keywords: </span>
+                {!!card.keywords.length &&
+                  card.keywords.map(k => <span key={card.id + k}>{k + " "}</span>)}
+                {!card.keywords.length && <span>no keywords</span>}
+              </div>
+              <hr className="opacity-25" />
+            </>
 
-            <h2 className="font-bold mb-3">Rulings:</h2>
-            {isLoading ? (
-              <div>loading...</div>
-            ) : (
+            <div className="flex gap-2">
+              <h2 className="font-bold mb-3">Rulings:</h2>
+              {isLoading && <div>loading...</div>}
+              {!isLoading && rulings.length === 0 && <div>no rulings found</div>}
+            </div>
+            {!isLoading &&
+              !!rulings.length &&
               rulings.map((r, i) => (
                 <div key={card.id + "rule_" + i}>
                   <p>{r.comment}</p>
                   <p>({r.published_at})</p>
                 </div>
-              ))
-            )}
+              ))}
           </div>
         </div>
       </div>
-    </div>
+    </dialog>
   )
 }
