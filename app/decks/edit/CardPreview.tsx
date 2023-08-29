@@ -68,14 +68,13 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
   // ------------------------------------------------------------------
 
   return (
-    <dialog
-      id="CardPreview__dialog"
-      open
+    <div
       className="
         bg-gray-600/95 backdrop-blur-0 text-gray-200
         px-3
         absolute left-0 top-0 w-full
         cursor-pointer
+        overflow-auto
       "
       style={{ height }}
       onClick={onClick}
@@ -163,6 +162,6 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
           </div>
         </div>
       </div>
-    </dialog>
+    </div>
   )
 }
