@@ -38,12 +38,9 @@ export default function DeckPage() {
   return (
     <section
       className="
-        border-0 border-red-500
         flex-auto flex flex-row w-full
+        max-h-[--layout-main-vh]
       "
-      style={{
-        maxHeight: "calc(100vh - 3rem)",
-      }}
     >
       {/* sidebar */}
       <article
@@ -131,7 +128,7 @@ export default function DeckPage() {
           {activeCard && (
             <CardPreview
               showChampionButtons={true}
-              height="calc(100vh - 3rem)"
+              height="var(--layout-main-vh)"
               isInDeck={isActiveCardInDeck}
               card={activeCard}
               onClick={() => setActiveCard(null)}

@@ -1,5 +1,6 @@
 import "./globals.css"
 import { Inter } from "next/font/google"
+import { cn } from "@/lib/utils"
 import { Navbar } from "./navbar"
 import { Providers } from "./providers"
 
@@ -13,12 +14,17 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={font.className}>
+      <body
+        className={cn(
+          font.className,
+          "[--layout-header-vh:3rem] [--layout-main-vh:calc(100vh_-_var(--layout-header-vh))]"
+        )}
+      >
         {/* header */}
         <div
           className="
           w-full
-          flex justify-center h-12 items-center
+          flex justify-center h-[--layout-header-vh] items-center
           bg-gradient-to-b from-zinc-900/95 to-zinc-800/95
           text-zinc-200
           "
@@ -26,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
         </div>
 
-        <main className="flex flex-col items-center" style={{ minHeight: "calc(100vh - 3rem)" }}>
+        <main className="flex flex-col items-center min-h-[--layout-main-vh]">
           <Providers>{children}</Providers>
         </main>
 
