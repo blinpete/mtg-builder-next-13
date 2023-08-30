@@ -3,7 +3,6 @@ import Image from "next/image"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useDeck } from "@/app/search/DeckContext"
 import { ScryRulings } from "@/app/search/ScryfallAPI"
-import { cn } from "@/lib/utils"
 import type { Card, Ruling } from "scryfall-sdk"
 
 type Props = {
@@ -71,6 +70,7 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
     <div
       className="
         bg-gray-600/95 backdrop-blur-0 text-gray-200
+        @container/main
         absolute left-0 top-0 w-full
         cursor-pointer
         overflow-auto
@@ -103,11 +103,29 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
         </div>
       )}
 
-      <div className="h-full flex flex-row">
-        <div className="flex flex-col flex-grow justify-center items-end flex-shrink-0 px-2">
+      <div
+        className="
+        h-max flex flex-col
+        @4xl/main:flex-row
+        @4xl/main:h-full
+      "
+      >
+        {/* card image */}
+        <div
+          className="
+          flex justify-center items-center
+          flex-grow flex-shrink-0
+          px-2 py-6
+          @4xl/main:justify-end
+        "
+        >
           {card.image_uris && (
             <Image
-              className="magic-card h-[clamp(70vh,28rem,90vh)] w-max"
+              className="
+                magic-card w-max
+                h-[clamp(60vmax,28rem,90vmax)]
+                @4xl/main:h-[clamp(70vmin,28rem,90vmin)]
+              "
               src={card.image_uris?.normal || card.image_uris.png}
               height={320}
               width={240}
@@ -115,11 +133,16 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
             />
           )}
         </div>
+
+        {/* about the card */}
         <div
           className="
-            max-h-full my-auto px-2
-            flex justify-center flex-grow basis-[36rem]
-            overflow-y-auto
+            my-auto px-5
+            flex justify-center flex-grow
+            @4xl/main:max-h-full
+            @4xl/main:overflow-y-auto
+            @4xl/main:px-2
+            @4xl/main:basis-[36rem]
           "
         >
           {/* <div className="mt-3 flex flex-col items-center gap-6">
@@ -129,7 +152,14 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
             </span>
           </div> */}
 
-          <div className="flex flex-col gap-3 h-max w-full my-10 max-w-[36rem]">
+          <div
+            className="
+              flex flex-col gap-3
+              h-max w-full max-w-[36rem]
+              mt-2 mb-10
+              @4xl/main:mt-10
+            "
+          >
             {/* keywords */}
             <>
               <hr className="opacity-25" />
