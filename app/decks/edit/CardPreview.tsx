@@ -3,6 +3,7 @@ import Image from "next/image"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useDeck } from "@/app/search/DeckContext"
 import { ScryRulings } from "@/app/search/ScryfallAPI"
+import { cn } from "@/lib/utils"
 import type { Card, Ruling } from "scryfall-sdk"
 
 type Props = {
@@ -68,18 +69,29 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
 
   return (
     <div
-      className="
-        bg-gray-600/95 backdrop-blur-0 text-gray-200
-        @container/main
-        absolute left-0 top-0 w-full
-        cursor-pointer
-        overflow-auto
-      "
+      className={cn(
+        "bg-gray-600/95 backdrop-blur-0 text-gray-200",
+        "@container/main",
+        "absolute left-0 top-0 w-full",
+        "cursor-pointer",
+        // note: scroll only for w < @3xl, after this bp we set fixed height and move scroll to the "About the card" container
+        "overflow-y-auto",
+        showChampionButtons
+          ? "[--preview-header-vh:2.4rem] [--preview-main-vh:calc(100%_-_var(--preview-header-vh))]"
+          : "[--preview-main-vh:100%]"
+      )}
       style={{ height }}
       onClick={onClick}
     >
       {showChampionButtons && (
-        <div className="py-3 px-4 flex gap-1 justify-center text-sm">
+        <div
+          className="
+            px-4
+            flex gap-1 justify-center items-center
+            text-sm
+            h-[var(--preview-header-vh)]
+          "
+        >
           <button
             className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
             disabled={!canAddChampion}
@@ -105,10 +117,10 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
 
       <div
         className="
-        h-max flex flex-col
-        @4xl/main:flex-row
-        @4xl/main:h-full
-      "
+          h-max flex flex-col
+          @3xl/main:flex-row
+          @3xl/main:h-[var(--preview-main-vh)]
+        "
       >
         {/* card image */}
         <div
@@ -116,7 +128,7 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
           flex justify-center items-center
           flex-grow flex-shrink-0
           px-2 py-6
-          @4xl/main:justify-end
+          @3xl/main:justify-end
         "
         >
           {card.image_uris && (
@@ -124,7 +136,7 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
               className="
                 magic-card w-max
                 h-[clamp(60vmax,28rem,90vmax)]
-                @4xl/main:h-[clamp(70vmin,28rem,90vmin)]
+                @3xl/main:h-[clamp(70vmin,28rem,90vmin)]
               "
               src={card.image_uris?.normal || card.image_uris.png}
               height={320}
@@ -139,10 +151,10 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
           className="
             my-auto px-5
             flex justify-center flex-grow
-            @4xl/main:max-h-full
-            @4xl/main:overflow-y-auto
-            @4xl/main:px-2
-            @4xl/main:basis-[36rem]
+            @3xl/main:max-h-full
+            @3xl/main:overflow-y-auto
+            @3xl/main:px-2
+            @3xl/main:basis-[36rem]
           "
         >
           {/* <div className="mt-3 flex flex-col items-center gap-6">
@@ -157,7 +169,7 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
               flex flex-col gap-3
               h-max w-full max-w-[36rem]
               mt-2 mb-10
-              @4xl/main:mt-10
+              @3xl/main:mt-10
             "
           >
             {/* keywords */}
