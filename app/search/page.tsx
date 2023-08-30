@@ -54,7 +54,7 @@ export default function Search(props: {
               <CardPreview
                 showChampionButtons={false}
                 isInDeck={false}
-                height="100vh"
+                height="100dvh"
                 card={activeCard}
                 onClick={() => setActiveCard(null)}
               />,

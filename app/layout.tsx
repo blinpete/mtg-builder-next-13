@@ -17,7 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={cn(
           font.className,
-          "[--layout-header-vh:3rem] [--layout-main-vh:calc(100vh_-_var(--layout-header-vh))]"
+          "[--layout-header-vh:3rem] [--layout-main-vh:calc(100dvh_-_var(--layout-header-vh))]"
         )}
       >
         {/* header */}
