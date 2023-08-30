@@ -71,7 +71,6 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
     <div
       className="
         bg-gray-600/95 backdrop-blur-0 text-gray-200
-        px-3
         absolute left-0 top-0 w-full
         cursor-pointer
         overflow-auto
@@ -104,27 +103,24 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
         </div>
       )}
 
-      <div className="flex flex-row gap-5">
-        <div className="flex flex-col justify-center items-center flex-shrink-0">
+      <div className="h-full flex flex-row">
+        <div className="flex flex-col flex-grow justify-center items-end flex-shrink-0 px-2">
           {card.image_uris && (
             <Image
-              className={cn("magic-card h-auto w-max")}
+              className="magic-card h-[clamp(70vh,28rem,90vh)] w-max"
               src={card.image_uris?.normal || card.image_uris.png}
               height={320}
               width={240}
-              style={{
-                height: "min(90vh, 400px)",
-              }}
               alt={card.name}
             />
           )}
-
-          {/* <div>{card.flavor_text}</div> */}
-          {/* <div>rarity: {card.rarity}</div> */}
         </div>
         <div
-          className="overflow-y-scroll my-auto flex justify-center"
-          style={{ maxHeight: "calc(100vh - 7rem)", flexGrow: 2 }}
+          className="
+            max-h-full my-auto px-2
+            flex justify-center flex-grow basis-[36rem]
+            overflow-y-auto
+          "
         >
           {/* <div className="mt-3 flex flex-col items-center gap-6">
             <div>{<ChevronDown />}</div>
@@ -133,7 +129,7 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
             </span>
           </div> */}
 
-          <div className="flex flex-col gap-3 my-10" style={{ maxWidth: "36rem" }}>
+          <div className="flex flex-col gap-3 h-max w-full my-10 max-w-[36rem]">
             {/* keywords */}
             <>
               <hr className="opacity-25" />
@@ -143,11 +139,15 @@ export function CardPreview({ card, isInDeck, showChampionButtons, height, onCli
                   card.keywords.map(k => <span key={card.id + k}>{k + " "}</span>)}
                 {!card.keywords.length && <span>no keywords</span>}
               </div>
+              <div>
+                <span className="font-bold mb-3">Rarity: </span>
+                {card.rarity}
+              </div>
               <hr className="opacity-25" />
             </>
 
             <div className="flex gap-2">
-              <h2 className="font-bold mb-3">Rulings:</h2>
+              <h2 className="font-bold">Rulings:</h2>
               {isLoading && <div>loading...</div>}
               {!isLoading && rulings.length === 0 && <div>no rulings found</div>}
             </div>
