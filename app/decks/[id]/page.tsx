@@ -2,11 +2,12 @@
 
 import { useParams, useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { CardsGrid } from "@/app/search/CardsGrid"
 import { useDeck } from "@/app/search/DeckContext"
 import { sortCards } from "@/lib/deckUtils.client"
 import { CardDotCounter } from "../edit/CardDotCounter"
+import { CardPreviewPortal } from "../edit/CardPreviewPortal"
 import { DeckSectionHeading } from "../edit/DeckColumn"
 import { useDecksMutation } from "../useDecksMutation"
 import { useDeckQuery } from "./useDeckQuery"
@@ -36,8 +37,9 @@ function Deck() {
 
   const router = useRouter()
   const { deck: activeDeck, setDeckId } = useDeck()
-
   const { deleteDeck, isFetching: isMutationRunning } = useDecksMutation()
+
+  const [activeCard, setActiveCard] = useState<Card | null>(null)
 
   const cardsExceptChampions = useMemo(() => {
     const filtered = deck?.cards?.filter(
@@ -130,6 +132,7 @@ function Deck() {
           <CardsGrid
             data={champions}
             counters={counters}
+            onCardClick={card => setActiveCard(card)}
             cardHeaderFn={card => (
               <CardDotCounter card={card} counters={counters} visible={false} />
             )}
@@ -145,6 +148,7 @@ function Deck() {
           <CardsGrid
             data={cardsExceptChampions}
             counters={counters}
+            onCardClick={card => setActiveCard(card)}
             cardHeaderFn={card => (
               <CardDotCounter card={card} counters={counters} visible={false} />
             )}
@@ -153,6 +157,8 @@ function Deck() {
           <div className="text-center my-7 text-sm text-zinc-600/60">Empty deck</div>
         )}
       </div>
+
+      {activeCard && <CardPreviewPortal card={activeCard} onClick={() => setActiveCard(null)} />}
     </section>
   )
 }

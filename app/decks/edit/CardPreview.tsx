@@ -6,7 +6,7 @@ import { ScryRulings } from "@/app/search/ScryfallAPI"
 import { cn } from "@/lib/utils"
 import type { Card, Ruling } from "scryfall-sdk"
 
-type Props = {
+export type CardPreviewProps = {
   card: Card
   isInDeck: boolean
   showChampionButtons: boolean
@@ -14,7 +14,13 @@ type Props = {
   onClick: () => void
 }
 
-export function CardPreview({ card, isInDeck, showChampionButtons, height, onClick }: Props) {
+export function CardPreview({
+  card,
+  isInDeck,
+  showChampionButtons,
+  height,
+  onClick,
+}: CardPreviewProps) {
   const [rulings, setRulings] = useState<Ruling[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   console.log("🚀 | CardPreview | isLoading:", isLoading)
