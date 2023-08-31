@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { useDeck } from "@/app/search/DeckContext"
 import { ScryRulings } from "@/app/search/ScryfallAPI"
 import { cn } from "@/lib/utils"
+import type { KeyboardEventHandler } from "react"
 import type { Card, Ruling } from "scryfall-sdk"
 
 export type CardPreviewProps = {
@@ -48,6 +49,12 @@ export function CardPreview({
     return () => ac.abort()
   }, [card])
 
+  const handleKeyEsc: KeyboardEventHandler = e => {
+    if (e.key === "Escape") onClick()
+    console.log("🚀 | handleEsc | e:", e)
+    console.log("🚀 | handleEsc | e.key:", e.key)
+  }
+
   // ------------------------------------------------------------------
   //                         handle champions
   // ------------------------------------------------------------------
@@ -89,6 +96,9 @@ export function CardPreview({
       style={{ height }}
       onClick={onClick}
     >
+      {/* hidden input for keyboard events */}
+      <input className="absolute top-0 left-0 opacity-0 h-0" autoFocus onKeyDown={handleKeyEsc} />
+
       {showChampionButtons && (
         <div
           className="
