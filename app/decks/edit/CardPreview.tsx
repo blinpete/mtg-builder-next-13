@@ -4,17 +4,35 @@ import { useCallback, useEffect, useMemo, useState } from "react"
 import { useDeck } from "@/app/search/DeckContext"
 import { ScryRulings } from "@/app/search/ScryfallAPI"
 import { cn } from "@/lib/utils"
+import type { KeyboardEventHandler } from "react"
 import type { Card, Ruling } from "scryfall-sdk"
 
-type Props = {
+export type CardPreviewProps = {
   card: Card
   isInDeck: boolean
+  showChampionButtons: boolean
+  height: string
   onClick: () => void
 }
 
-export function CardPreview({ card, isInDeck, onClick }: Props) {
+export function CardPreview({
+  card,
+  isInDeck,
+  showChampionButtons,
+  height,
+  onClick,
+}: CardPreviewProps) {
   const [rulings, setRulings] = useState<Ruling[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  console.log("🚀 | CardPreview | isLoading:", isLoading)
+
+  useEffect(() => {
+    document.documentElement.style.overflow = "hidden"
+
+    return () => {
+      document.documentElement.style.overflow = "auto"
+    }
+  }, [])
 
   useEffect(() => {
     if (!card) return
@@ -30,6 +48,10 @@ export function CardPreview({ card, isInDeck, onClick }: Props) {
 
     return () => ac.abort()
   }, [card])
+
+  const handleKeyEsc: KeyboardEventHandler = e => {
+    if (e.key === "Escape") onClick()
+  }
 
   // ------------------------------------------------------------------
   //                         handle champions
@@ -58,58 +80,96 @@ export function CardPreview({ card, isInDeck, onClick }: Props) {
 
   return (
     <div
-      className="
-        bg-gray-600/95 backdrop-blur-0 text-gray-200
-        px-3
-        fixed top-12 bottom-0 left-64 right-0
-        cursor-pointer
-      "
+      className={cn(
+        "bg-gray-600/95 backdrop-blur-0 text-gray-200",
+        "@container/main",
+        "absolute left-0 top-0 w-full",
+        "cursor-pointer",
+        // note: scroll only for w < @3xl, after this bp we set fixed height and move scroll to the "About the card" container
+        "overflow-y-auto",
+        showChampionButtons
+          ? "[--preview-header-vh:2.4rem] [--preview-main-vh:calc(100%_-_var(--preview-header-vh))]"
+          : "[--preview-main-vh:100%]"
+      )}
+      style={{ height }}
       onClick={onClick}
     >
-      <div className="py-3 px-4 flex gap-1 justify-center text-sm">
-        <button
-          className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-          disabled={!canAddChampion}
-          onClick={e => {
-            e.stopPropagation()
-            handleAddChampion()
-          }}
-        >
-          Add to champions
-        </button>
-        <button
-          className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-          disabled={!canRemoveChampion}
-          onClick={e => {
-            e.stopPropagation()
-            handleRemoveChampion()
-          }}
-        >
-          Remove from champions
-        </button>
-      </div>
+      {/* hidden input for keyboard events */}
+      <input className="absolute top-0 left-0 opacity-0 h-0" autoFocus onKeyDown={handleKeyEsc} />
 
-      <div className="flex flex-row gap-5">
-        <div className="flex flex-col justify-center items-center flex-shrink-0">
+      {showChampionButtons && (
+        <div
+          className="
+            px-4
+            flex gap-1 justify-center items-center
+            text-sm
+            h-[var(--preview-header-vh)]
+          "
+        >
+          <button
+            className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
+            disabled={!canAddChampion}
+            onClick={e => {
+              e.stopPropagation()
+              handleAddChampion()
+            }}
+          >
+            Add to champions
+          </button>
+          <button
+            className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
+            disabled={!canRemoveChampion}
+            onClick={e => {
+              e.stopPropagation()
+              handleRemoveChampion()
+            }}
+          >
+            Remove from champions
+          </button>
+        </div>
+      )}
+
+      <div
+        className="
+          h-max flex flex-col
+          @3xl/main:flex-row
+          @3xl/main:h-[var(--preview-main-vh)]
+        "
+      >
+        {/* card image */}
+        <div
+          className="
+          flex justify-center items-center
+          flex-grow flex-shrink-0
+          px-2 py-6
+          @3xl/main:justify-end
+        "
+        >
           {card.image_uris && (
             <Image
-              className={cn("magic-card h-auto w-max")}
+              className="
+                magic-card w-max
+                h-[clamp(60vmax,28rem,90vmax)]
+                @3xl/main:h-[clamp(70vmin,28rem,90vmin)]
+              "
               src={card.image_uris?.normal || card.image_uris.png}
               height={320}
               width={240}
-              style={{
-                height: "min(90vh, 400px)",
-              }}
               alt={card.name}
             />
           )}
-
-          {/* <div>{card.flavor_text}</div> */}
-          {/* <div>rarity: {card.rarity}</div> */}
         </div>
+
+        {/* about the card */}
         <div
-          className="overflow-y-scroll my-auto flex justify-center"
-          style={{ maxHeight: "calc(100vh - 7rem)", flexGrow: 2 }}
+          className="
+            my-auto px-5
+            flex justify-center flex-grow
+            @3xl/main:max-h-full
+            @3xl/main:overflow-y-auto
+            @3xl/main:px-2
+            @3xl/main:basis-[36rem]
+          "
         >
           {/* <div className="mt-3 flex flex-col items-center gap-6">
             <div>{<ChevronDown />}</div>
@@ -118,31 +178,43 @@ export function CardPreview({ card, isInDeck, onClick }: Props) {
             </span>
           </div> */}
 
-          <div className="flex flex-col gap-3 my-10" style={{ maxWidth: "36rem" }}>
-            {card.keywords.length ? (
-              <>
-                <hr className="opacity-25" />
-                <div>
-                  <span className="font-bold mb-3">Keywords: </span>
-                  {card.keywords.map(k => (
-                    <span key={card.id + k}>{k + " "}</span>
-                  ))}
-                </div>
-                <hr className="opacity-25" />
-              </>
-            ) : null}
+          <div
+            className="
+              flex flex-col gap-3
+              h-max w-full max-w-[36rem]
+              mt-2 mb-10
+              @3xl/main:mt-10
+            "
+          >
+            {/* keywords */}
+            <>
+              <hr className="opacity-25" />
+              <div>
+                <span className="font-bold mb-3">Keywords: </span>
+                {!!card.keywords.length &&
+                  card.keywords.map(k => <span key={card.id + k}>{k + " "}</span>)}
+                {!card.keywords.length && <span>no keywords</span>}
+              </div>
+              <div>
+                <span className="font-bold mb-3">Rarity: </span>
+                {card.rarity}
+              </div>
+              <hr className="opacity-25" />
+            </>
 
-            <h2 className="font-bold mb-3">Rulings:</h2>
-            {isLoading ? (
-              <div>loading...</div>
-            ) : (
+            <div className="flex gap-2">
+              <h2 className="font-bold">Rulings:</h2>
+              {isLoading && <div>loading...</div>}
+              {!isLoading && rulings.length === 0 && <div>no rulings found</div>}
+            </div>
+            {!isLoading &&
+              !!rulings.length &&
               rulings.map((r, i) => (
                 <div key={card.id + "rule_" + i}>
                   <p>{r.comment}</p>
                   <p>({r.published_at})</p>
                 </div>
-              ))
-            )}
+              ))}
           </div>
         </div>
       </div>

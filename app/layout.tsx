@@ -14,12 +14,17 @@ export const metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn(font.className, "overscroll-none")}>
+      <body
+        className={cn(
+          font.className,
+          "[--layout-header-vh:3rem] [--layout-main-vh:calc(100dvh_-_var(--layout-header-vh))]"
+        )}
+      >
         {/* header */}
         <div
           className="
           w-full
-          flex justify-center h-12 items-center
+          flex justify-center h-[--layout-header-vh] items-center
           bg-gradient-to-b from-zinc-900/95 to-zinc-800/95
           text-zinc-200
           "
@@ -27,9 +32,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Navbar />
         </div>
 
-        <main className="flex flex-col items-center" style={{ minHeight: "calc(100vh - 3rem)" }}>
+        <main className="flex flex-col items-center min-h-[--layout-main-vh]">
           <Providers>{children}</Providers>
         </main>
+
+        <div id="portal-root" className="fixed top-0 left-0 w-full h-0 z-10"></div>
       </body>
     </html>
   )

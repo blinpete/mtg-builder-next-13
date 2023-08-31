@@ -1,6 +1,10 @@
+"use client"
+
+import { useState } from "react"
+import { CardPreviewPortal } from "../decks/edit/CardPreviewPortal"
 import { SearchInput } from "./SearchInput"
 import { SearchOutput } from "./SearchOutput"
-import type { SearchOptions } from "scryfall-sdk"
+import type { Card, SearchOptions } from "scryfall-sdk"
 
 /**
  * #### Scryfall routes
@@ -21,18 +25,30 @@ import type { SearchOptions } from "scryfall-sdk"
  * #### formats
  * https://magic.wizards.com/en/formats
  */
-export default async function Search(props: {
+export default function Search(props: {
   searchParams?: {
     q?: string
   } & SearchOptions
 }) {
+  const [activeCard, setActiveCard] = useState<Card | null>(null)
+
   return (
     <>
       <SearchInput />
-      {/* <Suspense fallback={<div>Loading...</div>}>
-      </Suspense> */}
+
       {props.searchParams?.q ? (
-        <SearchOutput query={props.searchParams.q} options={props.searchParams} />
+        <>
+          <SearchOutput
+            query={props.searchParams.q}
+            options={props.searchParams}
+            onCardClick={card => setActiveCard(card)}
+          />
+
+          {/* https://react.dev/reference/react-dom/createPortal */}
+          {activeCard && (
+            <CardPreviewPortal card={activeCard} onClick={() => setActiveCard(null)} />
+          )}
+        </>
       ) : (
         <div>Empty query</div>
       )}

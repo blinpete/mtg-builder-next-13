@@ -38,12 +38,9 @@ export default function DeckPage() {
   return (
     <section
       className="
-        border-0 border-red-500
         flex-auto flex flex-row w-full
+        max-h-[--layout-main-vh]
       "
-      style={{
-        maxHeight: "calc(100vh - 3rem)",
-      }}
     >
       {/* sidebar */}
       <article
@@ -89,52 +86,56 @@ export default function DeckPage() {
       </article>
 
       {/* Search -> Card Grid */}
-      <article
-        className="flex-auto flex items-center flex-col overflow-y-auto"
-        style={{
-          fontSize: "0.92em",
-        }}
-      >
-        <SearchForm
-          query=""
-          onSubmit={e => {
-            e.preventDefault()
-            const target = e.target as unknown as { search: HTMLInputElement }
-            const q = target?.search?.value
-            if (!q) return
-
-            setQuery(q.replaceAll(" ", "+"))
+      <div className="relative w-full border-0 border-red-500 box-border">
+        <article
+          className="flex-auto flex items-center flex-col overflow-y-auto h-full"
+          style={{
+            fontSize: "0.92em",
           }}
-        />
+        >
+          <SearchForm
+            query=""
+            onSubmit={e => {
+              e.preventDefault()
+              const target = e.target as unknown as { search: HTMLInputElement }
+              const q = target?.search?.value
+              if (!q) return
 
-        {query ? (
-          <SearchOutput
-            query={query}
-            counters={counters}
-            onCardClick={card => setActiveCard(card)}
-            cardHeaderFn={(card, counters, visible) => (
-              <CardDotCounter
-                card={card}
-                counters={counters}
-                addCard={deck.addCard}
-                removeCard={deck.removeCard}
-                visible={visible}
-              />
-            )}
+              setQuery(q.replaceAll(" ", "+"))
+            }}
           />
-        ) : (
-          <div>Empty query</div>
-        )}
 
-        {/* overlay */}
-        {activeCard && (
-          <CardPreview
-            isInDeck={isActiveCardInDeck}
-            card={activeCard}
-            onClick={() => setActiveCard(null)}
-          />
-        )}
-      </article>
+          {query ? (
+            <SearchOutput
+              query={query}
+              counters={counters}
+              onCardClick={card => setActiveCard(card)}
+              cardHeaderFn={(card, counters, visible) => (
+                <CardDotCounter
+                  card={card}
+                  counters={counters}
+                  addCard={deck.addCard}
+                  removeCard={deck.removeCard}
+                  visible={visible}
+                />
+              )}
+            />
+          ) : (
+            <div>Empty query</div>
+          )}
+
+          {/* overlay */}
+          {activeCard && (
+            <CardPreview
+              showChampionButtons={true}
+              height="var(--layout-main-vh)"
+              isInDeck={isActiveCardInDeck}
+              card={activeCard}
+              onClick={() => setActiveCard(null)}
+            />
+          )}
+        </article>
+      </div>
     </section>
   )
 }
