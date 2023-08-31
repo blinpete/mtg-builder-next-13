@@ -51,8 +51,6 @@ export function CardPreview({
 
   const handleKeyEsc: KeyboardEventHandler = e => {
     if (e.key === "Escape") onClick()
-    console.log("🚀 | handleEsc | e:", e)
-    console.log("🚀 | handleEsc | e.key:", e.key)
   }
 
   // ------------------------------------------------------------------
