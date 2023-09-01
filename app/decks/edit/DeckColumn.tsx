@@ -62,7 +62,7 @@ export function DeckColumn({
       <ul
         className="
         mx-1 mt-4 mb-2 list-none
-        grid gap-y-1 grid-cols-1
+        grid gap-y-1 grid-cols-1 place-items-center
       "
       >
         {deck.champions.map(({ id }, i) => {
@@ -88,8 +88,8 @@ export function DeckColumn({
       <DeckSectionHeading title="Deck" />
       <ul
         className="
-        mx-1 mt-4 mb-2 list-none
-        grid gap-y-1 grid-cols-1
+        mx-1 mt-4 mb-6 list-none
+        grid gap-y-1 grid-cols-1 place-items-center
       "
       >
         {cardsSorted.map(({ card, count }, i) => (
