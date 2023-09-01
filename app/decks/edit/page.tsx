@@ -36,7 +36,7 @@ export default function DeckPage() {
   // if (!deck?.cards.length) return <div>Empty deck</div>
 
   return (
-    <div className="w-full overflow-x-scroll">
+    <div className="w-full overflow-x-scroll snap-x snap-mandatory">
       <section
         className="
           flex-auto flex flex-row
@@ -51,6 +51,7 @@ export default function DeckPage() {
             bg-gray-400/40
             basis-[--layout-sidebar-w] flex-grow-0 flex-shrink-0
             overflow-y-auto
+            snap-start
           "
         >
           <div className="p-2">
@@ -90,7 +91,7 @@ export default function DeckPage() {
         </article>
 
         {/* Search -> Card Grid */}
-        <div className="relative w-full border-0 border-red-500 box-border">
+        <div className="relative w-full border-0 border-red-500 box-border snap-start">
           <article
             className="flex-auto flex items-center flex-col overflow-y-auto h-full"
             style={{
