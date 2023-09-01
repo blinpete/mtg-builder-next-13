@@ -18,8 +18,13 @@ type Props = CardsGridProps & {
   ) => JSX.Element
 }
 
+function checkIfTouchScreen() {
+  return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+}
+
 export function CardsGrid(props: Props) {
   const [hovered, setHovered] = useState<string | null>(null)
+  const isTouchScreen = checkIfTouchScreen()
 
   return (
     <div className="@container/main w-full">
@@ -55,7 +60,8 @@ export function CardsGrid(props: Props) {
             onMouseLeave={() => setHovered(null)}
           >
             {/* header */}
-            {props.cardHeaderFn && props.cardHeaderFn(card, props.counters, hovered === card.id)}
+            {props.cardHeaderFn &&
+              props.cardHeaderFn(card, props.counters, isTouchScreen || hovered === card.id)}
 
             {/* card */}
             {card.image_uris && (
