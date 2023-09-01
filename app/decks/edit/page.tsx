@@ -66,9 +66,7 @@ export default function DeckPage() {
             </div>
 
             <div className="flex gap-1 mt-1 justify-center px-1">
-              <div className="text-xs text-right px-0.5 mr-auto">
-                {deck?.cards.reduce((acc, x) => acc + x.count, 0)} cards
-              </div>
+              <div className="text-xs text-right px-0.5 mr-auto">{deck.cardsCount} cards</div>
 
               <button
                 className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"

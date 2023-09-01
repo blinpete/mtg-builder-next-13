@@ -182,10 +182,13 @@ export function DeckProvider({ children }: PropsWithChildren) {
   const deck = useMemo(() => {
     if (!deckServer) return null
 
+    const cardsCount = cards.reduce((acc, x) => acc + x.count, 0)
+
     const deck: DeckLocal = {
       ...(deckServer || {}),
       name: name,
 
+      cardsCount,
       cards,
       addCard,
       removeCard,

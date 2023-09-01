@@ -11,7 +11,13 @@ import { CardPreviewPortal } from "../edit/CardPreviewPortal"
 import { DeckSectionHeading } from "../edit/DeckColumn"
 import { useDecksMutation } from "../useDecksMutation"
 import { useDeckQuery } from "./useDeckQuery"
+import type { CardEntry } from "@/types/decks"
 import type { Card } from "scryfall-sdk"
+
+function countCards(cards?: CardEntry[]) {
+  if (!cards) return 0
+  return cards.reduce((acc, x) => acc + x.count, 0)
+}
 
 export default function DeckPage() {
   const { status } = useSession()
@@ -105,7 +111,7 @@ function Deck() {
           <div className="text-slate-700 flex flex-col items-center">
             <div className="font-semibold text-lg">{deck.name}</div>
             <p className="text-sm">
-              cards: {deck.cards.length}/60 deck + {deck?.sideboard?.length}/15 sideboard
+              cards: {countCards(deck.cards)}/60 deck + {countCards(deck?.sideboard)}/15 sideboard
             </p>
             <p className="text-sm">
               Created at:{" "}
