@@ -11,15 +11,15 @@ const nextConfig = {
     // typedRoutes: true,
   },
 
-  webpack: (config, options) => {
-    config.devServer = {
-      port: 3000,
-      host: "0.0.0.0",
-    }
+  // webpack: (config, options) => {
+  //   config.devServer = {
+  //     port: 3000,
+  //     host: "0.0.0.0",
+  //   }
 
-    config.plugins = [...(config.plugins || []), new WebpackQRCodePlugin({ size: "small" })]
-    return config
-  },
+  //   config.plugins = [...(config.plugins || []), new WebpackQRCodePlugin({ size: "small" })]
+  //   return config
+  // },
 }
 
 module.exports = nextConfig
