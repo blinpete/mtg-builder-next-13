@@ -19,7 +19,15 @@ type Props = CardsGridProps & {
 }
 
 function checkIfTouchScreen() {
-  return "ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0
+  // https://stackoverflow.com/questions/55833326/wrong-maxtouchpoints-and-ontouchstart-in-document-in-chrome-mobile-emulati
+  // https://stackoverflow.com/questions/4817029/whats-the-best-way-to-detect-a-touch-screen-device-using-javascript
+
+  return (
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    // @ts-expect-error
+    navigator.msMaxTouchPoints > 0
+  )
 }
 
 export function CardsGrid(props: Props) {
