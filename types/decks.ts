@@ -47,6 +47,7 @@ export type DeckLoadedToRecord = DiffProps<DeckRecordLoaded, DeckRecord>
 export type DeckRecordToLoaded = DiffProps<DeckRecord, DeckRecordLoaded>
 
 export type DeckLocal = DeckRecordLoaded & {
+  cardsCount: number
   hasChanged: boolean
   has: (id: string) => boolean
 

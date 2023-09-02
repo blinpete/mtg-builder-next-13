@@ -95,7 +95,12 @@ export function CardPreview({
       onClick={onClick}
     >
       {/* hidden input for keyboard events */}
-      <input className="absolute top-0 left-0 opacity-0 h-0" autoFocus onKeyDown={handleKeyEsc} />
+      <input
+        className="absolute top-0 left-0 opacity-0 h-0"
+        readOnly // prevents mobile keyboard from showing up
+        autoFocus
+        onKeyDown={handleKeyEsc}
+      />
 
       {showChampionButtons && (
         <div

@@ -18,8 +18,21 @@ type Props = CardsGridProps & {
   ) => JSX.Element
 }
 
+function checkIfTouchScreen() {
+  // https://stackoverflow.com/questions/55833326/wrong-maxtouchpoints-and-ontouchstart-in-document-in-chrome-mobile-emulati
+  // https://stackoverflow.com/questions/4817029/whats-the-best-way-to-detect-a-touch-screen-device-using-javascript
+
+  return (
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    // @ts-expect-error
+    navigator.msMaxTouchPoints > 0
+  )
+}
+
 export function CardsGrid(props: Props) {
   const [hovered, setHovered] = useState<string | null>(null)
+  const isTouchScreen = checkIfTouchScreen()
 
   return (
     <div className="@container/main w-full">
@@ -55,7 +68,8 @@ export function CardsGrid(props: Props) {
             onMouseLeave={() => setHovered(null)}
           >
             {/* header */}
-            {props.cardHeaderFn && props.cardHeaderFn(card, props.counters, hovered === card.id)}
+            {props.cardHeaderFn &&
+              props.cardHeaderFn(card, props.counters, isTouchScreen || hovered === card.id)}
 
             {/* card */}
             {card.image_uris && (

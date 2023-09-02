@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "tscheck": "tsc --pretty --noEmit",
     "start": "next start",
     "dbgen": "prisma generate",
     "dbpush": "prisma db push",
@@ -50,6 +51,7 @@
     "@typescript-eslint/eslint-plugin": "^5.60.0",
     "eslint-config-prettier": "^8.8.0",
     "prettier": "^2.8.8",
-    "prisma": "^4.16.0"
+    "prisma": "^4.16.0",
+    "webpack-dev-server-qr-code": "^1.2.0"
   }
 }

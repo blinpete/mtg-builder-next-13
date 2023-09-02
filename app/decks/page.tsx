@@ -68,18 +68,18 @@ export default function DeckPage() {
   return (
     <section>
       <ul
-        className="flex flex-wrap justify-evenly my-4 mx-3"
+        className="flex flex-wrap justify-evenly my-4 mx-3 [--li-pad:0.25rem]"
         style={{
           maxWidth: "42rem",
-          marginRight: "10vw",
-          marginLeft: "10vw",
+          marginRight: "8vw",
+          marginLeft: "8vw",
         }}
       >
         <li key="decks_new" className="cursor-pointer hover:opacity-70">
           <button
             disabled={isMutationRunning}
             onClick={handleAddDeck}
-            className="flex items-center p-2 disabled:opacity-70"
+            className="flex items-center p-[--li-pad] disabled:opacity-70"
           >
             <div
               className="flex items-center justify-center
@@ -96,7 +96,10 @@ export default function DeckPage() {
         {decks &&
           decks.map(d => (
             <li key={"decks_" + d.id} className="cursor-pointer hover:opacity-90">
-              <Link href={pathname + "/" + d.id} className="flex flex-col items-center p-2 w-min">
+              <Link
+                href={pathname + "/" + d.id}
+                className="flex flex-col items-center p-[--li-pad] w-min"
+              >
                 <DeckCover deck={d} />
 
                 {/* @ts-expect-error: textWrap is a new CSS prop */}

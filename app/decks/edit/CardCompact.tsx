@@ -12,7 +12,7 @@ type Props = {
 
 export function CardCompact({ card, onClick, slotControls, slotLeftCorner }: Props) {
   return (
-    <li className="relative" onClick={onClick}>
+    <li className="relative max-w-xs min-w-[90%]" onClick={onClick}>
       {slotLeftCorner !== undefined && (
         <div
           className="
@@ -27,7 +27,7 @@ export function CardCompact({ card, onClick, slotControls, slotLeftCorner }: Pro
         </div>
       )}
       <div
-        className="h-11 overflow-hidden w-max"
+        className="overflow-hidden w-full aspect-[100/18]"
         style={{
           borderBottom: "solid 0.6rem black",
           borderRadius: "0.6rem",
