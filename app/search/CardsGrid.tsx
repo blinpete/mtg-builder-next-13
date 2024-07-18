@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { useState } from "react"
-import { cn } from "@/lib/utils"
+import { cn } from "@shared/lib/utils"
 import type { Scry } from "./ScryfallAPI"
 
 export type CardsGridProps = {

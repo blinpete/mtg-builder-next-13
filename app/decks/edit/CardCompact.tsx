@@ -1,5 +1,5 @@
 import Image from "next/image"
-import { cn } from "@/lib/utils"
+import { cn } from "@shared/lib/utils"
 import type { PropsWithChildren } from "react"
 import type { Card } from "scryfall-sdk"
 

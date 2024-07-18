@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useCallback, useEffect, useMemo, useState } from "react"
 import { useDeck } from "@/app/search/DeckContext"
 import { ScryRulings } from "@/app/search/ScryfallAPI"
-import { cn } from "@/lib/utils"
+import { cn } from "@shared/lib/utils"
 import type { KeyboardEventHandler } from "react"
 import type { Card, Ruling } from "scryfall-sdk"
 

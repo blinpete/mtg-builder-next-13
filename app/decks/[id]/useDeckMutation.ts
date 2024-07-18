@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react"
 import { useQueryClient } from "react-query"
-import { deckLoadedToRecord } from "@/lib/deckUtils.client"
+import { deckLoadedToRecord } from "@shared/lib/deckUtils.client"
 import type { DeckContextType } from "@/app/search/DeckContext"
 import type { DeckLocal, DeckRecord, DeckRecordLoaded } from "@shared/types/decks"
 

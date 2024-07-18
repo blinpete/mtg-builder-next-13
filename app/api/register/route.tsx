@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt"
 import { NextResponse } from "next/server"
-import { prisma } from "@/lib/prismadb"
+import { prisma } from "@shared/lib/prismadb"
 import { NextErrorResponse } from "@shared/types/errors"
 import type { RegisterRequest } from "@shared/types/auth"
 

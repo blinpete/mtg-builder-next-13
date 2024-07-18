@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { sortCards } from "@/lib/deckUtils.client"
+import { sortCards } from "@shared/lib/deckUtils.client"
 import { CardCompact, CardCompactButton } from "./CardCompact"
 import type { SetActiveCardAction } from "./page"
 import type { DeckLocal } from "@shared/types/decks"
