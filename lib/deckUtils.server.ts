@@ -1,5 +1,11 @@
 import type { Scry, ScrySearchError, ScrySearchResponse } from "@/app/search/ScryfallAPI"
-import type { CardEntry, CardRecord, DbDeck, DeckRecord, DeckRecordToLoaded } from "@/types/decks"
+import type {
+  CardEntry,
+  CardRecord,
+  DbDeck,
+  DeckRecord,
+  DeckRecordToLoaded,
+} from "@shared/types/decks"
 
 export const deckUtilsServer = {
   // serialize(deck: Omit<DeckRecord, "id" | 'createdAt'>): Omit<DbDeck, "id" | "createdAt">

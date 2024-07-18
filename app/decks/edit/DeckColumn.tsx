@@ -2,7 +2,7 @@ import { useMemo } from "react"
 import { sortCards } from "@/lib/deckUtils.client"
 import { CardCompact, CardCompactButton } from "./CardCompact"
 import type { SetActiveCardAction } from "./page"
-import type { DeckLocal } from "@/types/decks"
+import type { DeckLocal } from "@shared/types/decks"
 import type { Card } from "scryfall-sdk"
 
 export function DeckSectionHeading({ title }: { title: string }) {

@@ -2,8 +2,8 @@ import { NextResponse } from "next/server"
 import { deckRecordToLoaded, deckUtilsServer } from "@/lib/deckUtils.server"
 import { prisma } from "@/lib/prismadb"
 import { getDecodedJWT } from "@/lib/utilsJWT"
-import { NextErrorResponse } from "@/types/errors"
-import type { DeckRecordLoaded } from "@/types/decks"
+import { NextErrorResponse } from "@shared/types/errors"
+import type { DeckRecordLoaded } from "@shared/types/decks"
 import type { NextRequest } from "next/server"
 
 export async function GET(request: NextRequest) {

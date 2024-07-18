@@ -4,7 +4,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState } 
 import { useDeckMutation } from "../decks/[id]/useDeckMutation"
 import { useDeckQuery } from "../decks/[id]/useDeckQuery"
 import { useEffectEventCustom } from "./useEffectEventCustom"
-import type { CardEntry, DeckLocal, DeckRecord } from "@/types/decks"
+import type { CardEntry, DeckLocal, DeckRecord } from "@shared/types/decks"
 import type { PropsWithChildren } from "react"
 import type { Card } from "scryfall-sdk"
 

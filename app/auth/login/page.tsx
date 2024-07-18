@@ -3,7 +3,7 @@
 import { signIn } from "next-auth/react"
 import { useState } from "react"
 import { toast } from "react-hot-toast"
-import type { LoginData } from "@/types/auth"
+import type { LoginData } from "@shared/types/auth"
 
 export default function Login() {
   const [data, setData] = useState<LoginData>({

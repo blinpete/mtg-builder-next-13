@@ -8,7 +8,7 @@ import { useQuery } from "react-query"
 import { useDeck } from "../search/DeckContext"
 import { DeckCover } from "./DeckCover"
 import { useDecksMutation } from "./useDecksMutation"
-import type { DeckRecord } from "@/types/decks"
+import type { DeckRecord } from "@shared/types/decks"
 
 export default function DeckPage() {
   const {

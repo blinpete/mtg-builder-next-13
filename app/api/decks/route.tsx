@@ -2,8 +2,8 @@ import { NextResponse } from "next/server"
 import { deckUtilsServer } from "@/lib/deckUtils.server"
 import { prisma } from "@/lib/prismadb"
 import { getDecodedJWT } from "@/lib/utilsJWT"
-import { NextErrorResponse } from "@/types/errors"
-import type { UpdateDeckRequest } from "@/types/decks"
+import { NextErrorResponse } from "@shared/types/errors"
+import type { UpdateDeckRequest } from "@shared/types/decks"
 import type { NextRequest } from "next/server"
 
 /**

@@ -11,7 +11,7 @@ import { CardPreviewPortal } from "../edit/CardPreviewPortal"
 import { DeckSectionHeading } from "../edit/DeckColumn"
 import { useDecksMutation } from "../useDecksMutation"
 import { useDeckQuery } from "./useDeckQuery"
-import type { CardEntry } from "@/types/decks"
+import type { CardEntry } from "@shared/types/decks"
 import type { Card } from "scryfall-sdk"
 
 function countCards(cards?: CardEntry[]) {

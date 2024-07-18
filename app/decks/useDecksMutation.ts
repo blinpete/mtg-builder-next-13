@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react"
 import { useQueryClient } from "react-query"
-import type { DeckRecord } from "@/types/decks"
-import type { ErrorJSON } from "@/types/errors"
+import type { DeckRecord } from "@shared/types/decks"
+import type { ErrorJSON } from "@shared/types/errors"
 
 async function addDeck() {
   const response = await fetch("/api/decks", {

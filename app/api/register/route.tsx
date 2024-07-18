@@ -1,8 +1,8 @@
 import bcrypt from "bcrypt"
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prismadb"
-import { NextErrorResponse } from "@/types/errors"
-import type { RegisterRequest } from "@/types/auth"
+import { NextErrorResponse } from "@shared/types/errors"
+import type { RegisterRequest } from "@shared/types/auth"
 
 export async function POST(request: RegisterRequest) {
   const { name, email, password } = await request.json()

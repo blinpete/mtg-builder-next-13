@@ -2,8 +2,8 @@
 
 import { useState } from "react"
 import { toast } from "react-hot-toast"
-import type { RegisterData } from "@/types/auth"
-import type { ErrorJSON } from "@/types/errors"
+import type { RegisterData } from "@shared/types/auth"
+import type { ErrorJSON } from "@shared/types/errors"
 
 export default function Register() {
   const [data, setData] = useState<RegisterData>({

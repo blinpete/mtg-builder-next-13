@@ -4,7 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
 import { prisma } from "@/lib/prismadb"
-import type { LoginData } from "@/types/auth"
+import type { LoginData } from "@shared/types/auth"
 import type { AuthOptions, User } from "next-auth"
 
 export const authOptions: AuthOptions = {
