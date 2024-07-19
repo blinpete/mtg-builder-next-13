@@ -1,8 +1,7 @@
 // https://react.dev/learn/scaling-up-with-reducer-and-context
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
-import { useDeckMutation } from "../decks/[id]/useDeckMutation"
-import { useDeckQuery } from "../decks/[id]/useDeckQuery"
+import { useDeckMutation, useDeckQuery } from "@entities/deck"
 import { useEffectEventCustom } from "./useEffectEventCustom"
 import type { CardEntry, DeckLocal, DeckRecord } from "@shared/types/decks"
 import type { PropsWithChildren } from "react"

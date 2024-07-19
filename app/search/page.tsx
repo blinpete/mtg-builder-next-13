@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { CardPreviewPortal } from "../decks/edit/CardPreviewPortal"
+import { CardPreviewPortal } from "@entities/card"
 import { SearchInput } from "./SearchInput"
 import { SearchOutput } from "./SearchOutput"
 import type { Card, SearchOptions } from "scryfall-sdk"

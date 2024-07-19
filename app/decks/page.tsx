@@ -6,8 +6,8 @@ import { useSession } from "next-auth/react"
 import toast from "react-hot-toast"
 import { useQuery } from "react-query"
 import { useDeck } from "../search/DeckContext"
-import { DeckCover } from "./DeckCover"
-import { useDecksMutation } from "./useDecksMutation"
+import { DeckCover } from "@entities/deck"
+import { useDecksMutation } from "@entities/deck"
 import type { DeckRecord } from "@shared/types/decks"
 
 export default function DeckPage() {
