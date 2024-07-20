@@ -1,7 +1,7 @@
 import { useMemo } from "react"
-import { sortCards } from "@shared/lib/deckUtils.client"
 import { CardCompact, CardCompactButton } from "@entities/card"
-import type { SetActiveCardAction } from "./page"
+import { sortCards } from "@shared/lib/deckUtils.client"
+import type { SetActiveCardAction } from "@entities/deck"
 import type { DeckLocal } from "@shared/types/decks"
 import type { Card } from "scryfall-sdk"
 

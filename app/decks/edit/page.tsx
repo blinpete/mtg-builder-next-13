@@ -6,11 +6,8 @@ import { Input } from "@/app/search/Input"
 import { SearchForm } from "@/app/search/SearchForm"
 import { SearchOutput } from "@/app/search/SearchOutput"
 import { CardDotCounter, CardPreview } from "@entities/card"
-import { DeckColumn } from "./DeckColumn"
-import type { Dispatch, SetStateAction } from "react"
+import { DeckColumn } from "@features/DeckColumn"
 import type { Card } from "scryfall-sdk"
-
-export type SetActiveCardAction = Dispatch<SetStateAction<Card | null>>
 
 export default function DeckPage() {
   const { deck, saveDeck, setName, isSaving, dropChanges } = useDeck()
