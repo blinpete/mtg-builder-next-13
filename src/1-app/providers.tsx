@@ -3,8 +3,8 @@
 import { ThemeProvider } from "next-themes"
 import { type PropsWithChildren } from "react"
 import { QueryClient, QueryClientProvider } from "react-query"
+import { DeckProvider } from "@entities/deck"
 import { AuthProvider } from "../../app/auth/contexts/AuthProvider"
-import { DeckProvider } from "../../app/search/DeckContext"
 
 const queryClient = new QueryClient({
   defaultOptions: {

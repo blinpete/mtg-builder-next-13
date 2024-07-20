@@ -2,7 +2,7 @@
 
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
 import { useDeckMutation, useDeckQuery } from "@entities/deck"
-import { useEffectEventCustom } from "./useEffectEventCustom"
+import { useEffectEventCustom } from "../../../../app/search/useEffectEventCustom"
 import type { CardEntry, DeckLocal, DeckRecord } from "@shared/types/decks"
 import type { PropsWithChildren } from "react"
 import type { Card } from "scryfall-sdk"

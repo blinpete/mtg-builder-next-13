@@ -1,11 +1,11 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { useDeck } from "@/app/search/DeckContext"
 import { Input } from "@/app/search/Input"
 import { SearchForm } from "@/app/search/SearchForm"
 import { SearchOutput } from "@/app/search/SearchOutput"
 import { CardDotCounter, CardPreview } from "@entities/card"
+import { useDeck } from "@entities/deck"
 import { DeckColumn } from "@features/DeckColumn"
 import type { Card } from "scryfall-sdk"
 
