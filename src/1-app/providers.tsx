@@ -4,7 +4,7 @@ import { ThemeProvider } from "next-themes"
 import { type PropsWithChildren } from "react"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { DeckProvider } from "@entities/deck"
-import { AuthProvider } from "../../app/auth/contexts/AuthProvider"
+import { AuthProvider } from "@shared/auth"
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,4 +1,4 @@
-import { ToasterContext } from "./contexts/ToasterContext"
+import { ToasterContext } from "@shared/lib/ToasterContext"
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
