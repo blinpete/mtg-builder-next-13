@@ -1,12 +1,12 @@
 "use client"
 
 import { useMemo, useState } from "react"
-import { Input } from "@/app/search/Input"
-import { SearchForm } from "@/app/search/SearchForm"
-import { SearchOutput } from "@/app/search/SearchOutput"
 import { CardDotCounter, CardPreview } from "@entities/card"
 import { useDeck } from "@entities/deck"
 import { DeckColumn } from "@features/DeckColumn"
+import { SearchForm } from "@features/Search"
+import { Input } from "@shared/ui"
+import { SearchOutput } from "@/app/search"
 import type { Card } from "scryfall-sdk"
 
 export function DeckEditPage() {

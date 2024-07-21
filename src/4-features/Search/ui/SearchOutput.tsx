@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from "react"
 import { useInfiniteQuery } from "react-query"
 import { CardsGrid, type CardsGridProps } from "@entities/card-collection"
-import { Pagination } from "./Pagination"
-import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } from "./ScryfallAPI"
+import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } from "@shared/api"
+import { Pagination } from "@shared/ui"
 
 const wrap = (children: JSX.Element) => <div className="mx-6 my-6">{children}</div>
 
