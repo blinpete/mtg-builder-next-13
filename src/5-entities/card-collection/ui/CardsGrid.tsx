@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { useState } from "react"
 import { cn } from "@shared/lib/utils"
-import type { Scry } from "./ScryfallAPI"
+import type { Scry } from "../../../../app/search/ScryfallAPI"
 
 export type CardsGridProps = {
   counters?: Record<string, number>
