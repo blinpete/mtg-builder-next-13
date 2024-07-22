@@ -1,5 +1,5 @@
-import type { Scry } from "@/app/search/ScryfallAPI"
 import type { Prisma } from "@prisma/client"
+import type { Scry } from "@shared/api"
 import type { NextRequest } from "next/server"
 
 export type CreateDeckData = {

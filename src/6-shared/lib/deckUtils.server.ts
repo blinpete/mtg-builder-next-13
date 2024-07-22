@@ -1,4 +1,4 @@
-import type { Scry, ScrySearchError, ScrySearchResponse } from "@/app/search/ScryfallAPI"
+import type { Scry, ScrySearchError, ScrySearchResponse } from "@shared/api"
 import type {
   CardEntry,
   CardRecord,

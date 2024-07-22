@@ -1,5 +1,5 @@
 import { cn } from "@shared/lib/utils"
-import type { Scry } from "@/app/search/ScryfallAPI"
+import type { Scry } from "@shared/api"
 
 type Props = {
   card: Scry.Card

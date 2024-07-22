@@ -5,8 +5,8 @@ import { CardDotCounter, CardPreview } from "@entities/card"
 import { useDeck } from "@entities/deck"
 import { DeckColumn } from "@features/DeckColumn"
 import { SearchForm } from "@features/Search"
+import { SearchOutput } from "@features/Search"
 import { Input } from "@shared/ui"
-import { SearchOutput } from "@/app/search"
 import type { Card } from "scryfall-sdk"
 
 export function DeckEditPage() {
