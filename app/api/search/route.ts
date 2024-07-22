@@ -22,7 +22,7 @@ export async function GET(request: Request) {
   return NextResponse.json({ data })
 }
 
-export type SearchResponse = {
-  data: Scry.Card[] | null
-  error?: string
-}
+// export type SearchResponse = {
+//   data: Scry.Card[] | null
+//   error?: string
+// }
