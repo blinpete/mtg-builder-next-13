@@ -10,6 +10,7 @@
     "dbgen": "prisma generate",
     "dbpush": "prisma db push",
     "dbseed": "prisma db seed",
+    "dbmigrate": "prisma migrate dev",
     "fmt": "prettier . '!pnpm-lock.yaml' --write --ignore-path .gitignore",
     "lint": "next lint"
   },
