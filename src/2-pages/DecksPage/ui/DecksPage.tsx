@@ -7,7 +7,7 @@ import toast from "react-hot-toast"
 import { useQuery } from "react-query"
 import { DeckCover, useDeck } from "@entities/deck"
 import { useDecksMutation } from "@entities/deck"
-import type { DeckRecord } from "@shared/types/decks"
+import type { DeckRecord } from "@shared/types"
 
 export function DecksPage() {
   const {

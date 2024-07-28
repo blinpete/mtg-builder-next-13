@@ -2,7 +2,7 @@ import { useCallback, useState } from "react"
 import { useQueryClient } from "react-query"
 import { deckLoadedToRecord } from "@shared/lib/deckUtils.client"
 import type { DeckContextType } from "@entities/deck"
-import type { DeckLocal, DeckRecord, DeckRecordLoaded } from "@shared/types/decks"
+import type { DeckLocal, DeckRecord, DeckRecordLoaded } from "@shared/types"
 
 async function saveDeck(deck: DeckLocal) {
   const deckRecord: DeckRecord = {
