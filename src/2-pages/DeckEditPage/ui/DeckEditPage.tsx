@@ -32,13 +32,13 @@ export function DeckEditPage() {
   // if (!deck?.cards.length) return <div>Empty deck</div>
 
   return (
-    <div className="w-full overflow-x-scroll snap-x snap-mandatory">
+    <div className="flex-grow w-full overflow-x-scroll snap-x snap-mandatory">
       <section
         className="
           flex-auto flex flex-row
           w-[200vw] sm:w-full
           [--layout-sidebar-w:100vw] sm:[--layout-sidebar-w:16rem]
-          max-h-[--layout-main-vh]
+          max-h-[--layout-main-vh] min-h-[--layout-main-vh]
         "
       >
         {/* sidebar */}
