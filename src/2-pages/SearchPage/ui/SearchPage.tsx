@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { CardPreviewPortal } from "@entities/card"
 import { SearchInput, SearchOutput } from "@features/Search"
+import { LayoutMain } from "@widgets/LayoutMain"
 import type { Card, SearchOptions } from "scryfall-sdk"
 
 /**
@@ -32,7 +33,7 @@ export function SearchPage(props: {
   const [activeCard, setActiveCard] = useState<Card | null>(null)
 
   return (
-    <>
+    <LayoutMain>
       <SearchInput />
 
       {props.searchParams?.q ? (
@@ -51,6 +52,6 @@ export function SearchPage(props: {
       ) : (
         <div>Empty query</div>
       )}
-    </>
+    </LayoutMain>
   )
 }

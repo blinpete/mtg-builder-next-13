@@ -1,6 +1,7 @@
 import Link from "next/link"
 import * as Scry from "scryfall-sdk"
 import { GenericTable } from "@entities/set"
+import { LayoutMain } from "@widgets/LayoutMain"
 
 // https://ui.shadcn.com/docs/components/data-table
 
@@ -10,7 +11,7 @@ export default async function Sets() {
   data.length = 20
 
   return (
-    <>
+    <LayoutMain>
       <GenericTable
         rows={data}
         getId={item => item.id}
@@ -46,6 +47,6 @@ export default async function Sets() {
           },
         ]}
       />
-    </>
+    </LayoutMain>
   )
 }

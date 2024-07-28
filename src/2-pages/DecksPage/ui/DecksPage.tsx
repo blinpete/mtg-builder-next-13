@@ -7,9 +7,18 @@ import toast from "react-hot-toast"
 import { useQuery } from "react-query"
 import { DeckCover, useDeck } from "@entities/deck"
 import { useDecksMutation } from "@entities/deck"
+import { LayoutMain } from "@widgets/LayoutMain"
 import type { DeckRecord } from "@shared/types"
 
 export function DecksPage() {
+  return (
+    <LayoutMain>
+      <Page />
+    </LayoutMain>
+  )
+}
+
+function Page() {
   const {
     data: decks,
     isFetching,

@@ -2,11 +2,13 @@
 // import User from "@/components/User"
 // import { authOptions } from "./api/auth/[...nextauth]/route"
 
+import { LayoutMain } from "@widgets/LayoutMain"
+
 export async function HomePage() {
   // const session = await getServerSession(authOptions)
 
   return (
-    <div
+    <LayoutMain
       className="flex-grow flex flex-col justify-center text-center bg-clip-text"
       style={{
         opacity: 0.75,
@@ -27,6 +29,6 @@ export async function HomePage() {
       <a href="/auth/protected" className="text-blue-400 hover:opacity-50 transition">
         Auth protected page
       </a> */}
-    </div>
+    </LayoutMain>
   )
 }

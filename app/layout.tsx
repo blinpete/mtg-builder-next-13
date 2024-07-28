@@ -2,7 +2,7 @@ import "@app/globals.css"
 import { Inter } from "next/font/google"
 import { Providers } from "@app/providers"
 import { cn } from "@shared/lib/utils"
-import { Navbar } from "@shared/ui/navbar"
+import { Header } from "@widgets/Header"
 
 const font = Inter({ subsets: ["latin"] })
 
@@ -17,22 +17,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body
         className={cn(
           font.className,
-          "[--layout-header-vh:3rem] [--layout-main-vh:calc(100dvh_-_var(--layout-header-vh))]"
+          "[--layout-header-vh:3rem] [--layout-main-vh:calc(100dvh_-_var(--layout-header-vh))]",
+          "[--layout-main-content-max-w:64rem]"
         )}
       >
         {/* header */}
-        <div
-          className="
-          w-full
-          flex justify-center h-[--layout-header-vh] items-center
-          bg-gradient-to-b from-zinc-900/95 to-zinc-800/95
-          text-zinc-200
-          "
-        >
-          <Navbar />
-        </div>
+        <Header />
 
-        <main className="flex flex-col items-center min-h-[--layout-main-vh]">
+        <main className="flex min-h-[--layout-main-vh]">
           <Providers>{children}</Providers>
         </main>
 

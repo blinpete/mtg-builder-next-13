@@ -8,6 +8,7 @@ import { CardsGrid } from "@entities/card-collection"
 import { useDecksMutation, useDeckQuery, useDeck } from "@entities/deck"
 import { DeckSectionHeading } from "@features/DeckColumn"
 import { sortCards } from "@shared/lib/deckUtils.client"
+import { LayoutMain } from "@widgets/LayoutMain"
 import type { CardEntry } from "@shared/types"
 import type { Card } from "scryfall-sdk"
 
@@ -17,6 +18,14 @@ function countCards(cards?: CardEntry[]) {
 }
 
 export function DeckIdPage() {
+  return (
+    <LayoutMain>
+      <Page />
+    </LayoutMain>
+  )
+}
+
+function Page() {
   const { status } = useSession()
 
   if (status === "loading") return <p>Loading...</p>

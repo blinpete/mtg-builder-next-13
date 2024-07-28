@@ -32,7 +32,7 @@ export function DeckEditPage() {
   // if (!deck?.cards.length) return <div>Empty deck</div>
 
   return (
-    <div className="flex-grow w-full overflow-x-scroll snap-x snap-mandatory">
+    <div className="flex-grow w-full overflow-x-auto snap-x snap-mandatory">
       <section
         className="
           flex-auto flex flex-row
@@ -85,43 +85,50 @@ export function DeckEditPage() {
         </article>
 
         {/* Search -> Card Grid */}
-        <div className="relative w-full border-0 border-red-500 box-border snap-start">
+        <div className="relative w-full box-border snap-start">
           <article
-            className="flex-auto flex items-center flex-col overflow-y-auto h-full"
+            className="flex-auto overflow-y-auto h-full"
             style={{
               fontSize: "0.92em",
             }}
           >
-            <SearchForm
-              query=""
-              onSubmit={e => {
-                e.preventDefault()
-                const target = e.target as unknown as { search: HTMLInputElement }
-                const q = target?.search?.value
-                if (!q) return
+            <div
+              className="
+              flex items-center flex-col
+              max-w-[--layout-main-content-max-w] mx-auto
+            "
+            >
+              <SearchForm
+                query=""
+                onSubmit={e => {
+                  e.preventDefault()
+                  const target = e.target as unknown as { search: HTMLInputElement }
+                  const q = target?.search?.value
+                  if (!q) return
 
-                setQuery(q.replaceAll(" ", "+"))
-              }}
-            />
-
-            {query ? (
-              <SearchOutput
-                query={query}
-                counters={counters}
-                onCardClick={card => setActiveCard(card)}
-                cardHeaderFn={(card, counters, visible) => (
-                  <CardDotCounter
-                    card={card}
-                    counters={counters}
-                    addCard={deck.addCard}
-                    removeCard={deck.removeCard}
-                    visible={visible}
-                  />
-                )}
+                  setQuery(q.replaceAll(" ", "+"))
+                }}
               />
-            ) : (
-              <div>Empty query</div>
-            )}
+
+              {query ? (
+                <SearchOutput
+                  query={query}
+                  counters={counters}
+                  onCardClick={card => setActiveCard(card)}
+                  cardHeaderFn={(card, counters, visible) => (
+                    <CardDotCounter
+                      card={card}
+                      counters={counters}
+                      addCard={deck.addCard}
+                      removeCard={deck.removeCard}
+                      visible={visible}
+                    />
+                  )}
+                />
+              ) : (
+                <div>Empty query</div>
+              )}
+            </div>
 
             {/* overlay */}
             {activeCard && (
