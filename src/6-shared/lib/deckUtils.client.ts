@@ -1,9 +1,4 @@
-import type {
-  CardEntry,
-  CardRecord,
-  DeckLoadedToRecord,
-  DeckRecordLoaded,
-} from "@shared/types/decks"
+import type { CardEntry, CardRecord, DeckLoadedToRecord, DeckRecordLoaded } from "../types"
 
 export const deckUtilsClient = {}
 
