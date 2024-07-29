@@ -1,1 +1,1 @@
-export { DeckColumn, DeckSectionHeading } from "./ui/DeckColumn"
+export { DeckColumn, DeckSectionHeading } from "./DeckColumn"
