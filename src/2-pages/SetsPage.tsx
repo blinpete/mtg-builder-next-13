@@ -5,7 +5,7 @@ import { LayoutMain } from "@widgets/LayoutMain"
 
 // https://ui.shadcn.com/docs/components/data-table
 
-export default async function Sets() {
+export async function SetsPage() {
   // const data = await Scry.setFuzzySearch()
   const data = await Scry.Sets.all()
   data.length = 20

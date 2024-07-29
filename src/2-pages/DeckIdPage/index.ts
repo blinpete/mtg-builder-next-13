@@ -1,1 +1,1 @@
-export { DeckIdPage } from "./ui/DeckIdPage"
+export { DeckIdPage } from "./page"

@@ -5,17 +5,11 @@ import { useSession } from "next-auth/react"
 import { useMemo, useState } from "react"
 import { CardDotCounter, CardPreviewPortal } from "@entities/card"
 import { CardsGrid } from "@entities/card-collection"
-import { useDecksMutation, useDeckQuery, useDeck } from "@entities/deck"
+import { useDecksMutation, useDeckQuery, useDeck, countCards } from "@entities/deck"
 import { DeckSectionHeading } from "@features/DeckColumn"
 import { sortCards } from "@shared/lib/deckUtils.client"
 import { LayoutMain } from "@widgets/LayoutMain"
-import type { CardEntry } from "@shared/types"
 import type { Card } from "scryfall-sdk"
-
-function countCards(cards?: CardEntry[]) {
-  if (!cards) return 0
-  return cards.reduce((acc, x) => acc + x.count, 0)
-}
 
 export function DeckIdPage() {
   return (
