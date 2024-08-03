@@ -46,7 +46,7 @@ export function CardPreview({
       })
       .finally(() => setIsLoading(false))
 
-    return () => ac.abort()
+    return () => ac.abort("No need, user navigated away")
   }, [card])
 
   const handleKeyEsc: KeyboardEventHandler = e => {
