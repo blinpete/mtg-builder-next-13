@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { CardDotCounter, CardPreview } from "@entities/card"
-import { useDeck } from "@entities/deck"
+import { useDeck, useStoreActiveDeck } from "@entities/deck"
 import { DeckColumn } from "@features/DeckColumn"
 import { SearchForm } from "@features/Search"
 import { SearchOutput } from "@features/Search"
@@ -10,7 +10,9 @@ import { Input } from "@shared/ui"
 import type { Card } from "scryfall-sdk"
 
 export function DeckEditPage() {
-  const { deck, saveDeck, setName, isSaving, dropChanges } = useDeck()
+  const { deck, dropChanges, saveDeck, isSaving } = useDeck()
+
+  const setName = useStoreActiveDeck(state => state.setName)
 
   const [query, setQuery] = useState("")
   const [activeCard, setActiveCard] = useState<Card | null>(null)
@@ -66,14 +68,14 @@ export function DeckEditPage() {
 
               <button
                 className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-                disabled={!deck.hasChanged || isSaving}
+                disabled={isSaving}
                 onClick={() => saveDeck()}
               >
                 Save
               </button>
               <button
                 className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-                disabled={!deck.hasChanged || isSaving}
+                disabled={isSaving}
                 onClick={() => dropChanges()}
               >
                 Cancel

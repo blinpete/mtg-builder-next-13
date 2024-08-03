@@ -6,6 +6,8 @@ export { useDecksMutation } from "./api/useDecksMutation"
 // model
 export type { SetActiveCardAction } from "./model/activeCard"
 export { DeckProvider, useDeck, type DeckContextType } from "./model/DeckContext"
+export { useStoreActiveDeck, useStoreActiveDeckCardsCount } from "./model/store"
+// export { useDeck } from "./model/useDeck"
 
 // utils
 export { countCards } from "./utils/countCards"
