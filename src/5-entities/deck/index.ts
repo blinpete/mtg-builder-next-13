@@ -11,6 +11,7 @@ export { useStoreActiveDeck, useStoreActiveDeckCardsCount } from "./model/store"
 
 // utils
 export { countCards } from "./utils/countCards"
+export { useCardsCounters } from "./utils/useCardsCounters"
 
 // ui
 export { DeckCover } from "./ui/DeckCover"

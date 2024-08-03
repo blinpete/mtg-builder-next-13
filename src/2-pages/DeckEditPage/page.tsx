@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react"
 import { CardDotCounter, CardPreview } from "@entities/card"
-import { useDeck, useStoreActiveDeck } from "@entities/deck"
+import { useCardsCounters, useDeck, useStoreActiveDeck } from "@entities/deck"
 import { DeckColumn } from "@features/DeckColumn"
 import { SearchForm } from "@features/Search"
 import { SearchOutput } from "@features/Search"
@@ -17,10 +17,7 @@ export function DeckEditPage() {
   const [query, setQuery] = useState("")
   const [activeCard, setActiveCard] = useState<Card | null>(null)
 
-  const counters = useMemo(() => {
-    if (!deck) return
-    return Object.fromEntries(deck?.cards.map(x => [x.card.id, x.count]))
-  }, [deck])
+  const counters = useCardsCounters(deck?.cards)
 
   const isActiveCardInDeck = useMemo(() => {
     if (!activeCard?.id) return false
@@ -29,9 +26,7 @@ export function DeckEditPage() {
     return !!counters[activeCard.id]
   }, [activeCard, counters])
 
-  // if (isFetching) return <div>Loading...</div>
   if (!deck) return <div>Error: deck is null. This should never happen</div>
-  // if (!deck?.cards.length) return <div>Empty deck</div>
 
   return (
     <div className="flex-grow w-full overflow-x-auto snap-x snap-mandatory">

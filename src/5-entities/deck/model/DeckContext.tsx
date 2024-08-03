@@ -54,6 +54,9 @@ export function DeckProvider({ children }: PropsWithChildren) {
 
   const cardsCount = useStoreActiveDeckCardsCount()
 
+  // --------------------------------------------------------------
+  //               DeckLocal: server deck + deck store
+  // --------------------------------------------------------------
   const deck = useMemo(() => {
     if (!deckServer) return null
 
@@ -67,6 +70,9 @@ export function DeckProvider({ children }: PropsWithChildren) {
     return deck
   }, [deckServer, deckStore, cardsCount])
 
+  // --------------------------------------------------------------
+  //                         deck mutation
+  // --------------------------------------------------------------
   const { isFetching: isSaving, saveDeck } = useDeckMutation({ deck, dropChanges: setInitialState })
 
   return (
