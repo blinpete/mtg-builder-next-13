@@ -1,1 +1,2 @@
-export { DeckColumn, DeckSectionHeading } from "./DeckColumn"
+export { DeckColumn } from "./DeckColumn"
+export { DeckSectionHeading } from "./DeckSectionHeading"
