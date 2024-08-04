@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from "react"
-import { useDeck } from "@entities/deck"
+import { useStoreActiveDeck } from "@entities/deck"
 import type { Card } from "@entities/card"
 
 type Props = {
@@ -7,32 +7,32 @@ type Props = {
 }
 
 export function ChampionsManager({ card }: Props) {
-  const { deck } = useDeck()
+  const deckHasCard = useStoreActiveDeck(s => s.has)
+  const addChampion = useStoreActiveDeck(s => s.addChampion)
+  const removeChampion = useStoreActiveDeck(s => s.removeChampion)
+  const champions = useStoreActiveDeck(s => s.champions)
 
   const isInDeck = useMemo(() => {
     if (!card?.id) return false
-    if (!deck) return false
 
-    return deck.has(card.id)
-  }, [card, deck])
+    return deckHasCard(card.id)
+  }, [card, deckHasCard])
 
   const handleAddChampion = useCallback(() => {
-    if (!deck?.addChampion) return
-    return deck.addChampion(card)
-  }, [deck, card])
+    return addChampion(card)
+  }, [card, addChampion])
 
   const handleRemoveChampion = useCallback(() => {
-    if (!deck?.removeChampion) return
-    return deck.removeChampion(card.id)
-  }, [deck, card.id])
+    return removeChampion(card.id)
+  }, [card.id, removeChampion])
 
   const canAddChampion = useMemo(() => {
-    return isInDeck && deck?.champions.findIndex(x => x.id === card.id) === -1
-  }, [card.id, deck?.champions, isInDeck])
+    return isInDeck && champions.findIndex(x => x.id === card.id) === -1
+  }, [card.id, champions, isInDeck])
 
   const canRemoveChampion = useMemo(() => {
-    return deck?.champions.findIndex(x => x.id === card.id) !== -1
-  }, [card.id, deck?.champions])
+    return champions.findIndex(x => x.id === card.id) !== -1
+  }, [card.id, champions])
 
   return (
     <div
@@ -41,7 +41,6 @@ export function ChampionsManager({ card }: Props) {
         flex gap-1 justify-center items-center
         text-sm
       "
-      // h-[var(--preview-header-vh)]
     >
       <button
         className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
