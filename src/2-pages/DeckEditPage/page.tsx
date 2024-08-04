@@ -3,11 +3,20 @@
 import { useStoreActiveCard } from "@entities/card"
 import { CardPreview } from "@entities/card"
 import { useDeck } from "@entities/deck"
+import { AuthGuard } from "@features/AuthGuard"
 import { Main } from "./Main"
 import { Sidebar } from "./Sidebar"
 import { ChampionsManager } from "./use-cases/manage-champions"
 
 export function DeckEditPage() {
+  return (
+    <AuthGuard>
+      <Page />
+    </AuthGuard>
+  )
+}
+
+function Page() {
   const { deck } = useDeck()
 
   const activeCard = useStoreActiveCard(s => s.card)

@@ -2,15 +2,17 @@
 
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { useSession } from "next-auth/react"
 import toast from "react-hot-toast"
 import { DeckCover, useDeck, useDecksMutation, useDecksQuery } from "@entities/deck"
+import { AuthGuard } from "@features/AuthGuard"
 import { LayoutMain } from "@widgets/LayoutMain"
 
 export function DecksPage() {
   return (
     <LayoutMain>
-      <Page />
+      <AuthGuard>
+        <Page />
+      </AuthGuard>
     </LayoutMain>
   )
 }
@@ -36,16 +38,6 @@ function Page() {
 
     setDeckId(deck.id)
     router.push("/decks/edit")
-  }
-
-  const { status } = useSession()
-
-  if (status === "loading") {
-    return <p>Loading...</p>
-  }
-
-  if (status === "unauthenticated") {
-    return <p>Access Denied</p>
   }
 
   if (isFetching) return <div className="m-4">Loading...</div>

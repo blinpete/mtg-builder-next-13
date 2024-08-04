@@ -1,11 +1,11 @@
 "use client"
 
 import { useParams, useRouter } from "next/navigation"
-import { useSession } from "next-auth/react"
 import { useMemo, useState } from "react"
 import { CardDotCounter, CardPreviewPortal } from "@entities/card"
 import { CardsGrid } from "@entities/card-collection"
 import { useDecksMutation, useDeckQuery, useDeck, countCards } from "@entities/deck"
+import { AuthGuard } from "@features/AuthGuard"
 import { DeckSectionHeading } from "@features/DeckColumn"
 import { sortCards } from "@shared/lib/deckUtils.client"
 import { LayoutMain } from "@widgets/LayoutMain"
@@ -14,21 +14,14 @@ import type { Card } from "@shared/types"
 export function DeckIdPage() {
   return (
     <LayoutMain>
-      <Page />
+      <AuthGuard>
+        <Page />
+      </AuthGuard>
     </LayoutMain>
   )
 }
 
 function Page() {
-  const { status } = useSession()
-
-  if (status === "loading") return <p>Loading...</p>
-  if (status === "unauthenticated") return <p>You are not logged in</p>
-
-  return <Deck />
-}
-
-function Deck() {
   const params = useParams()
   console.log("🚀 | DeckPage | params:", params)
 
