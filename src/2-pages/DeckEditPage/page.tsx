@@ -1,26 +1,17 @@
 "use client"
 
-import { useMemo } from "react"
 import { useStoreActiveCard } from "@entities/card"
 import { CardPreview } from "@entities/card"
-import { useCardsCounters, useDeck } from "@entities/deck"
+import { useDeck } from "@entities/deck"
 import { Main } from "./Main"
 import { Sidebar } from "./Sidebar"
+import { ChampionsManager } from "./use-cases/manage-champions"
 
 export function DeckEditPage() {
   const { deck } = useDeck()
 
   const activeCard = useStoreActiveCard(s => s.card)
   const setActiveCard = useStoreActiveCard(s => s.setCard)
-
-  const counters = useCardsCounters(deck?.cards)
-
-  const isActiveCardInDeck = useMemo(() => {
-    if (!activeCard?.id) return false
-    if (!counters) return false
-
-    return !!counters[activeCard.id]
-  }, [activeCard, counters])
 
   if (!deck) return <div>Error: deck is null. This should never happen</div>
 
@@ -58,9 +49,8 @@ export function DeckEditPage() {
             {/* overlay */}
             {activeCard && (
               <CardPreview
-                showChampionButtons={true}
+                slotExtraContent={<ChampionsManager card={activeCard} />}
                 height="var(--layout-main-vh)"
-                isInDeck={isActiveCardInDeck}
                 card={activeCard}
                 onClick={() => setActiveCard(null)}
               />

@@ -8,13 +8,7 @@ export function CardPreviewPortal({ card, onClick }: Pick<CardPreviewProps, "car
   return (
     portalNode &&
     createPortal(
-      <CardPreview
-        showChampionButtons={false}
-        isInDeck={false}
-        height="100dvh"
-        card={card}
-        onClick={onClick}
-      />,
+      <CardPreview height="100dvh" card={card} onClick={onClick} />,
       portalNode,
       "CardPreview"
     )

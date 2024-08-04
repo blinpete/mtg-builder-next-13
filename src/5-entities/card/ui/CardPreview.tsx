@@ -1,27 +1,19 @@
 // import { ChevronDown } from "lucide-react"
 import Image from "next/image"
-import { useCallback, useEffect, useMemo, useState } from "react"
-import { useDeck } from "@entities/deck"
+import { useEffect, useState } from "react"
 import { ScryRulings } from "@shared/api"
 import { cn } from "@shared/lib/utils"
-import type { KeyboardEventHandler } from "react"
-import type { Card, Ruling } from "scryfall-sdk"
+import type { Card, Ruling } from "../types"
+import type { KeyboardEventHandler, ReactNode } from "react"
 
 export type CardPreviewProps = {
   card: Card
-  isInDeck: boolean
-  showChampionButtons: boolean
+  slotExtraContent?: ReactNode
   height: string
   onClick: () => void
 }
 
-export function CardPreview({
-  card,
-  isInDeck,
-  showChampionButtons,
-  height,
-  onClick,
-}: CardPreviewProps) {
+export function CardPreview({ card, slotExtraContent, height, onClick }: CardPreviewProps) {
   const [rulings, setRulings] = useState<Ruling[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   console.log("🚀 | CardPreview | isLoading:", isLoading)
@@ -54,29 +46,6 @@ export function CardPreview({
   }
 
   // ------------------------------------------------------------------
-  //                         handle champions
-  // ------------------------------------------------------------------
-  const { deck } = useDeck()
-
-  const handleAddChampion = useCallback(() => {
-    if (!deck?.addChampion) return
-    return deck.addChampion(card)
-  }, [deck, card])
-
-  const handleRemoveChampion = useCallback(() => {
-    if (!deck?.removeChampion) return
-    return deck.removeChampion(card.id)
-  }, [deck, card.id])
-
-  const canAddChampion = useMemo(() => {
-    return isInDeck && deck?.champions.findIndex(x => x.id === card.id) === -1
-  }, [card.id, deck?.champions, isInDeck])
-
-  const canRemoveChampion = useMemo(() => {
-    return deck?.champions.findIndex(x => x.id === card.id) !== -1
-  }, [card.id, deck?.champions])
-
-  // ------------------------------------------------------------------
 
   return (
     <div
@@ -87,7 +56,7 @@ export function CardPreview({
         "cursor-pointer",
         // note: scroll only for w < @3xl, after this bp we set fixed height and move scroll to the "About the card" container
         "overflow-y-auto",
-        showChampionButtons
+        slotExtraContent
           ? "[--preview-header-vh:2.4rem] [--preview-main-vh:calc(100%_-_var(--preview-header-vh))]"
           : "[--preview-main-vh:100%]"
       )}
@@ -102,37 +71,7 @@ export function CardPreview({
         onKeyDown={handleKeyEsc}
       />
 
-      {showChampionButtons && (
-        <div
-          className="
-            px-4
-            flex gap-1 justify-center items-center
-            text-sm
-            h-[var(--preview-header-vh)]
-          "
-        >
-          <button
-            className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-            disabled={!canAddChampion}
-            onClick={e => {
-              e.stopPropagation()
-              handleAddChampion()
-            }}
-          >
-            Add to champions
-          </button>
-          <button
-            className="px-2 py-0.5 rounded-sm bg-orange-400 hover:opacity-80 disabled:opacity-30"
-            disabled={!canRemoveChampion}
-            onClick={e => {
-              e.stopPropagation()
-              handleRemoveChampion()
-            }}
-          >
-            Remove from champions
-          </button>
-        </div>
-      )}
+      {slotExtraContent && <div className="h-[var(--preview-header-vh)]">{slotExtraContent}</div>}
 
       <div
         className="
