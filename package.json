@@ -5,12 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "tscheck": "tsc --pretty --noEmit",
     "start": "next start",
     "dbgen": "prisma generate",
     "dbpush": "prisma db push",
     "dbseed": "prisma db seed",
     "dbmigrate": "prisma migrate dev",
+    "fsd-cruise": "fsd-cruise",
+    "tscheck": "tsc --pretty --noEmit",
     "fmt": "prettier . '!pnpm-lock.yaml' --write --ignore-path .gitignore",
     "lint": "next lint"
   },
@@ -52,9 +53,11 @@
     "@types/react-dom": "18.2.4",
     "@typescript-eslint/eslint-plugin": "^7.16.1",
     "@typescript-eslint/parser": "^7.16.1",
+    "dependency-cruiser": "^16.3.10",
     "eslint": "8.57.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-import-resolver-typescript": "^3.6.1",
+    "fsd-cruise": "1.0.5-beta.6",
     "prettier": "^2.8.8",
     "prisma": "^4.16.0",
     "webpack-dev-server-qr-code": "^1.2.0"
