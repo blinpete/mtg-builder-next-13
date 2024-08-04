@@ -4,11 +4,8 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { useSession } from "next-auth/react"
 import toast from "react-hot-toast"
-import { useQuery } from "react-query"
-import { DeckCover, useDeck } from "@entities/deck"
-import { useDecksMutation } from "@entities/deck"
+import { DeckCover, useDeck, useDecksMutation, useDecksQuery } from "@entities/deck"
 import { LayoutMain } from "@widgets/LayoutMain"
-import type { DeckRecord } from "@shared/types"
 
 export function DecksPage() {
   return (
@@ -19,34 +16,15 @@ export function DecksPage() {
 }
 
 function Page() {
-  const {
-    data: decks,
-    isFetching,
-    error,
-  } = useQuery<DeckRecord[], any>({
-    queryKey: ["decks"],
-    queryFn: async () => {
-      const response = await fetch("/api/decks", {
-        method: "GET",
-        cache: "no-cache",
-      })
-      const res = await response.json()
-      console.log("🚀 GET decks | queryFn: | res:", res)
-
-      return res
-    },
-  })
-  // or Prisma.DeckUncheckedCreateWithoutUserInput[]
-
-  const pathname = usePathname()
+  const { data: decks, isFetching, error } = useDecksQuery()
+  const { addDeck, isFetching: isMutationRunning } = useDecksMutation()
+  const { setDeckId } = useDeck()
 
   console.log("🚀 | DeckPage | error:", error)
   console.log("🚀 | decks:", decks)
 
+  const pathname = usePathname()
   const router = useRouter()
-  const { setDeckId } = useDeck()
-
-  const { addDeck, isFetching: isMutationRunning } = useDecksMutation()
 
   async function handleAddDeck() {
     const deck = await addDeck()

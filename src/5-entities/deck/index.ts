@@ -2,6 +2,7 @@
 export { useDeckMutation } from "./api/useDeckMutation"
 export { useDeckQuery } from "./api/useDeckQuery"
 export { useDecksMutation } from "./api/useDecksMutation"
+export { useDecksQuery } from "./api/useDecksQuery"
 
 // model
 export type { SetActiveCardAction } from "./model/activeCard"
