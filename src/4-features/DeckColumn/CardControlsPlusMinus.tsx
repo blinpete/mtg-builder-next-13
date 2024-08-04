@@ -1,6 +1,6 @@
 import { CardCompactButton } from "@entities/card"
 import type { DeckLocal } from "@shared/types"
-import type { Card } from "scryfall-sdk"
+import type { Card } from "@shared/types"
 
 export function CardControlsPlusMinus({ deck, card }: { deck: DeckLocal; card: Card }) {
   return (

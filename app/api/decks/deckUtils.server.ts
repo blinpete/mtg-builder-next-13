@@ -1,5 +1,12 @@
-import type { Scry, ScrySearchError, ScrySearchResponse } from "@shared/api"
-import type { CardEntry, CardRecord, DbDeck, DeckRecord, DeckRecordToLoaded } from "@shared/types"
+import type { ScrySearchError, ScrySearchResponse } from "@shared/api"
+import type {
+  Card,
+  CardEntry,
+  CardRecord,
+  DbDeck,
+  DeckRecord,
+  DeckRecordToLoaded,
+} from "@shared/types"
 
 export const deckUtilsServer = {
   // serialize(deck: Omit<DeckRecord, "id" | 'createdAt'>): Omit<DbDeck, "id" | "createdAt">
@@ -57,7 +64,7 @@ export async function deckRecordToLoaded(
     return json
   }
 
-  const map: Record<string, Scry.Card> = {}
+  const map: Record<string, Card> = {}
   for (const card of json.data) {
     map[card.id] = card
   }

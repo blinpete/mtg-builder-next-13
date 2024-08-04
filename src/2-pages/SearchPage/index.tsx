@@ -4,7 +4,8 @@ import { useState } from "react"
 import { CardPreviewPortal } from "@entities/card"
 import { SearchInput, SearchOutput } from "@features/Search"
 import { LayoutMain } from "@widgets/LayoutMain"
-import type { Card, SearchOptions } from "scryfall-sdk"
+import type { SearchOptions } from "@shared/api"
+import type { Card } from "@shared/types"
 
 /**
  * #### Scryfall routes

@@ -1,6 +1,6 @@
 import { create } from "zustand"
 import type { CardEntry, DeckRecord } from "@shared/types"
-import type { Card } from "scryfall-sdk"
+import type { Card } from "@shared/types"
 
 type State = {
   name: string

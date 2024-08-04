@@ -9,7 +9,7 @@ import { useDecksMutation, useDeckQuery, useDeck, countCards } from "@entities/d
 import { DeckSectionHeading } from "@features/DeckColumn"
 import { sortCards } from "@shared/lib/deckUtils.client"
 import { LayoutMain } from "@widgets/LayoutMain"
-import type { Card } from "scryfall-sdk"
+import type { Card } from "@shared/types"
 
 export function DeckIdPage() {
   return (

@@ -1,5 +1,5 @@
 import { create } from "zustand"
-import type { Card } from "scryfall-sdk"
+import type { Card } from "@shared/types"
 
 type Store = {
   card: Card | null

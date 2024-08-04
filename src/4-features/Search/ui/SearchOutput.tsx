@@ -3,7 +3,12 @@
 import { useEffect, useMemo, useState } from "react"
 import { useInfiniteQuery } from "react-query"
 import { CardsGrid, type CardsGridProps } from "@entities/card-collection"
-import { ScrySearch, type Scry, type ScrySearchResponse, type ScrySearchError } from "@shared/api"
+import {
+  ScrySearch,
+  type ScrySearchResponse,
+  type ScrySearchError,
+  type SearchOptions,
+} from "@shared/api"
 import { Pagination } from "@shared/ui"
 
 const wrap = (children: JSX.Element) => <div className="mx-6 my-6">{children}</div>
@@ -14,7 +19,7 @@ const wrap = (children: JSX.Element) => <div className="mx-6 my-6">{children}</d
 export function SearchOutput(
   props: CardsGridProps & {
     query: string
-    options?: Scry.SearchOptions
+    options?: SearchOptions
     cardHeaderFn?: Parameters<typeof CardsGrid>[0]["cardHeaderFn"]
   }
 ) {

@@ -1,21 +1,17 @@
 import Image from "next/image"
 import { useState } from "react"
 import { cn } from "@shared/lib/utils"
-import type { Scry } from "@shared/api"
+import type { Card } from "@shared/types"
 
 export type CardsGridProps = {
   counters?: Record<string, number>
-  onCardClick?: (card: Scry.Card) => void
+  onCardClick?: (card: Card) => void
 }
 
 type Props = CardsGridProps & {
-  data: Scry.Card[]
-  cardClassName?: (card: Scry.Card) => string
-  cardHeaderFn?: (
-    card: Scry.Card,
-    counters: CardsGridProps["counters"],
-    visible: boolean
-  ) => JSX.Element
+  data: Card[]
+  cardClassName?: (card: Card) => string
+  cardHeaderFn?: (card: Card, counters: CardsGridProps["counters"], visible: boolean) => JSX.Element
 }
 
 function checkIfTouchScreen() {

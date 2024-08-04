@@ -4,7 +4,7 @@ import { sortCards } from "@shared/lib/deckUtils.client"
 import { CardControlsPlusMinus } from "./CardControlsPlusMinus"
 import { DeckSectionHeading } from "./DeckSectionHeading"
 import type { DeckLocal } from "@shared/types"
-import type { Card } from "scryfall-sdk"
+import type { Card } from "@shared/types"
 
 type Props = {
   deck: DeckLocal

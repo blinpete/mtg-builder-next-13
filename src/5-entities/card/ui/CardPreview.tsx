@@ -3,7 +3,7 @@ import Image from "next/image"
 import { useEffect, useState } from "react"
 import { ScryRulings } from "@shared/api"
 import { cn } from "@shared/lib/utils"
-import type { Card, Ruling } from "../types"
+import type { Card, Ruling } from "@shared/types"
 import type { KeyboardEventHandler, ReactNode } from "react"
 
 export type CardPreviewProps = {

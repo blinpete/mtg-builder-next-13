@@ -1,5 +1,5 @@
 import type { Prisma } from "@prisma/client"
-import type { Scry } from "@shared/api"
+import type { Card } from "@shared/types"
 import type { NextRequest } from "next/server"
 
 export type CreateDeckData = {
@@ -26,7 +26,7 @@ export type DeckRecord = Omit<DbDeck, "cards" | "champions" | "sideboard"> & {
 export type CardRecord = [id: string, count: number]
 
 export type CardEntry = {
-  card: Scry.Card
+  card: Card
   count: number
 }
 
@@ -51,11 +51,11 @@ export type DeckLocal = DeckRecordLoaded & {
   // hasChanged: boolean
   has: (id: string) => boolean
 
-  addCard: (card: Scry.Card) => void
-  removeCard: (id: Scry.Card["id"]) => void
+  addCard: (card: Card) => void
+  removeCard: (id: Card["id"]) => void
 
-  addChampion: (card: Scry.Card) => void
-  removeChampion: (id: Scry.Card["id"]) => void
+  addChampion: (card: Card) => void
+  removeChampion: (id: Card["id"]) => void
 }
 
 // export const Deck = Prisma.validator<Prisma.DeckArgs>()({

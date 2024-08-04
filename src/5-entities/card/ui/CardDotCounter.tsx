@@ -1,10 +1,10 @@
 import { cn } from "@shared/lib/utils"
-import type { Scry } from "@shared/api"
+import type { Card } from "@shared/types"
 
 type Props = {
-  card: Scry.Card
-  addCard?: (card: Scry.Card) => void
-  removeCard?: (id: string) => void
+  card: Card
+  addCard?: (card: Card) => void
+  removeCard?: (id: Card["id"]) => void
 
   counters?: Record<string, number>
 

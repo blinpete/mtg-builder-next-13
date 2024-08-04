@@ -1,6 +1,6 @@
 import { useCallback, useMemo } from "react"
 import { useStoreActiveDeck } from "@entities/deck"
-import type { Card } from "@entities/card"
+import type { Card } from "@shared/types"
 
 type Props = {
   card: Card

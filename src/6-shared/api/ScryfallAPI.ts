@@ -1,6 +1,6 @@
 import type Scry from "scryfall-sdk"
 
-export type * as Scry from "scryfall-sdk"
+export type { SearchOptions } from "scryfall-sdk"
 
 export type ScrySearchResponse = {
   object: "list"

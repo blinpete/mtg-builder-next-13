@@ -3,8 +3,8 @@
  */
 import Image from "next/image"
 import { cn } from "@shared/lib/utils"
+import type { Card } from "@shared/types"
 import type { PropsWithChildren } from "react"
-import type { Card } from "scryfall-sdk"
 
 type Props = {
   card: Card
