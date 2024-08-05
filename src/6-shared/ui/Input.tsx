@@ -15,7 +15,7 @@ export const Input = forwardRef<HTMLInputElement, Props>(function Input(props, r
         outline-none border-2 border-transparent
         focus:border-slate-500
         focus:ring-transparent
-        placeholder:text-gray-600
+        placeholder:opacity-60
       `,
         props.className
       )}

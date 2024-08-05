@@ -9,8 +9,6 @@ type Props = {
   onSubmit: FormEventHandler<HTMLFormElement>
 }
 export function SearchForm(props: Props) {
-  console.log("🚀 | SearchForm")
-
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -23,7 +21,14 @@ export function SearchForm(props: Props) {
     <>
       <form onSubmit={props.onSubmit} className="w-full px-5 my-2">
         <label>
-          <Input ref={inputRef} type="text" name="search" className="w-full" />
+          <Input
+            required
+            ref={inputRef}
+            type="text"
+            name="search"
+            className="w-full"
+            placeholder="set:eld c:black order:set unique:art"
+          />
         </label>
       </form>
     </>

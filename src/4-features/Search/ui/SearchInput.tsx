@@ -22,6 +22,7 @@ export function SearchInput() {
           " ",
           "+"
         )
+
         router.push(`${pathname}?q=${q}&page=1`)
       }}
     />

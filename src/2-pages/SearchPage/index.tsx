@@ -2,9 +2,15 @@
 
 import { useEffect } from "react"
 import { CardPreviewPortal, useStoreActiveCard } from "@entities/card"
-import { SearchInput, SearchOutput } from "@features/Search"
+import {
+  SearchInput,
+  SearchOutput,
+  useStoreSearchQuery,
+  DEFAULT_SEARCH_QUERY,
+} from "@features/Search"
 import { LayoutMain } from "@widgets/LayoutMain"
 import type { SearchOptions } from "@shared/api"
+import { usePathname, useRouter } from "next/navigation"
 
 /**
  * #### Scryfall routes
@@ -21,6 +27,7 @@ import type { SearchOptions } from "@shared/api"
  * #### advanced search examples
  * - https://scryfall.com/search?as=grid&order=name&q=type%3Acreature+set%3Amat
  * - https://gatherer.wizards.com/Pages/Default.aspx
+ * - year>2020 c:black order:set unique:art t:vampire
  *
  * #### formats
  * https://magic.wizards.com/en/formats
@@ -33,6 +40,23 @@ export function SearchPage(props: {
   const activeCard = useStoreActiveCard(s => s.card)
   const setActiveCard = useStoreActiveCard(s => s.setCard)
   useEffect(() => setActiveCard(null), [setActiveCard])
+
+  const query = useStoreSearchQuery(s => s.query)
+  console.log("🚀🚀🚀 | query:", query)
+
+  const setQuery = useStoreSearchQuery(s => s.setQuery)
+  if (props.searchParams?.q) {
+    setQuery(props.searchParams?.q)
+  }
+
+  const pathname = usePathname()
+  const router = useRouter()
+
+  if (!props.searchParams?.q) {
+    const q = (query || DEFAULT_SEARCH_QUERY).replaceAll(" ", "+")
+
+    router.replace(`${pathname}?q=${q}`)
+  }
 
   return (
     <LayoutMain>
@@ -52,7 +76,7 @@ export function SearchPage(props: {
           )}
         </>
       ) : (
-        <div>Empty query</div>
+        <div className="flex-grow pt-1 text-zinc-500">start searching cards...</div>
       )}
     </LayoutMain>
   )
