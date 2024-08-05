@@ -1,15 +1,20 @@
 "use client"
 
 import { useParams, useRouter } from "next/navigation"
-import { useMemo, useState } from "react"
-import { CardDotCounter, CardPreviewPortal } from "@entities/card"
+import { useEffect } from "react"
+import { CardDotCounter, CardPreviewPortal, useStoreActiveCard } from "@entities/card"
 import { CardsGrid } from "@entities/card-collection"
-import { useDecksMutation, useDeckQuery, useDeck, countCards } from "@entities/deck"
+import {
+  useDecksMutation,
+  useDeck,
+  countCards,
+  useCardsCounters,
+  useDeckQuery,
+  useChampions,
+} from "@entities/deck"
 import { AuthGuard } from "@features/AuthGuard"
 import { DeckSectionHeading } from "@features/DeckColumn"
-import { sortCards } from "@shared/lib/deckUtils.client"
 import { LayoutMain } from "@widgets/LayoutMain"
-import type { Card } from "@shared/types"
 
 export function DeckIdPage() {
   return (
@@ -29,33 +34,17 @@ function Page() {
   console.log("🚀 | /deck/[id] | error:", error)
   console.log("🚀 | /deck/[id] | deck:", deck)
 
-  const counters = useMemo(() => {
-    if (!deck || !deck?.cards) return
-    return Object.fromEntries(deck.cards.map(x => [x.card.id, x.count]))
-  }, [deck])
-
   const router = useRouter()
   const { deck: activeDeck, setDeckId } = useDeck()
   const { deleteDeck, isFetching: isMutationRunning } = useDecksMutation()
 
-  const [activeCard, setActiveCard] = useState<Card | null>(null)
+  const activeCard = useStoreActiveCard(s => s.card)
+  const setActiveCard = useStoreActiveCard(s => s.setCard)
+  // drop activeCard state from other pages
+  useEffect(() => setActiveCard(null), [setActiveCard])
 
-  const cardsExceptChampions = useMemo(() => {
-    const filtered = deck?.cards?.filter(
-      x => deck.champions.findIndex(champion => champion.id === x.card.id) === -1
-    )
-    if (!filtered) return filtered
-
-    const sorted = sortCards(filtered)
-
-    return sorted.map(x => x.card)
-  }, [deck?.cards, deck?.champions])
-
-  const champions = useMemo(() => {
-    return deck?.champions
-      ?.map(champion => deck.cards.find(x => champion.id === x.card.id)?.card)
-      .filter(Boolean) as Card[]
-  }, [deck?.cards, deck?.champions])
+  const counters = useCardsCounters(deck?.cards)
+  const { champions, cardsExceptChampions } = useChampions(deck)
 
   if (isFetching) return <div>Loading the deck...</div>
 
@@ -76,8 +65,6 @@ function Page() {
 
     router.push("/decks")
   }
-
-  if (!deck) return <div>No deck with id: {params.id} </div>
 
   return (
     <section className="w-full">

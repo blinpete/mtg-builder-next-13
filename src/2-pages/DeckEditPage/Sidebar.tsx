@@ -13,7 +13,7 @@ export function Sidebar({ className }: Props) {
   // const name = useStoreActiveDeck(s => s.name)
   const setName = useStoreActiveDeck(s => s.setName)
 
-  const activeCard = useStoreActiveCard(s => s.card)
+  const isActiveCard = useStoreActiveCard(s => s.isActiveCard)
   const setActiveCard = useStoreActiveCard(s => s.setCard)
 
   const { deck, isSaving, saveDeck, dropChanges } = useDeck()
@@ -53,7 +53,7 @@ export function Sidebar({ className }: Props) {
         </div>
       </div>
 
-      <DeckColumn deck={deck} activeCard={activeCard} setActiveCard={setActiveCard} />
+      <DeckColumn deck={deck} isActiveCard={isActiveCard} onCardClick={setActiveCard} />
     </article>
   )
 }

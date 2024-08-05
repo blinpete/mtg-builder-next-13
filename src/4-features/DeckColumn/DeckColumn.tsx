@@ -8,19 +8,19 @@ import type { Card } from "@shared/types"
 
 type Props = {
   deck: DeckLocal
-  activeCard: Card | null
-  setActiveCard: (card: Card | null) => void
+  isActiveCard: (card: Card["id"]) => boolean
+  onCardClick: (card: Card | null) => void
 }
 
-export function DeckColumn({ deck, activeCard, setActiveCard }: Props) {
+export function DeckColumn({ deck, isActiveCard, onCardClick }: Props) {
   const cardsSorted = useMemo(() => sortCards(deck.cards), [deck.cards])
 
-  const toggleActiveCard = useCallback<Props["setActiveCard"]>(
+  const toggleActiveCard = useCallback<Props["onCardClick"]>(
     card => {
-      if (activeCard?.id === card?.id) return setActiveCard(null)
-      setActiveCard(card)
+      if (card?.id && isActiveCard(card.id)) return onCardClick(null)
+      onCardClick(card)
     },
-    [activeCard, setActiveCard]
+    [isActiveCard, onCardClick]
   )
 
   return (
@@ -43,7 +43,7 @@ export function DeckColumn({ deck, activeCard, setActiveCard }: Props) {
               onClick={() => toggleActiveCard(item.card)}
               slotLeftCorner={<span>{item.count}</span>}
               slotControls={
-                activeCard?.id !== item.card.id ? null : (
+                !isActiveCard(item.card.id) ? null : (
                   <CardControlsPlusMinus deck={deck} card={item.card} />
                 )
               }
@@ -66,7 +66,7 @@ export function DeckColumn({ deck, activeCard, setActiveCard }: Props) {
             onClick={() => toggleActiveCard(card)}
             slotLeftCorner={<span>{count}</span>}
             slotControls={
-              activeCard?.id !== card.id ? null : <CardControlsPlusMinus deck={deck} card={card} />
+              !isActiveCard(card.id) ? null : <CardControlsPlusMinus deck={deck} card={card} />
             }
           />
         ))}

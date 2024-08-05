@@ -1,4 +1,5 @@
 import { create } from "zustand"
+import { sortCards } from "@shared/lib/deckUtils.client"
 import type { CardEntry, DeckRecord } from "@shared/types"
 import type { Card } from "@shared/types"
 
@@ -106,6 +107,10 @@ export const useStoreActiveDeck = create<DeckStore>()((set, get, api) => ({
   setState: state => set(state),
 }))
 
+// --------------------------------------------------------
+//                       derived state
+// --------------------------------------------------------
+
 export function useStoreActiveDeckCardsCount() {
   // use useShallow use use
   return useStoreActiveDeck(state => {
@@ -114,5 +119,27 @@ export function useStoreActiveDeckCardsCount() {
       count += card.count
     })
     return count
+  })
+}
+
+export function useStoreActiveDeckCardsExceptChampions() {
+  // use useShallow use use
+  return useStoreActiveDeck(state => {
+    const filtered = [...state.cards.values()].filter(
+      x => state.champions.findIndex(champion => champion.id === x.card.id) === -1
+    )
+    if (!filtered) return filtered
+
+    const sorted = sortCards(filtered)
+
+    return sorted.map(x => x.card)
+  })
+}
+
+export function useStoreActiveDeckChampions() {
+  // use useShallow use using use
+  return useStoreActiveDeck(state => {
+    const filtered = state.champions.map(x => state.cards.get(x.id)?.card)
+    return filtered as Card[]
   })
 }

@@ -1,11 +1,10 @@
 "use client"
 
-import { useState } from "react"
-import { CardPreviewPortal } from "@entities/card"
+import { useEffect } from "react"
+import { CardPreviewPortal, useStoreActiveCard } from "@entities/card"
 import { SearchInput, SearchOutput } from "@features/Search"
 import { LayoutMain } from "@widgets/LayoutMain"
 import type { SearchOptions } from "@shared/api"
-import type { Card } from "@shared/types"
 
 /**
  * #### Scryfall routes
@@ -31,7 +30,9 @@ export function SearchPage(props: {
     q?: string
   } & SearchOptions
 }) {
-  const [activeCard, setActiveCard] = useState<Card | null>(null)
+  const activeCard = useStoreActiveCard(s => s.card)
+  const setActiveCard = useStoreActiveCard(s => s.setCard)
+  useEffect(() => setActiveCard(null), [setActiveCard])
 
   return (
     <LayoutMain>
