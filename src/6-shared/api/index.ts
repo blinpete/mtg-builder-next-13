@@ -1,8 +1,10 @@
 export {
   ScrySearch,
-  ScryRulings,
   type SearchOptions,
   type ScrySearchResponse,
   type ScrySearchError,
-  type ScryRulingsResponse,
-} from "./ScryfallAPI"
+} from "./search"
+
+export { ScryRulings, type ScryRulingsResponse } from "./rulings"
+
+export { useSetsQuery } from "./useSetsQuery"

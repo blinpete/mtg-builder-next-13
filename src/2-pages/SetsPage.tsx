@@ -3,8 +3,9 @@ import * as Scry from "scryfall-sdk"
 import { GenericTable } from "@entities/set"
 import { LayoutMain } from "@widgets/LayoutMain"
 
-// https://ui.shadcn.com/docs/components/data-table
-
+/**
+ * https://scryfall.com/sets
+ */
 export async function SetsPage() {
   // const data = await Scry.setFuzzySearch()
   const data = await Scry.Sets.all()
