@@ -21,7 +21,7 @@ function checkIfTouchScreen() {
   return (
     "ontouchstart" in window ||
     navigator.maxTouchPoints > 0 ||
-    // @ts-expect-error
+    // @ts-expect-error: thanks IE<=10
     navigator.msMaxTouchPoints > 0
   )
 }

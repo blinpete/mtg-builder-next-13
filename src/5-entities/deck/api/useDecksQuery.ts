@@ -2,7 +2,7 @@ import { useQuery } from "react-query"
 import type { DeckRecord } from "@shared/types"
 
 export function useDecksQuery() {
-  return useQuery<DeckRecord[], any>({
+  return useQuery<DeckRecord[], unknown>({
     queryKey: ["decks"],
     queryFn: async () => {
       const response = await fetch("/api/decks", {

@@ -11,7 +11,7 @@ import type { PropsWithChildren } from "react"
 export type DeckContextType = {
   deck: DeckLocal | null
   isFetching: boolean
-  error: any
+  error: unknown
 
   setDeckId: (id: string) => void
 
@@ -20,7 +20,8 @@ export type DeckContextType = {
 
   dropChanges: (props?: { dropName: boolean }) => void
 }
-const DeckContext = createContext<DeckContextType>(null as any)
+// @ts-expect-error: damn contexts
+const DeckContext = createContext<DeckContextType>(null)
 
 export function DeckProvider({ children }: PropsWithChildren) {
   // --------------------------------------------------------------

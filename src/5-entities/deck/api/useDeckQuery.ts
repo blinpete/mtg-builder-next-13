@@ -2,7 +2,7 @@ import { useQuery } from "react-query"
 import type { DeckRecordLoaded } from "@shared/types"
 
 export function useDeckQuery(props: { id: string | null }) {
-  return useQuery<DeckRecordLoaded | undefined, any>({
+  return useQuery<DeckRecordLoaded | undefined, unknown>({
     queryKey: ["deck", props.id],
     queryFn: async () => {
       if (props.id === null) return undefined

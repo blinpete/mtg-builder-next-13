@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function GenericTable<Item extends { [key: string]: any }>(props: {
   columns: {
     label: string

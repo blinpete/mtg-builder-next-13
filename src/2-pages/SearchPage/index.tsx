@@ -1,5 +1,6 @@
 "use client"
 
+import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
 import { CardPreviewPortal, useStoreActiveCard } from "@entities/card"
 import {
@@ -10,7 +11,6 @@ import {
 } from "@features/Search"
 import { LayoutMain } from "@widgets/LayoutMain"
 import type { SearchOptions } from "@shared/api"
-import { usePathname, useRouter } from "next/navigation"
 
 /**
  * #### Scryfall routes

@@ -26,7 +26,7 @@ type Actions = {
 
 type DeckStore = State & Actions
 
-export const useStoreActiveDeck = create<DeckStore>()((set, get, api) => ({
+export const useStoreActiveDeck = create<DeckStore>()((set, get) => ({
   name: "",
   setName: name => set({ name }),
 

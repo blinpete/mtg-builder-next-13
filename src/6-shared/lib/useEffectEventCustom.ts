@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react"
 
-export function useEffectEventCustom<T extends (...args: any[]) => any>(callback: T) {
+export function useEffectEventCustom<T extends (...args: unknown[]) => unknown>(callback: T) {
   const fn = useRef(callback)
 
   useEffect(() => {

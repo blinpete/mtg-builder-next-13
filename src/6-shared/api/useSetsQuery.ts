@@ -2,7 +2,7 @@ import { useQuery } from "react-query"
 import type { Set } from "scryfall-sdk"
 
 export function useSetsQuery() {
-  return useQuery<Set[], any>({
+  return useQuery<Set[], unknown>({
     queryKey: ["sets"],
     queryFn: async () => {
       const response = await fetch("/api/sets", { method: "GET" })
