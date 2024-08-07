@@ -1,6 +1,7 @@
 "use client"
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
+
 import { SearchForm } from "./SearchForm"
 
 export function SearchInput() {

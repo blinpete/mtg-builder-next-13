@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
+
 import { LayoutMain } from "@widgets/LayoutMain"
 import {
   SearchInput,

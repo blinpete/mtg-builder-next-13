@@ -1,4 +1,5 @@
 import { useQuery } from "react-query"
+
 import type { DeckRecordLoaded } from "@shared/types"
 
 export function useDeckQuery(props: { id: string | null }) {

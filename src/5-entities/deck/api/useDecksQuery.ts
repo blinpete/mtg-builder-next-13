@@ -1,4 +1,5 @@
 import { useQuery } from "react-query"
+
 import type { DeckRecord } from "@shared/types"
 
 export function useDecksQuery() {

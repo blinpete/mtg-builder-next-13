@@ -1,8 +1,10 @@
 import { useCallback, useMemo } from "react"
+
 import { CardCompact } from "@entities/card"
 import { sortCards } from "@shared/lib/deckUtils.client"
 import type { DeckLocal } from "@shared/types"
 import type { Card } from "@shared/types"
+
 import { CardControlsPlusMinus } from "./CardControlsPlusMinus"
 import { DeckSectionHeading } from "./DeckSectionHeading"
 

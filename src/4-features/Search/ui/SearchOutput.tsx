@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react"
 import { useInfiniteQuery } from "react-query"
+
 import { CardsGrid, type CardsGridProps } from "@entities/card-collection"
 import {
   ScrySearch,

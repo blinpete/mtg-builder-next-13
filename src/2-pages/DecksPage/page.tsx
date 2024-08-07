@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import toast from "react-hot-toast"
+
 import { LayoutMain } from "@widgets/LayoutMain"
 import { AuthGuard } from "@features/AuthGuard"
 import { DeckCover, useDeck, useDecksMutation, useDecksQuery } from "@entities/deck"

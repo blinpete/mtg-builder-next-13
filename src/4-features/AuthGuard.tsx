@@ -1,4 +1,5 @@
 import { useSession } from "next-auth/react"
+
 import type { PropsWithChildren } from "react"
 
 export function AuthGuard({ children }: PropsWithChildren) {

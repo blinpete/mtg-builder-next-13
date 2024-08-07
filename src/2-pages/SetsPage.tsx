@@ -1,5 +1,6 @@
 import Link from "next/link"
 import * as Scry from "scryfall-sdk"
+
 import { LayoutMain } from "@widgets/LayoutMain"
 import { GenericTable } from "@entities/set"
 

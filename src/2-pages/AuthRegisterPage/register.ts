@@ -1,4 +1,5 @@
 import { toast } from "react-hot-toast"
+
 import type { RegisterData } from "@shared/auth"
 import type { ErrorJSON } from "@shared/types"
 

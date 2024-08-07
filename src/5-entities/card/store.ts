@@ -1,4 +1,5 @@
 import { create } from "zustand"
+
 import type { Card } from "@shared/types"
 
 type Store = {

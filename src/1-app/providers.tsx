@@ -3,6 +3,7 @@
 import { ThemeProvider } from "next-themes"
 import { type PropsWithChildren } from "react"
 import { QueryClient, QueryClientProvider } from "react-query"
+
 import { DeckProvider } from "@entities/deck"
 import { AuthProvider } from "@shared/auth"
 

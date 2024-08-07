@@ -1,7 +1,9 @@
 "use client"
 
 import { useState } from "react"
+
 import type { RegisterData } from "@shared/auth"
+
 import { registerUser } from "./register"
 
 export function AuthRegisterPage() {

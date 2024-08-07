@@ -1,5 +1,7 @@
 import { createPortal } from "react-dom"
+
 import { CardPreview } from "./CardPreview"
+
 import type { CardPreviewProps } from "./CardPreview"
 
 export function CardPreviewPortal({ card, onClick }: Pick<CardPreviewProps, "card" | "onClick">) {

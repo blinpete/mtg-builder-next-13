@@ -1,4 +1,5 @@
 import { useQuery } from "react-query"
+
 import type { Set } from "scryfall-sdk"
 
 export function useSetsQuery() {

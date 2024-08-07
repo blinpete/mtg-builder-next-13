@@ -4,6 +4,7 @@ import { AuthGuard } from "@features/AuthGuard"
 import { useStoreActiveCard } from "@entities/card"
 import { CardPreview } from "@entities/card"
 import { useDeck } from "@entities/deck"
+
 import { Main } from "./Main"
 import { Sidebar } from "./Sidebar"
 import { ChampionsManager } from "./use-cases/manage-champions"

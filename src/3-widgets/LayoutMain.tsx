@@ -1,4 +1,5 @@
 import { cn } from "@shared/lib/utils"
+
 import type { CSSProperties, PropsWithChildren } from "react"
 
 type Props = PropsWithChildren & {

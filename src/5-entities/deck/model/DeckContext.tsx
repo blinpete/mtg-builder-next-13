@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react"
+
 import {
   useDeckMutation,
   useDeckQuery,
@@ -6,6 +7,7 @@ import {
   useStoreActiveDeckCardsCount,
 } from "@entities/deck"
 import type { DeckLocal } from "@shared/types"
+
 import type { PropsWithChildren } from "react"
 
 export type DeckContextType = {

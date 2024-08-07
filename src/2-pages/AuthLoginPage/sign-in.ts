@@ -1,5 +1,6 @@
 import { signIn } from "next-auth/react"
 import { toast } from "react-hot-toast"
+
 import type { LoginData } from "@shared/auth"
 
 export async function handleSignIn(data: LoginData) {

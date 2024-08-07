@@ -2,8 +2,10 @@
  * Compact card representation for sidebar stack.
  */
 import Image from "next/image"
+
 import { cn } from "@shared/lib/utils"
 import type { Card } from "@shared/types"
+
 import type { PropsWithChildren } from "react"
 
 type Props = {

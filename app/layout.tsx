@@ -1,5 +1,6 @@
 import "@app/globals.css"
 import { Inter } from "next/font/google"
+
 import { Providers } from "@app/providers"
 import { Header } from "@widgets/Header"
 import { cn } from "@shared/lib/utils"
