@@ -1,0 +1,1 @@
+export { DeckIdPage } from "./page"

@@ -5,11 +5,13 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "tscheck": "tsc --pretty --noEmit",
     "start": "next start",
     "dbgen": "prisma generate",
     "dbpush": "prisma db push",
     "dbseed": "prisma db seed",
+    "dbmigrate": "prisma migrate dev",
+    "fsd-cruise": "fsd-cruise",
+    "tscheck": "tsc --pretty --noEmit",
     "fmt": "prettier . '!pnpm-lock.yaml' --write --ignore-path .gitignore",
     "lint": "next lint"
   },
@@ -25,7 +27,6 @@
     "bcrypt": "^5.1.0",
     "class-variance-authority": "^0.6.0",
     "clsx": "^1.2.1",
-    "eslint": "8.42.0",
     "eslint-config-next": "13.4.5",
     "lucide-react": "^0.243.0",
     "next": "13.4.5",
@@ -40,7 +41,8 @@
     "tailwind-merge": "^1.13.1",
     "tailwindcss": "3.3.2",
     "tailwindcss-animate": "^1.0.6",
-    "typescript": "5.1.3"
+    "typescript": "5.1.3",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
@@ -48,8 +50,15 @@
     "@types/node": "20.3.0",
     "@types/react": "18.2.11",
     "@types/react-dom": "18.2.4",
-    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/eslint-plugin": "^7.16.1",
+    "@typescript-eslint/parser": "^7.16.1",
+    "dependency-cruiser": "^16.3.10",
+    "eslint": "8.57.0",
     "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-boundaries": "^4.2.2",
+    "eslint-plugin-react-refresh": "^0.4.9",
+    "fsd-cruise": "1.0.5-beta.6",
     "prettier": "^2.8.8",
     "prisma": "^4.16.0",
     "webpack-dev-server-qr-code": "^1.2.0"
