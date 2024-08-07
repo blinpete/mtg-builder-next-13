@@ -2,14 +2,14 @@
 
 import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { CardPreviewPortal, useStoreActiveCard } from "@entities/card"
+import { LayoutMain } from "@widgets/LayoutMain"
 import {
   SearchInput,
   SearchOutput,
   useStoreSearchQuery,
   DEFAULT_SEARCH_QUERY,
 } from "@features/Search"
-import { LayoutMain } from "@widgets/LayoutMain"
+import { CardPreviewPortal, useStoreActiveCard } from "@entities/card"
 import type { SearchOptions } from "@shared/api"
 
 /**

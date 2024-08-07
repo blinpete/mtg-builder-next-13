@@ -1,5 +1,5 @@
-import type { Prisma } from "@prisma/client"
 import type { Card } from "@shared/types"
+import type { Prisma } from "@prisma/client"
 import type { NextRequest } from "next/server"
 
 export type CreateDeckData = {

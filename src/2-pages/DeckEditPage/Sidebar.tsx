@@ -1,8 +1,8 @@
 "use client"
 
+import { DeckColumn } from "@features/DeckColumn"
 import { useStoreActiveCard } from "@entities/card"
 import { useDeck, useStoreActiveDeck } from "@entities/deck"
-import { DeckColumn } from "@features/DeckColumn"
 import { Input } from "@shared/ui"
 
 type Props = {

@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { registerUser } from "./register"
 import type { RegisterData } from "@shared/auth"
+import { registerUser } from "./register"
 
 export function AuthRegisterPage() {
   const [data, setData] = useState<RegisterData>({

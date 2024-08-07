@@ -2,6 +2,9 @@
 
 import { useParams, useRouter } from "next/navigation"
 import { useEffect } from "react"
+import { LayoutMain } from "@widgets/LayoutMain"
+import { AuthGuard } from "@features/AuthGuard"
+import { DeckSectionHeading } from "@features/DeckColumn"
 import { CardDotCounter, CardPreviewPortal, useStoreActiveCard } from "@entities/card"
 import { CardsGrid } from "@entities/card-collection"
 import {
@@ -12,9 +15,6 @@ import {
   useDeckQuery,
   useChampions,
 } from "@entities/deck"
-import { AuthGuard } from "@features/AuthGuard"
-import { DeckSectionHeading } from "@features/DeckColumn"
-import { LayoutMain } from "@widgets/LayoutMain"
 
 export function DeckIdPage() {
   return (

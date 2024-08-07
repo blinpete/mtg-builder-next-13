@@ -1,9 +1,9 @@
 "use client"
 
+import { SearchForm, SearchOutput, useStoreSearchQuery } from "@features/Search"
 import { CardDotCounter } from "@entities/card"
 import { useStoreActiveCard } from "@entities/card"
 import { useCardsCounters, useStoreActiveDeck } from "@entities/deck"
-import { SearchForm, SearchOutput, useStoreSearchQuery } from "@features/Search"
 import { cn } from "@shared/lib/utils"
 
 type Props = {

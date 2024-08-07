@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { handleSignIn } from "./sign-in"
 import type { LoginData } from "@shared/auth"
+import { handleSignIn } from "./sign-in"
 
 export function AuthLoginPage() {
   const [data, setData] = useState<LoginData>({
